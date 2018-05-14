@@ -4,9 +4,89 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Views.Pages"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:pageVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Pages"
+             xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Settings"/>
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance pageVms:SettingsPageViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:ListOfStringExpanderConverter x:Key="ListOfStringExpanderConverter"
+                                                      Seperator=","/>
+
+            <Style BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}"
+                   TargetType="TextBox" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="16">
+        <StackPanel Width="640">
+
+            <TextBlock Text="Visual Studio Team Services or Team Foundation Server" />
+            <materialDesign:Card Margin="0,4,0,0">
+                <StackPanel Margin="16">
+                    <TextBox materialDesign:HintAssist.Hint="URL"
+                             Text="{Binding Settings.TfsUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox materialDesign:HintAssist.Hint="Default Collection"
+                             Margin="0,16,0,0"
+                             Text="{Binding Settings.TfsDefaultCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </materialDesign:Card>
+            
+            <TextBlock Margin="0,16,0,0"
+                       Text="Work Item Query"/>
+            <materialDesign:Card Margin="0,4,0,0">
+                <StackPanel Margin="16">
+                    <ListView ItemsSource="{Binding Settings.WorkItemQuery.Expressions}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="225"
+                                                DisplayMemberBinding="{Binding FieldName}"
+                                                Header="Field"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Operator}"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Values, Converter={StaticResource ListOfStringExpanderConverter}}"
+                                                Header="Value"/>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <materialDesign:PopupBox DockPanel.Dock="Right"
+                                                                     PlacementMode="BottomAndAlignRightEdges"
+                                                                     StaysOpen="False">
+                                                <StackPanel>
+                                                    <Button Command="{Binding DataContext.DeleteExpressionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SettingsPage}}}"
+                                                            CommandParameter="{Binding}"
+                                                            Content="Delete" />
+                                                </StackPanel>
+                                            </materialDesign:PopupBox>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <Button Margin="0,8,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding AddExpressionCommand}"
+                            Content="ADD"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            ToolTip="Add Criteria" />
+
+                </StackPanel>
+            </materialDesign:Card>
+
+            <StackPanel Margin="0,16,0,0"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <Button Content="CANCEL"
+                        Style="{StaticResource MaterialDesignFlatButton}" />
+                <Button Margin="8,0,0,0"
+                        Command="{Binding SaveCommand}"
+                        Content="SAVE"
+                        Style="{StaticResource MaterialDesignRaisedButton}" />
+            </StackPanel>
+
+        </StackPanel>
     </Grid>
 </UserControl>
