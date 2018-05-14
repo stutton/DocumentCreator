@@ -8,4 +8,8 @@
         <dialogs:MessageDialog />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialogVms:AddWorkItemExpressionDialogViewModel}">
+        <dialogs:AddWorkItemExpressionDialog />
+    </DataTemplate>
+
 </ResourceDictionary>

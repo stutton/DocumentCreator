@@ -69,6 +69,7 @@
     <Compile Include="Services\Tfs\TfsService.cs" />
     <Compile Include="Services\Tfs\TfsWorkItemMapper.cs" />
     <Compile Include="Setup.cs" />
+    <Compile Include="ViewModels\Dialogs\AddWorkItemExpressionDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />

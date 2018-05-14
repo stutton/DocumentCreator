@@ -7,11 +7,23 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:model="clr-namespace:Stutton.DocumentCreator.Models.WorkItems"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:dialogVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Dialogs"
+             xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance dialogVms:AddWorkItemExpressionDialogViewModel}">
     <UserControl.Resources>
+
         <sys:Boolean x:Key="True">True</sys:Boolean>
         <sys:Boolean x:Key="False">False</sys:Boolean>
+        
+        <converters:ValueCompareToVisibilityConverter x:Key="InOpToVisibilityConverter"
+                                                      CompareToValue="{x:Static model:WorkItemQueryExpressionOperator.In}"/>
+        <converters:ValueCompareToVisibilityConverter x:Key="InverseInOpToVisibilityConverter"
+                                                      CompareToValue="{x:Static model:WorkItemQueryExpressionOperator.In}"
+                                                      TrueValue="Collapsed"
+                                                      FalseValue="Visible"/>
 
         <ObjectDataProvider x:Key="OperatorEnumDataProvider"
                             MethodName="GetValues"
@@ -20,7 +32,9 @@
                 <x:Type TypeName="model:WorkItemQueryExpressionOperator"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
     </UserControl.Resources>
+
     <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -42,24 +56,56 @@
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            
+
             <ComboBox MinWidth="200"
                       materialDesign:HintAssist.Hint="Field"
                       IsEditable="True"
-                      ItemsSource="{Binding AvailableFields}"
-                      Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                      ItemsSource="{Binding WorkItemFields}"
+                      Text="{Binding Model.FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
 
             <ComboBox Grid.Column="2"
                       materialDesign:HintAssist.Hint="Operator"
                       IsEditable="False"
                       ItemsSource="{Binding Source={StaticResource OperatorEnumDataProvider}}"
-                      SelectedItem="{Binding Operator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                      SelectedItem="{Binding Model.Operator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             
-            <ContentPresenter Grid.Column="4"/>
+            <TextBox Grid.Column="4"
+                     MinWidth="200"
+                     materialDesign:HintAssist.Hint="Value"
+                     Text="{Binding Value}"
+                     Visibility="{Binding Model.Operator, Converter={StaticResource InverseInOpToVisibilityConverter}}"/>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="4"
+                        Visibility="{Binding Model.Operator, Converter={StaticResource InOpToVisibilityConverter}}">
+                <TextBlock Text="(" Margin="0,0,4,0"/>
+                <ItemsControl ItemsSource="{Binding Model.Values}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Path=.}"
+                                     Margin="0,0,4,0"
+                                     MinWidth="100"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                        Command="{Binding DataContext.AddInValueCommand, RelativeSource={RelativeSource AncestorType={x:Type local:AddWorkItemExpressionDialog}}}">
+                    <materialDesign:PackIcon Width="24"
+                                             Height="24"
+                                             Kind="Plus"/>
+                </Button>
+                <TextBlock Text=")"/>
+            </StackPanel>
 
         </Grid>
 
-        <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="4"
                     Margin="0,16,0,0"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">

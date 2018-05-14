@@ -14,7 +14,7 @@ namespace Stutton.DocumentCreator.Models.WorkItems
     {
         private string _fieldName;
         private WorkItemQueryExpressionOperator _operator;
-        private ObservableCollection<string> _values;
+        private ObservableCollection<string> _values = new ObservableCollection<string>();
 
         [DataMember]
         public string FieldName
