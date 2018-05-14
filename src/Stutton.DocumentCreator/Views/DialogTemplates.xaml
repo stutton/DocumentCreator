@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Stutton.DocumentCreator.Views"
+                    xmlns:dialogVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Dialogs"
+                    xmlns:dialogs="clr-namespace:Stutton.DocumentCreator.Views.Dialogs">
+
+    <DataTemplate DataType="{x:Type dialogVms:MessageDialogViewModel}">
+        <dialogs:MessageDialog />
+    </DataTemplate>
+
+</ResourceDictionary>
