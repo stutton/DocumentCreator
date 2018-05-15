@@ -13,8 +13,9 @@
              d:DataContext="{d:DesignInstance pageVms:SettingsPageViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:ListOfStringExpanderConverter x:Key="ListOfStringExpanderConverter"
-                                                      Seperator=","/>
+            <converters:FlattenListConverter x:Key="ListOfStringExpanderConverter"
+                                             Separator=","
+                                             PropertyName="Value"/>
 
             <Style BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}"
                    TargetType="TextBox" />
@@ -36,6 +37,7 @@
             
             <TextBlock Margin="0,16,0,0"
                        Text="Work Item Query"/>
+
             <materialDesign:Card Margin="0,4,0,0">
                 <StackPanel Margin="16">
                     <ListView ItemsSource="{Binding Settings.WorkItemQuery.Expressions}">
@@ -44,9 +46,11 @@
                                 <GridViewColumn Width="225"
                                                 DisplayMemberBinding="{Binding FieldName}"
                                                 Header="Field"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding Operator}"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Operator}"
+                                                Header="Operator"/>
                                 <GridViewColumn DisplayMemberBinding="{Binding Values, Converter={StaticResource ListOfStringExpanderConverter}}"
-                                                Header="Value"/>
+                                                Header="Value"
+                                                Width="225"/>
                                 <GridViewColumn>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -56,7 +60,7 @@
                                                 <StackPanel>
                                                     <Button Command="{Binding DataContext.DeleteExpressionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SettingsPage}}}"
                                                             CommandParameter="{Binding}"
-                                                            Content="Delete" />
+                                                            Content="Delete"/>
                                                 </StackPanel>
                                             </materialDesign:PopupBox>
                                         </DataTemplate>

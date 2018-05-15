@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using Flurl;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.Client;
+using Microsoft.VisualStudio.Services.Profile;
+using Microsoft.VisualStudio.Services.Profile.Client;
 using Microsoft.VisualStudio.Services.WebApi;
 using Stutton.DocumentCreator.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
@@ -52,15 +56,12 @@ namespace Stutton.DocumentCreator.Services.Tfs
         {
             try
             {
+
                 var sb = new StringBuilder();
-                sb.Append("SELECT * FROM workitems WHERE ");
-                var prependAnd = false;
+                sb.Append($"SELECT * FROM workitems WHERE [System.AssignedTo] contains '{}");
                 foreach (var expression in query.Expressions)
                 {
-                    if (prependAnd)
-                    {
-                        sb.Append("AND ");
-                    }
+                    sb.Append("AND ");
 
                     sb.Append($"[{expression.FieldName}] ");
 
@@ -82,8 +83,6 @@ namespace Stutton.DocumentCreator.Services.Tfs
                     {
                         sb.Append($"'{expression.Values.FirstOrDefault()}' ");
                     }
-                    
-                    prependAnd = true;
                 }
 
                 var wiql = new Wiql {Query = sb.ToString()};
@@ -138,9 +137,31 @@ namespace Stutton.DocumentCreator.Services.Tfs
             throw new NotImplementedException();
         }
 
-        public Task<IResponse<ProfileModel>> GetUserProfileAsync()
+        public async Task<IResponse<ProfileModel>> GetUserProfileAsync()
         {
-            throw new NotImplementedException();
+            var connectionResponse = await GetUpdatedVssConnection();
+
+            if (!connectionResponse.Success)
+            {
+                return Response<ProfileModel>.FromFailure(connectionResponse.Message);
+            }
+
+            var connection = connectionResponse.Value;
+            var profileClient = await connection.GetClientAsync<ProfileHttpClient>();
+            var name = await profileClient.GetDisplayNameAsync(null);
+            var avatar = await profileClient.GetAvatarAsync(AvatarSize.Large);
+
+            var result = new ProfileModel { Name = name };
+            var imageBytes = avatar.Value;
+
+            BitmapSource image;
+            using (var stream = new MemoryStream(imageBytes))
+            {
+                image = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+            }
+
+            result.ProfilePicture = image;
+            return Response<ProfileModel>.FromSuccess(result);
         }
 
         private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)
@@ -175,7 +196,9 @@ namespace Stutton.DocumentCreator.Services.Tfs
                     return Response<VssConnection>.FromFailure(settingsResponse.Message);
                 }
 
-                var tfsUrl = settingsResponse.Value.TfsUrl;
+                var settings = settingsResponse.Value;
+                var tfsUrl = settings.TfsUrl;
+
                 var defaultCollection = settingsResponse.Value.TfsDefaultCollection;
 
                 var defaultCollectionUrl = Url.Combine(tfsUrl, defaultCollection);

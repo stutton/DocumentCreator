@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.ViewModels;
 using Unity;
 
@@ -31,7 +32,7 @@ namespace Stutton.DocumentCreator
 
             _container = new UnityContainer();
 
-            Setup.Configure(_container);
+            Setup.Configure(_container, MainSnackbar.MessageQueue);
             Setup.LoadPages(_container);
 
             _shellViewModel = _container.Resolve<ShellViewModel>();

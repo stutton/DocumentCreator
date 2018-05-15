@@ -59,6 +59,7 @@
     <Compile Include="Models\WorkItems\WorkItemModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionOperator.cs" />
+    <Compile Include="Models\WorkItems\WorkItemQueryInValue.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryModel.cs" />
     <Compile Include="Services\IResponse.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
@@ -89,7 +90,7 @@
     <Compile Include="ViewModels\WorkItems\WorkItemViewModel.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
     <Compile Include="Views\Controls\TilePanel.cs" />
-    <Compile Include="Views\Converters\ListOfStringExpanderConverter.cs" />
+    <Compile Include="Views\Converters\FlattenListConverter.cs" />
     <Compile Include="Views\Converters\SideBarOffsetConverter.cs" />
     <Compile Include="Views\Converters\ValueCompareConverterBase.cs" />
     <Compile Include="Views\Converters\ValueCompareToVisibilityConverter.cs" />

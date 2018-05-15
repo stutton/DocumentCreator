@@ -18,6 +18,9 @@
         </ResourceDictionary>
     </Window.Resources>
     <materialDesign:DialogHost Loaded="DialogHost_OnLoaded" Identifier="RootDialog">
-        <views:ShellView x:Name="ShellView"/>
+        <Grid>
+            <views:ShellView x:Name="ShellView"/>
+            <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}"/>
+        </Grid>
     </materialDesign:DialogHost>
 </Window>

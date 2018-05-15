@@ -28,7 +28,7 @@ namespace Stutton.DocumentCreator.ViewModels.Dialogs
 
         private void AddInValue()
         {
-            Model.Values.Add(string.Empty);
+            Model.Values.Add(new WorkItemQueryInValue());
         }
 
         #endregion
@@ -43,7 +43,7 @@ namespace Stutton.DocumentCreator.ViewModels.Dialogs
                 if (Set(ref _value, value))
                 {
                     Model.Values.Clear();
-                    Model.Values.Add(value);
+                    Model.Values.Add(new WorkItemQueryInValue {Value = value});
                 }
             }
         }

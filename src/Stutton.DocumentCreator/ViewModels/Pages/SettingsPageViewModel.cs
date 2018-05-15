@@ -19,6 +19,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
     {
         private readonly ISettingsService _settingsService;
         private readonly ITfsService _tfsService;
+        private readonly ISnackbarMessageQueue _messageQueue;
         public const string Key = "SettingsPage";
         public const int Order = 2;
         public override string PageKey => Key;
@@ -26,10 +27,11 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public override string Title => Resources.SettingsPage_Settings;
         public override bool IsOnDemandPage => false;
 
-        public SettingsPageViewModel(ISettingsService settingsService, ITfsService tfsService)
+        public SettingsPageViewModel(ISettingsService settingsService, ITfsService tfsService, ISnackbarMessageQueue messageQueue)
         {
             _settingsService = settingsService;
             _tfsService = tfsService;
+            _messageQueue = messageQueue;
         }
 
         #region Save Command
@@ -43,7 +45,9 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             if (!response.Success)
             {
                 await DialogHost.Show(new ErrorMessageDialogViewModel($"Failed to save settings: {response.Message}"));
+                return;
             }
+            _messageQueue.Enqueue("Settings saved");
         }
 
         #endregion
@@ -74,7 +78,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         private void DeleteExpression(WorkItemQueryExpressionModel commandParameter)
         {
-            
+            Settings.WorkItemQuery.Expressions.Remove(commandParameter);
         }
 
         #endregion

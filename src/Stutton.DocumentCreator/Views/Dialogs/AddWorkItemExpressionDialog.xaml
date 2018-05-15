@@ -58,10 +58,12 @@
             </Grid.ColumnDefinitions>
 
             <ComboBox MinWidth="200"
+                      Height="28"
                       materialDesign:HintAssist.Hint="Field"
                       IsEditable="True"
                       ItemsSource="{Binding WorkItemFields}"
-                      Text="{Binding Model.FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                      Text="{Binding Model.FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      VerticalAlignment="Top">
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel/>
@@ -70,37 +72,38 @@
             </ComboBox>
 
             <ComboBox Grid.Column="2"
+                      Height="28"
+                      VerticalAlignment="Top"
                       materialDesign:HintAssist.Hint="Operator"
                       IsEditable="False"
                       ItemsSource="{Binding Source={StaticResource OperatorEnumDataProvider}}"
                       SelectedItem="{Binding Model.Operator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             
             <TextBox Grid.Column="4"
+                     Height="28"
+                     VerticalAlignment="Top"
                      MinWidth="200"
                      materialDesign:HintAssist.Hint="Value"
                      Text="{Binding Value}"
                      Visibility="{Binding Model.Operator, Converter={StaticResource InverseInOpToVisibilityConverter}}"/>
 
-            <StackPanel Orientation="Horizontal"
-                        Grid.Column="4"
-                        Visibility="{Binding Model.Operator, Converter={StaticResource InOpToVisibilityConverter}}">
-                <TextBlock Text="(" Margin="0,0,4,0"/>
+            <StackPanel Grid.Column="4"
+                        Visibility="{Binding Model.Operator, Converter={StaticResource InOpToVisibilityConverter}}"
+                        VerticalAlignment="Top">
                 <ItemsControl ItemsSource="{Binding Model.Values}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Path=.}"
-                                     Margin="0,0,4,0"
-                                     MinWidth="100"/>
+                            <TextBox Text="{Binding Value}"
+                                     Height="28"
+                                     MinWidth="100"
+                                     materialDesign:HintAssist.Hint="Value"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <Button Style="{DynamicResource MaterialDesignToolForegroundButton}"
-                        Command="{Binding DataContext.AddInValueCommand, RelativeSource={RelativeSource AncestorType={x:Type local:AddWorkItemExpressionDialog}}}">
-                    <materialDesign:PackIcon Width="24"
-                                             Height="24"
-                                             Kind="Plus"/>
-                </Button>
-                <TextBlock Text=")"/>
+                <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                        Command="{Binding DataContext.AddInValueCommand, RelativeSource={RelativeSource AncestorType={x:Type local:AddWorkItemExpressionDialog}}}"
+                        Content="ADD VALUE"
+                        Margin="0,4,0,0"/>
             </StackPanel>
 
         </Grid>
