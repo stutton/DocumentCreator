@@ -79,6 +79,15 @@ namespace Stutton.DocumentCreator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to defaultcollection.
+        /// </summary>
+        internal static string TfsDefaultCollection_DefaultValue {
+            get {
+                return ResourceManager.GetString("TfsDefaultCollection_DefaultValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Work Items.
         /// </summary>
         internal static string WorkItemsPage_WorkItems {

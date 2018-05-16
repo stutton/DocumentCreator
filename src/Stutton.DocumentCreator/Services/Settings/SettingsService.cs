@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Stutton.DocumentCreator.Models.Settings;
+using AppDomain = System.AppDomain;
 
 namespace Stutton.DocumentCreator.Services.Settings
 {
@@ -20,6 +22,10 @@ namespace Stutton.DocumentCreator.Services.Settings
             try
             {
                 _settingsCache = settings;
+                if (!Directory.Exists(_settingsDirectoryName))
+                {
+                    Directory.CreateDirectory(_settingsDirectoryName);
+                }
                 var settingsJson = await Task.Run(() => JsonConvert.SerializeObject(settings));
                 await Task.Run(() => File.WriteAllText(_settingsFileName, settingsJson));
                 return Response.FromSuccess();
@@ -41,12 +47,7 @@ namespace Stutton.DocumentCreator.Services.Settings
 
                 if (!File.Exists(_settingsFileName))
                 {
-                    _settingsCache = new SettingsModel();
-                    Directory.CreateDirectory(_settingsDirectoryName);
-                    var response = await SaveSettings(_settingsCache);
-                    return Response<SettingsModel>.FromFailure(!response.Success
-                        ? response.Message
-                        : "No settings file found. Created empty settings file. Please configure the settings on the Settings screen.");
+                    return Response<SettingsModel>.FromFailure("No settings file found", ResponseCode.FileNotFound);
                 }
 
                 var settingsJson = await Task.Run(() => File.ReadAllText(_settingsFileName));
@@ -58,6 +59,30 @@ namespace Stutton.DocumentCreator.Services.Settings
             catch(Exception ex)
             {
                 return Response<SettingsModel>.FromFailure($"Failed to load settings: {ex.Message}");
+            }
+        }
+
+        public async Task<IResponse<SettingsTransformModel>> GetSettingsTransformAsync()
+        {
+            try
+            {
+                var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var files = Directory.GetFiles(baseDirectory, "*.settings.transform");
+                if (!files.Any())
+                {
+                    return Response<SettingsTransformModel>.FromFailure("No settings transforms found",
+                        ResponseCode.FileNotFound);
+                }
+
+                var transformPath = files.First();
+                var transformJson = await Task.Run(() => File.ReadAllText(transformPath));
+                var transformModel =
+                    await Task.Run(() => JsonConvert.DeserializeObject<SettingsTransformModel>(transformJson));
+                return Response<SettingsTransformModel>.FromSuccess(transformModel);
+            }
+            catch (Exception ex)
+            {
+                return Response<SettingsTransformModel>.FromFailure($"Failed to load settings transform: {ex.Message}");
             }
         }
     }

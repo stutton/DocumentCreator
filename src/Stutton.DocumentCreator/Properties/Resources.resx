@@ -124,6 +124,9 @@
   <data name="SettingsPage_Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="TfsDefaultCollection_DefaultValue" xml:space="preserve">
+    <value>defaultcollection</value>
+  </data>
   <data name="WorkItemsPage_WorkItems" xml:space="preserve">
     <value>Work Items</value>
   </data>

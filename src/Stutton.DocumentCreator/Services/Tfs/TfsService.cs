@@ -56,9 +56,17 @@ namespace Stutton.DocumentCreator.Services.Tfs
         {
             try
             {
+                var settingsResponse = await _settingsService.GetSettings();
+
+                if (!settingsResponse.Success)
+                {
+                    return Response< IEnumerable<IWorkItem >>.FromFailure(settingsResponse.Message);
+                }
+
+                var settings = settingsResponse.Value;
 
                 var sb = new StringBuilder();
-                sb.Append($"SELECT * FROM workitems WHERE [System.AssignedTo] contains '{}");
+                sb.Append($"SELECT * FROM workitems WHERE [System.AssignedTo] contains '{settings.TfsUserName}");
                 foreach (var expression in query.Expressions)
                 {
                     sb.Append("AND ");

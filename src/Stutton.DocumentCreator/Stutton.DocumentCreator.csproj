@@ -56,12 +56,14 @@
     </ApplicationDefinition>
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
+    <Compile Include="Models\Settings\SettingsTransformModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionOperator.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryInValue.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryModel.cs" />
     <Compile Include="Services\IResponse.cs" />
+    <Compile Include="Services\ResponseCode.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="Services\Tfs\ITfsService.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
     <Compile Include="ViewModels\Navigation\INavigationService.cs" />
     <Compile Include="ViewModels\Pages\IPage.cs" />
     <Compile Include="ViewModels\Navigation\NavigationService.cs" />
@@ -101,6 +104,9 @@
       <DependentUpon>MessageDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\MessageIconTemplateSelector.cs" />
+    <Compile Include="Views\Dialogs\TfsUrlDialog.xaml.cs">
+      <DependentUpon>TfsUrlDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -128,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\MessageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\TfsUrlDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,4 +12,8 @@
         <dialogs:AddWorkItemExpressionDialog />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialogVms:TfsUrlDialogViewModel}">
+        <dialogs:TfsUrlDialog/>
+    </DataTemplate>
+
 </ResourceDictionary>
