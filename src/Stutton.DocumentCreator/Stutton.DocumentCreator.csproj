@@ -55,9 +55,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\DocumentTemplates\Automations\IAutomation.cs" />
-    <Compile Include="Models\DocumentTemplates\DocumentFieldModel.cs" />
+    <Compile Include="Models\DocumentTemplates\Details\DocumentDetailsModel.cs" />
     <Compile Include="Models\DocumentTemplates\DocumentType.cs" />
-    <Compile Include="Models\DocumentTemplates\FieldTypes\IDocumentFieldType.cs" />
+    <Compile Include="Models\DocumentTemplates\Fields\IField.cs" />
     <Compile Include="Models\DocumentTemplates\DocumentTemplateModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
