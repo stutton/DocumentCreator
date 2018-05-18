@@ -54,6 +54,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\DocumentTemplates\Automations\IAutomation.cs" />
+    <Compile Include="Models\DocumentTemplates\DocumentFieldModel.cs" />
+    <Compile Include="Models\DocumentTemplates\DocumentType.cs" />
+    <Compile Include="Models\DocumentTemplates\FieldTypes\IDocumentFieldType.cs" />
+    <Compile Include="Models\DocumentTemplates\DocumentTemplateModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Models\Settings\SettingsTransformModel.cs" />
@@ -62,12 +67,12 @@
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionOperator.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryInValue.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryModel.cs" />
-    <Compile Include="Services\IResponse.cs" />
-    <Compile Include="Services\ResponseCode.cs" />
+    <Compile Include="Shared\IResponse.cs" />
+    <Compile Include="Shared\ResponseCode.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="Services\Tfs\ITfsService.cs" />
-    <Compile Include="Services\Response.cs" />
+    <Compile Include="Shared\Response.cs" />
     <Compile Include="Services\Tfs\TfsFieldKeys.cs" />
     <Compile Include="Services\Tfs\TfsService.cs" />
     <Compile Include="Services\Tfs\TfsWorkItemMapper.cs" />
@@ -78,6 +83,7 @@
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
     <Compile Include="ViewModels\Navigation\INavigationService.cs" />
+    <Compile Include="ViewModels\Pages\DocumentsPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\IPage.cs" />
     <Compile Include="ViewModels\Navigation\NavigationService.cs" />
     <Compile Include="ViewModels\Pages\PageBase.cs" />
@@ -106,6 +112,9 @@
     <Compile Include="Views\Dialogs\MessageIconTemplateSelector.cs" />
     <Compile Include="Views\Dialogs\TfsUrlDialog.xaml.cs">
       <DependentUpon>TfsUrlDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pages\DocumentsPage.xaml.cs">
+      <DependentUpon>DocumentsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -142,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DialogTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Pages\DocumentsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -221,6 +234,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.0.0</Version>
     </PackageReference>
     <PackageReference Include="System.Windows.Interactivity.WPF">
       <Version>2.0.20525</Version>

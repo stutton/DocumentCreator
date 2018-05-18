@@ -3,7 +3,9 @@
                     xmlns:materialConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
                     xmlns:workItems="clr-namespace:Stutton.DocumentCreator.ViewModels.WorkItems"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:views="clr-namespace:Stutton.DocumentCreator.Views">
+                    xmlns:views="clr-namespace:Stutton.DocumentCreator.Views"
+                    xmlns:workItems1="clr-namespace:Stutton.DocumentCreator.Models.WorkItems"
+                    xmlns:documentTemplates="clr-namespace:Stutton.DocumentCreator.Models.DocumentTemplates">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
@@ -11,7 +13,7 @@
 
     <materialConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-    <DataTemplate DataType="{x:Type workItems:WorkItemViewModel}">
+    <DataTemplate DataType="{x:Type workItems1:WorkItemModel}">
         <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect FadeIn}"
                                              OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
             <Border views:ShadowAnimationAssist.AnimateToShadow="Depth3"
@@ -34,7 +36,7 @@
                             </Style>
                         </Button.Style>
                         <StackPanel Width="250" Margin="16,16,16,16">
-                            <TextBlock Text="{Binding Name, FallbackValue=This is a long title}"
+                            <TextBlock Text="{Binding Title, FallbackValue=No Title}"
                                                Style="{StaticResource MaterialDesignBody2TextBlock}" 
                                                TextWrapping="Wrap"/>
                             <TextBlock Margin="0,8,0,0"
@@ -58,7 +60,7 @@
                                 </Grid>
                                 <StackPanel Margin="16,0,0,0" DockPanel.Dock="Left">
                                     <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" 
-                                                       Text="{Binding ID}"
+                                                       Text="{Binding Id}"
                                                        FontWeight="Bold"/>
 
                                     <TextBlock Margin="0,0,0,0"
@@ -87,6 +89,68 @@
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
+            </Border>
+        </materialDesign:TransitioningContent>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type documentTemplates:DocumentTemplateModel}">
+        <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect FadeIn}"
+                                             OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+            <Border views:ShadowAnimationAssist.AnimateToShadow="Depth3"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                    Background="Transparent"
+                    Effect="{Binding RelativeSource={RelativeSource Self}, Path=(materialDesign:ShadowAssist.ShadowDepth), Converter={x:Static materialConverters:ShadowConverter.Instance}}">
+                <materialDesign:Card Margin="4,4,0,0" materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                    <Button Command="{Binding Command}">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border>
+                                                <ContentPresenter Content="{TemplateBinding Content}" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+
+                        <StackPanel Width="250" Margin="16,16,16,16">
+                            <DockPanel Margin="0,0,0,0">
+                                <Grid DockPanel.Dock="Left">
+                                    <Ellipse Width="24"
+                                                     Height="24"
+                                                     Fill="{DynamicResource PrimaryHueDarkBrush}" />
+                                    <materialDesign:PackIcon Width="12"
+                                                                     Height="12"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"
+                                                                     Foreground="White"
+                                                                     Kind="ClipboardCheck" />
+                                </Grid>
+                                <StackPanel Margin="16,0,0,0" DockPanel.Dock="Left">
+                                    <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" 
+                                                       Text="{Binding Name}"
+                                                       FontWeight="Bold"/>
+
+                                    <TextBlock Margin="0,0,0,0"
+                                                       Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                       Text="{Binding DocumentType, FallbackValue=?Something here?}" />
+                                </StackPanel>
+                            </DockPanel>
+
+                            <TextBlock Margin="0,8,0,0"
+                                       Opacity=".68"
+                                       Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                       Text="{Binding Description}"
+                                       TextWrapping="Wrap" 
+                                       MaxHeight="60"
+                                       TextTrimming="WordEllipsis"/>
+
+                        </StackPanel>
+                    </Button>
+                </materialDesign:Card>
             </Border>
         </materialDesign:TransitioningContent>
     </DataTemplate>

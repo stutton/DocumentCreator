@@ -1,4 +1,6 @@
-﻿namespace Stutton.DocumentCreator.Services
+﻿using Stutton.DocumentCreator.Services;
+
+namespace Stutton.DocumentCreator.Shared
 {
     public interface IResponse
     {

@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stutton.DocumentCreator.Services
+namespace Stutton.DocumentCreator.Models.DocumentTemplates
 {
-    public enum ResponseCode
+    public enum DocumentType
     {
-        Ok,
-        Error,
-        FileNotFound
+        Word
     }
 }

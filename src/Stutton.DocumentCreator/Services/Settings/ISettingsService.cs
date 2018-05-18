@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stutton.DocumentCreator.Models.Settings;
+using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Services.Settings
 {

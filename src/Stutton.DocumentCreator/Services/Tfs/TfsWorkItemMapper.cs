@@ -26,8 +26,11 @@ namespace Stutton.DocumentCreator.Services.Tfs
             model.Id = workItem.Id.Value;
             foreach (var kv in TfsNameToModelProperty)
             {
-                var value = workItem.Fields[kv.Key].ToString();
-                typeof(WorkItemModel).GetProperty(kv.Value).SetValue(model, value);
+                if (workItem.Fields.ContainsKey(kv.Key))
+                {
+                    var value = workItem.Fields[kv.Key].ToString();
+                    typeof(WorkItemModel).GetProperty(kv.Value).SetValue(model, value);
+                }
             }
 
             return model;

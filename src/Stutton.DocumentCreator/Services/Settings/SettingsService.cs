@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Stutton.DocumentCreator.Models.Settings;
+using Stutton.DocumentCreator.Shared;
 using AppDomain = System.AppDomain;
 
 namespace Stutton.DocumentCreator.Services.Settings

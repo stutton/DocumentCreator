@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Stutton.DocumentCreator.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
+using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Services.Tfs
 {

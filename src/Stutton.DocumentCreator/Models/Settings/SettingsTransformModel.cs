@@ -16,6 +16,6 @@ namespace Stutton.DocumentCreator.Models.Settings
         [DataMember]
         public string TfsDefaultCollection { get; set; }
         [DataMember]
-        public WorkItemQueryModel WorkItemQuery { get; set; }
+        public WorkItemQueryModel WorkItemQuery { get; set; } = new WorkItemQueryModel();
     }
 }

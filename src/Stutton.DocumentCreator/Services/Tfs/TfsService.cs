@@ -16,6 +16,7 @@ using Microsoft.VisualStudio.Services.WebApi;
 using Stutton.DocumentCreator.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Settings;
+using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Services.Tfs
 {
@@ -66,7 +67,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 var settings = settingsResponse.Value;
 
                 var sb = new StringBuilder();
-                sb.Append($"SELECT * FROM workitems WHERE [System.AssignedTo] contains '{settings.TfsUserName}");
+                sb.Append($"SELECT * FROM workitems WHERE [System.AssignedTo] contains '{settings.TfsUserName}'");
                 foreach (var expression in query.Expressions)
                 {
                     sb.Append("AND ");
