@@ -89,6 +89,7 @@
     <Compile Include="ViewModels\Documents\DocumentTemplateSteps\DetailsStepViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentTemplateSteps\FieldsStepViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentTemplateSteps\SummaryStepViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\WorkItemQueryStepViewModel.cs" />
     <Compile Include="ViewModels\Navigation\INavigationService.cs" />
     <Compile Include="ViewModels\Pages\DocumentCreatorPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\DocumentsPageViewModel.cs" />
@@ -107,6 +108,12 @@
     <Compile Include="Models\WorkItems\IWorkItem.cs" />
     <Compile Include="ViewModels\WorkItems\WorkItemViewModel.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
+    <Compile Include="Views\Controls\TemplateSteps\DetailsStep.xaml.cs">
+      <DependentUpon>DetailsStep.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TemplateSteps\WorkItemQueryStep.xaml.cs">
+      <DependentUpon>WorkItemQueryStep.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\TilePanel.cs" />
     <Compile Include="Views\Converters\FlattenListConverter.cs" />
     <Compile Include="Views\Converters\SideBarOffsetConverter.cs" />
@@ -150,6 +157,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Controls\TemplateSteps\DetailsStep.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\TemplateSteps\WorkItemQueryStep.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\AddWorkItemExpressionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

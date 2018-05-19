@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="Stutton.DocumentCreator.Views.Controls.TemplateSteps.WorkItemQueryStep"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stutton.DocumentCreator.Views.Controls.TemplateSteps"
+             xmlns:documentTemplateStepVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance documentTemplateStepVms:WorkItemQueryStepViewModel}">
+    <UserControl.Resources>
+        <converters:FlattenListConverter x:Key="ListOfStringExpanderConverter"
+                                         Separator=","
+                                         PropertyName="Value"/>
+    </UserControl.Resources>
+    <StackPanel>
+        <ListView ItemsSource="{Binding Model.Expressions}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="225"
+                                                DisplayMemberBinding="{Binding FieldName}"
+                                                Header="Field"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Operator}"
+                                                Header="Operator"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Values, Converter={StaticResource ListOfStringExpanderConverter}}"
+                                                Header="Value"
+                                                Width="225"/>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <materialDesign:PopupBox DockPanel.Dock="Right"
+                                                                     PlacementMode="BottomAndAlignRightEdges"
+                                                                     StaysOpen="False">
+                                    <StackPanel>
+                                        <Button Command="{Binding DataContext.DeleteExpressionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}"
+                                                            CommandParameter="{Binding}"
+                                                            Content="Delete"/>
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button Margin="0,8,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding AddExpressionCommand}"
+                            Content="ADD"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            ToolTip="Add Criteria" />
+    </StackPanel>
+</UserControl>

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps;
+using Stutton.DocumentCreator.ViewModels.Pages;
 
 namespace Stutton.DocumentCreator.Views.Pages
 {
@@ -23,6 +25,20 @@ namespace Stutton.DocumentCreator.Views.Pages
         public DocumentTemplatePage()
         {
             InitializeComponent();
+        }
+
+        private void Stepper_OnContinueNavigation(object sender, RoutedEventArgs e)
+        {
+            if (TemplateStepper.ActiveStep.Content is SummaryStepViewModel)
+            {
+                if (DataContext is DocumentTemplatePageViewModel vm)
+                {
+                    if (vm.FinishCommand.CanExecute(null))
+                    {
+                        vm.FinishCommand.Execute(null);
+                    }
+                }
+            }
         }
     }
 }

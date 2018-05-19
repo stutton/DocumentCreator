@@ -53,6 +53,18 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         #endregion
 
+        #region ICommand FinishCommand
+
+        private ICommand _finishCommand;
+        public ICommand FinishCommand => _finishCommand ?? (_finishCommand = new RelayCommand(Finish));
+
+        private void Finish()
+        {
+            _navigationService.NavigateTo(DocumentsPageViewModel.Key);
+        }
+
+        #endregion
+
         public override Task NavigatedTo(object parameter)
         {
             if (parameter == null || !(parameter is DocumentModel model))
@@ -65,6 +77,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             Steps = new List<IStep>
             {
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Details"}, Content = new DetailsStepViewModel(Model.Details)},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Query"}, Content = new WorkItemQueryStepViewModel(Model.Details.WorkItemQuery)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = new FieldsStepViewModel(Model.Fields)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = new AutomationsStepViewModel(Model.Automations)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Finish"}, Content = new SummaryStepViewModel(Model)}

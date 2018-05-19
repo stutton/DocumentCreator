@@ -21,11 +21,12 @@
     </UserControl.Resources>
 
     <materialDesign:Card>
-        <mdeControls:Stepper IsLinear="False" 
+        <mdeControls:Stepper x:Name="TemplateStepper"
+                             IsLinear="False" 
                              Layout="Horizontal"
                              Steps="{Binding Steps}"
                              Width="640"
                              CancelNavigationCommand="{Binding CancelCommand}"
-                             ContinueNavigationCommand="{Binding ContinueCommand}"/>
+                             ContinueNavigation="Stepper_OnContinueNavigation"/>
     </materialDesign:Card>
 </UserControl>
