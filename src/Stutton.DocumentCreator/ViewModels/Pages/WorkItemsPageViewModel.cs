@@ -22,7 +22,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly ITfsService _tfsService;
         private readonly ISettingsService _settingsService;
         public const string Key = "WorkItemsPage";
-        public const int Order = 1;
+        public const int Order = 2;
 
         public WorkItemsPageViewModel(ITfsService tfsService, ISettingsService settingsService)
         {

@@ -8,8 +8,16 @@
         <pages:WorkItemsPage/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type pageViewModels:DocumentsPageViewModel}">
+        <pages:DocumentsPage/>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type pageViewModels:SettingsPageViewModel}">
         <pages:SettingsPage/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type pageViewModels:DocumentTemplatePageViewModel}">
+        <pages:DocumentTemplatePage/>
     </DataTemplate>
 
 </ResourceDictionary>

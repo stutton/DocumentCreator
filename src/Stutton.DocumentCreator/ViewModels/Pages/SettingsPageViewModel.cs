@@ -21,7 +21,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly ITfsService _tfsService;
         private readonly ISnackbarMessageQueue _messageQueue;
         public const string Key = "SettingsPage";
-        public const int Order = 2;
+        public const int Order = 3;
         public override string PageKey => Key;
         public override int PageOrder => Order;
         public override string Title => Resources.SettingsPage_Settings;

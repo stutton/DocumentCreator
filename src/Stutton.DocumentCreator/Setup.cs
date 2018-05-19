@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MaterialDesignThemes.Wpf;
+using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Services.Settings;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.ViewModels.Navigation;
@@ -21,6 +23,7 @@ namespace Stutton.DocumentCreator
             container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISettingsService, SettingsService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ITfsService, TfsService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDocumentsService, DocumentsService>(new ContainerControlledLifetimeManager());
             container.RegisterInstance(messageQueue, new ExternallyControlledLifetimeManager());
         }
 
@@ -46,6 +49,7 @@ namespace Stutton.DocumentCreator
                 catch (InvalidOperationException ex)
                 {
                     //_logger.Exception(ex, LogLevel.Warn);
+                    Debug.WriteLine(ex.Message);
                 }
             }
         }

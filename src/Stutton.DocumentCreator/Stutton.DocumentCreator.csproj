@@ -54,11 +54,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\DocumentTemplates\Automations\IAutomation.cs" />
-    <Compile Include="Models\DocumentTemplates\Details\DocumentDetailsModel.cs" />
-    <Compile Include="Models\DocumentTemplates\DocumentType.cs" />
-    <Compile Include="Models\DocumentTemplates\Fields\IField.cs" />
-    <Compile Include="Models\DocumentTemplates\DocumentTemplateModel.cs" />
+    <Compile Include="Models\Documents\Automations\IAutomation.cs" />
+    <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
+    <Compile Include="Models\Documents\DocumentType.cs" />
+    <Compile Include="Models\Documents\Fields\IField.cs" />
+    <Compile Include="Models\Documents\DocumentModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Models\Settings\SettingsTransformModel.cs" />
@@ -67,6 +67,8 @@
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionOperator.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryInValue.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryModel.cs" />
+    <Compile Include="Services\Documents\DocumentsService.cs" />
+    <Compile Include="Services\Documents\IDocumentsService.cs" />
     <Compile Include="Shared\IResponse.cs" />
     <Compile Include="Shared\ResponseCode.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
@@ -82,8 +84,15 @@
     <Compile Include="ViewModels\Dialogs\MessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentCardViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\AutomationsStepViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\DetailsStepViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\FieldsStepViewModel.cs" />
+    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\SummaryStepViewModel.cs" />
     <Compile Include="ViewModels\Navigation\INavigationService.cs" />
+    <Compile Include="ViewModels\Pages\DocumentCreatorPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\DocumentsPageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\DocumentTemplatePageViewModel.cs" />
     <Compile Include="ViewModels\Pages\IPage.cs" />
     <Compile Include="ViewModels\Navigation\NavigationService.cs" />
     <Compile Include="ViewModels\Pages\PageBase.cs" />
@@ -115,6 +124,9 @@
     </Compile>
     <Compile Include="Views\Pages\DocumentsPage.xaml.cs">
       <DependentUpon>DocumentsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pages\DocumentTemplatePage.xaml.cs">
+      <DependentUpon>DocumentTemplatePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -158,6 +170,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Pages\DocumentTemplatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Pages\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -175,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Themes\CardTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Themes\DocumentTemplateStepTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -222,6 +242,9 @@
     </PackageReference>
     <PackageReference Include="MaterialDesignColors">
       <Version>1.1.3</Version>
+    </PackageReference>
+    <PackageReference Include="MaterialDesignExtensions">
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
       <Version>2.4.0.1044</Version>

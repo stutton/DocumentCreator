@@ -13,7 +13,6 @@ namespace Stutton.DocumentCreator.Shared
 
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
-        private readonly Action<object> _executeWithParam;
 
         public RelayCommand(Action execute) : this(execute, null) { }
 

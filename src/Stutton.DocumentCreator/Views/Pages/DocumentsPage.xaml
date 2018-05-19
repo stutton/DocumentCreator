@@ -13,11 +13,19 @@
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance pageVms:DocumentsPageViewModel}">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/CardTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                   VerticalScrollBarVisibility="Auto">
         <Grid Margin="16">
 
-            <ItemsControl ItemsSource="{Binding WorkItems}">
+            <ItemsControl ItemsSource="{Binding Documents}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <controls:TilePanel Orientation="Vertical"

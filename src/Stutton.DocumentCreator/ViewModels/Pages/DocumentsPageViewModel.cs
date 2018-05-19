@@ -5,8 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Stutton.DocumentCreator.Models.DocumentTemplates;
+using MaterialDesignThemes.Wpf;
+using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Shared;
+using Stutton.DocumentCreator.ViewModels.Dialogs;
+using Stutton.DocumentCreator.ViewModels.Documents;
+using Stutton.DocumentCreator.ViewModels.Navigation;
 
 namespace Stutton.DocumentCreator.ViewModels.Pages
 {
@@ -16,10 +21,20 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public override string PageKey => Key;
         public override string Title => "Documents";
         public override bool IsOnDemandPage => false;
+        public override int PageOrder => 1;
 
-        private ObservableCollection<DocumentTemplateModel> _propertyName;
+        private readonly IDocumentsService _documentsService;
+        private readonly INavigationService _navigationService;
 
-        public ObservableCollection<DocumentTemplateModel> Documents
+        public DocumentsPageViewModel(IDocumentsService documentsService, INavigationService navigationService)
+        {
+            _documentsService = documentsService;
+            _navigationService = navigationService;
+        }
+
+        private ObservableCollection<DocumentCardViewModel> _propertyName;
+
+        public ObservableCollection<DocumentCardViewModel> Documents
         {
             get => _propertyName;
             set => Set(ref _propertyName, value);
@@ -36,5 +51,19 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         }
 
         #endregion
+
+        public override async Task NavigatedTo(object parameter)
+        {
+            var documentResponse = _documentsService.GetDocuments();
+
+            if (!documentResponse.Success)
+            {
+                await DialogHost.Show(new ErrorMessageDialogViewModel(documentResponse.Message));
+                return;
+            }
+
+            Documents = new ObservableCollection<DocumentCardViewModel>(
+                documentResponse.Value.Select(d => new DocumentCardViewModel(d, _navigationService)));
+        }
     }
 }

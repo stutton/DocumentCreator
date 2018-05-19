@@ -49,7 +49,10 @@ namespace Stutton.DocumentCreator.Views
                 _vm = DataContext as ShellViewModel;
             }
             var pageToNavigate = (IPage)PagesListBox.SelectedItem;
-            await _vm.Navigator.NavigateTo(pageToNavigate.PageKey).ConfigureAwait(true);
+            if (_vm != null)
+            {
+                await _vm.Navigator.NavigateTo(pageToNavigate.PageKey).ConfigureAwait(true);
+            }
         }
     }
 }

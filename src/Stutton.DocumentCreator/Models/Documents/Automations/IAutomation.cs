@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Models.DocumentTemplates.Automations
+namespace Stutton.DocumentCreator.Models.Documents.Automations
 {
     public interface IAutomation
     {

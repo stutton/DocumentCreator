@@ -45,7 +45,7 @@ namespace Stutton.DocumentCreator.ViewModels
         public async Task LoadAsync()
         {
             await LoadInitialSettings();
-            await Navigator.NavigateTo(WorkItemsPageViewModel.Key);
+            await Navigator.NavigateTo(DocumentsPageViewModel.Key);
         }
 
         private async Task LoadInitialSettings()

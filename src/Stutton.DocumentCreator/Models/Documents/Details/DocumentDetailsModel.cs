@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Models.DocumentTemplates.Details
+namespace Stutton.DocumentCreator.Models.Documents.Details
 {
     [DataContract(Name = "DocumentDetails")]
     public class DocumentDetailsModel : Observable
     {
+        private string _description;
+        private DocumentType _documentType;
         private string _name;
+        private string _templateFilePath;
+        private WorkItemQueryModel _workItemQuery;
 
         [DataMember]
         public string Name
@@ -21,16 +20,12 @@ namespace Stutton.DocumentCreator.Models.DocumentTemplates.Details
             set => Set(ref _name, value);
         }
 
-        private string _description;
-
         [DataMember]
         public string Description
         {
             get => _description;
             set => Set(ref _description, value);
         }
-
-        private string _templateFilePath;
 
         [DataMember]
         public string TemplateFilePath
@@ -39,16 +34,12 @@ namespace Stutton.DocumentCreator.Models.DocumentTemplates.Details
             set => Set(ref _templateFilePath, value);
         }
 
-        private WorkItemQueryModel _workItemQuery;
-
         [DataMember]
         public WorkItemQueryModel WorkItemQuery
         {
             get => _workItemQuery;
             set => Set(ref _workItemQuery, value);
         }
-
-        private DocumentType _documentType;
 
         [DataMember]
         public DocumentType DocumentType
