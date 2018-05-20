@@ -6,9 +6,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MaterialDesignThemes.Wpf;
+using Stutton.DocumentCreator.Models.Documents.Fields;
 using Stutton.DocumentCreator.Services.Documents;
+using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Services.Settings;
 using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Navigation;
 using Stutton.DocumentCreator.ViewModels.Pages;
 using Unity;
@@ -24,6 +27,7 @@ namespace Stutton.DocumentCreator
             container.RegisterType<ISettingsService, SettingsService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ITfsService, TfsService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IDocumentsService, DocumentsService>(new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IFieldFactoryService>(new FieldFactoryService(t => container.Resolve(t) as IField));
             container.RegisterInstance(messageQueue, new ExternallyControlledLifetimeManager());
         }
 
@@ -52,15 +56,6 @@ namespace Stutton.DocumentCreator
                     Debug.WriteLine(ex.Message);
                 }
             }
-        }
-
-        private static IEnumerable<Type> GetInheritingTypes<T>(this Assembly assembly)
-        {
-            var types = assembly.DefinedTypes.Where(
-                p => p.DeclaredConstructors.Any(
-                         q => q.IsPublic) && typeof(T).GetTypeInfo().IsAssignableFrom(p) &&
-                     !p.IsAbstract);
-            return types.ToList();
         }
     }
 }

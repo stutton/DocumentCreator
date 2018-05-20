@@ -57,8 +57,10 @@
     <Compile Include="Models\Documents\Automations\IAutomation.cs" />
     <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
     <Compile Include="Models\Documents\DocumentType.cs" />
+    <Compile Include="Models\Documents\Fields\FieldsModel.cs" />
     <Compile Include="Models\Documents\Fields\IField.cs" />
     <Compile Include="Models\Documents\DocumentModel.cs" />
+    <Compile Include="Models\Documents\Fields\TextFieldModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Models\Settings\SettingsTransformModel.cs" />
@@ -69,6 +71,9 @@
     <Compile Include="Models\WorkItems\WorkItemQueryModel.cs" />
     <Compile Include="Services\Documents\DocumentsService.cs" />
     <Compile Include="Services\Documents\IDocumentsService.cs" />
+    <Compile Include="Services\Fields\FieldFactoryService.cs" />
+    <Compile Include="Services\Fields\IFieldFactoryService.cs" />
+    <Compile Include="Shared\Extensions.cs" />
     <Compile Include="Shared\IResponse.cs" />
     <Compile Include="Shared\ResponseCode.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
@@ -110,6 +115,9 @@
     <Compile Include="Views\Controls\SideBarHost.cs" />
     <Compile Include="Views\Controls\TemplateSteps\DetailsStep.xaml.cs">
       <DependentUpon>DetailsStep.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TemplateSteps\FieldsStep.xaml.cs">
+      <DependentUpon>FieldsStep.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\TemplateSteps\WorkItemQueryStep.xaml.cs">
       <DependentUpon>WorkItemQueryStep.xaml</DependentUpon>
@@ -158,6 +166,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Controls\TemplateSteps\DetailsStep.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\TemplateSteps\FieldsStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

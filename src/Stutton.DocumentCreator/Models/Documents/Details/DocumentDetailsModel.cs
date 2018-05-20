@@ -11,7 +11,7 @@ namespace Stutton.DocumentCreator.Models.Documents.Details
         private DocumentType _documentType;
         private string _name;
         private string _templateFilePath;
-        private WorkItemQueryModel _workItemQuery;
+        private WorkItemQueryModel _workItemQuery = new WorkItemQueryModel();
 
         [DataMember]
         public string Name

@@ -21,8 +21,8 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="225"
-                                                DisplayMemberBinding="{Binding FieldName}"
-                                                Header="Field"/>
+                                    DisplayMemberBinding="{Binding FieldName}"
+                                    Header="Field"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Operator}"
                                                 Header="Operator"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Values, Converter={StaticResource ListOfStringExpanderConverter}}"
