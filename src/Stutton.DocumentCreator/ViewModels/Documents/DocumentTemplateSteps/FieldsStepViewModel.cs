@@ -14,7 +14,7 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps
     public class FieldsStepViewModel : Observable
     {
         private readonly IFieldFactoryService _fieldFactoryService;
-        public ObservableCollection<IField> Fields { get; } = new ObservableCollection<IField>();
+        public ObservableCollection<IField> Fields { get; }
 
         public ObservableCollection<string> AvailableFieldTypes
         {
@@ -42,14 +42,15 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps
 
         private void DeleteField(IField field)
         {
-            
+            Fields.Remove(field);
         }
 
         #endregion
         
-        public FieldsStepViewModel(IFieldFactoryService fieldFactoryService)
+        public FieldsStepViewModel(ObservableCollection<IField> fields, IFieldFactoryService fieldFactoryService)
         {
             _fieldFactoryService = fieldFactoryService;
+            Fields = fields;
         }
 
         public async Task InitializeAsync()

@@ -22,7 +22,7 @@
 
     <DataTemplate DataType="{x:Type stepVms:FieldsStepViewModel}">
         <StackPanel>
-            <TextBlock Text="Fields stuff goes here"/>
+            <templateSteps:FieldsStep/>
             <mdeControls:StepButtonBar Back="BACK" Continue="CONTINUE" Cancel="CANCEL"/>
         </StackPanel>
     </DataTemplate>

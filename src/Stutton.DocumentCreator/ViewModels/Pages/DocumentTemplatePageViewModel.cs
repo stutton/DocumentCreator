@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignExtensions.Model;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps;
 using Stutton.DocumentCreator.ViewModels.Navigation;
@@ -20,6 +21,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public override bool IsOnDemandPage => true;
 
         private readonly INavigationService _navigationService;
+        private readonly IFieldFactoryService _fieldFactoryService;
         private DocumentModel _model;
         private List<IStep> _steps;
 
@@ -29,9 +31,10 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             set => Set(ref _model, value);
         }
 
-        public DocumentTemplatePageViewModel(INavigationService navigationService)
+        public DocumentTemplatePageViewModel(INavigationService navigationService, IFieldFactoryService fieldFactoryService)
         {
             _navigationService = navigationService;
+            _fieldFactoryService = fieldFactoryService;
             IsInEditMode = true;
         }
 
@@ -65,7 +68,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         #endregion
 
-        public override Task NavigatedTo(object parameter)
+        public override async Task NavigatedTo(object parameter)
         {
             if (parameter == null || !(parameter is DocumentModel model))
             {
@@ -74,16 +77,18 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
             Model = model;
 
+            var fieldStepVm = new FieldsStepViewModel(Model.Fields, _fieldFactoryService);
+
+            await fieldStepVm.InitializeAsync();
+
             Steps = new List<IStep>
             {
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Details"}, Content = new DetailsStepViewModel(Model.Details)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Query"}, Content = new WorkItemQueryStepViewModel(Model.Details.WorkItemQuery)},
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = new FieldsStepViewModel(Model.Fields)},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = fieldStepVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = new AutomationsStepViewModel(Model.Automations)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Finish"}, Content = new SummaryStepViewModel(Model)}
             };
-
-            return Task.FromResult(true);
         }
     }
 }
