@@ -8,6 +8,7 @@
              xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
@@ -45,6 +46,16 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
+
+            <Button VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right"
+                    Margin="24"
+                    Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                    Command="{Binding CreateDocumentTemplateCommand}">
+                <materialDesign:PackIcon Kind="Plus"
+                                         Height="24"
+                                         Width="24"/>
+            </Button>
 
             <ProgressBar Width="24"
                          Height="24"

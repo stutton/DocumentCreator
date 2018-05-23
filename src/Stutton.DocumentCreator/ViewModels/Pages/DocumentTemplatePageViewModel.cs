@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignExtensions.Model;
+using MaterialDesignThemes.Wpf;
 using Microsoft.VisualStudio.Services.Profile;
 using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Services.Automations;
+using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Shared;
+using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps;
 using Stutton.DocumentCreator.ViewModels.Navigation;
 
@@ -25,6 +28,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly INavigationService _navigationService;
         private readonly IFieldFactoryService _fieldFactoryService;
         private readonly IAutomationFactoryService _automationFactoryService;
+        private readonly IDocumentsService _documentsService;
         private DocumentModel _model;
         private List<IStep> _steps;
 
@@ -34,11 +38,15 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             set => Set(ref _model, value);
         }
 
-        public DocumentTemplatePageViewModel(INavigationService navigationService, IFieldFactoryService fieldFactoryService, IAutomationFactoryService automationFactoryService)
+        public DocumentTemplatePageViewModel(INavigationService navigationService, 
+            IFieldFactoryService fieldFactoryService, 
+            IAutomationFactoryService automationFactoryService, 
+            IDocumentsService documentsService)
         {
             _navigationService = navigationService;
             _fieldFactoryService = fieldFactoryService;
             _automationFactoryService = automationFactoryService;
+            _documentsService = documentsService;
             IsInEditMode = true;
         }
 
@@ -63,11 +71,16 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         #region ICommand FinishCommand
 
         private ICommand _finishCommand;
-        public ICommand FinishCommand => _finishCommand ?? (_finishCommand = new RelayCommand(Finish));
+        public ICommand FinishCommand => _finishCommand ?? (_finishCommand = new RelayCommand(async () => await Finish()));
 
-        private void Finish()
+        private async Task Finish()
         {
-            _navigationService.NavigateTo(DocumentsPageViewModel.Key);
+            var response = await _documentsService.SaveDocumentTemplate(Model);
+            if (!response.Success)
+            {
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+            }
+            await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
         }
 
         #endregion

@@ -40,14 +40,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             set => Set(ref _propertyName, value);
         }
 
-        #region CreateDocumentCommand
+        #region ICommand CreateDocumentTemplateCommand
 
-        private ICommand _createDocumentCommand;
-        public ICommand CreateDocumentCommand => _createDocumentCommand ?? (_createDocumentCommand = new RelayCommand(CreateDocument));
+        private ICommand _createDocumentTemplateCommand;
+        public ICommand CreateDocumentTemplateCommand => _createDocumentTemplateCommand ?? (_createDocumentTemplateCommand = new RelayCommand(CreateDocumentTemplate));
 
-        private void CreateDocument()
+        private void CreateDocumentTemplate()
         {
-
+            _navigationService.NavigateTo(DocumentTemplatePageViewModel.Key);
         }
 
         #endregion
