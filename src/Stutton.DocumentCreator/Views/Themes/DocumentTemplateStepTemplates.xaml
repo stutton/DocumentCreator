@@ -36,7 +36,7 @@
 
     <DataTemplate DataType="{x:Type stepVms:SummaryStepViewModel}">
         <StackPanel>
-            <TextBlock Text="Summary stuff goes here"/>
+            <templateSteps:SummaryStep/>
             <mdeControls:StepButtonBar Back="BACK" Continue="FINISH" Cancel="CANCEL"/>
         </StackPanel>
     </DataTemplate>
