@@ -24,4 +24,8 @@
         <dialogs:AddTemplateAutomationDialog/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialogVms:MaterialOpenFileDialogViewModel}">
+        <dialogs:MaterialOpenFileDialog/>
+    </DataTemplate>
+
 </ResourceDictionary>
