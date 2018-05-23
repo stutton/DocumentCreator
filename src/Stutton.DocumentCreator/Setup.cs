@@ -6,7 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MaterialDesignThemes.Wpf;
+using Stutton.DocumentCreator.Models.Documents.Automations;
 using Stutton.DocumentCreator.Models.Documents.Fields;
+using Stutton.DocumentCreator.Services.Automations;
 using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Services.Settings;
@@ -28,6 +30,8 @@ namespace Stutton.DocumentCreator
             container.RegisterType<ITfsService, TfsService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IDocumentsService, DocumentsService>(new ContainerControlledLifetimeManager());
             container.RegisterInstance<IFieldFactoryService>(new FieldFactoryService(t => container.Resolve(t) as IField));
+            container.RegisterInstance<IAutomationFactoryService>(
+                new AutomationFactoryService(t => container.Resolve(t) as IAutomation));
             container.RegisterInstance(messageQueue, new ExternallyControlledLifetimeManager());
         }
 

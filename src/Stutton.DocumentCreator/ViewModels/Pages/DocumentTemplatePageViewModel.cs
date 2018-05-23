@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignExtensions.Model;
+using Microsoft.VisualStudio.Services.Profile;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Services.Automations;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps;
@@ -22,6 +24,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         private readonly INavigationService _navigationService;
         private readonly IFieldFactoryService _fieldFactoryService;
+        private readonly IAutomationFactoryService _automationFactoryService;
         private DocumentModel _model;
         private List<IStep> _steps;
 
@@ -31,10 +34,11 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             set => Set(ref _model, value);
         }
 
-        public DocumentTemplatePageViewModel(INavigationService navigationService, IFieldFactoryService fieldFactoryService)
+        public DocumentTemplatePageViewModel(INavigationService navigationService, IFieldFactoryService fieldFactoryService, IAutomationFactoryService automationFactoryService)
         {
             _navigationService = navigationService;
             _fieldFactoryService = fieldFactoryService;
+            _automationFactoryService = automationFactoryService;
             IsInEditMode = true;
         }
 
@@ -77,16 +81,12 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
             Model = model;
 
-            var fieldStepVm = new FieldsStepViewModel(Model.Fields, _fieldFactoryService);
-
-            await fieldStepVm.InitializeAsync();
-
             Steps = new List<IStep>
             {
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Details"}, Content = new DetailsStepViewModel(Model.Details)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Query"}, Content = new WorkItemQueryStepViewModel(Model.Details.WorkItemQuery)},
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = fieldStepVm},
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = new AutomationsStepViewModel(Model.Automations)},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = new FieldsStepViewModel(Model.Fields, _fieldFactoryService)},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = new AutomationsStepViewModel(Model.Automations, _automationFactoryService)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Finish"}, Content = new SummaryStepViewModel(Model)}
             };
         }

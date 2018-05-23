@@ -16,11 +16,7 @@ namespace Stutton.DocumentCreator.Models.Documents.Fields
             set => Set(ref _replaceWithText, value);
         }
 
-        public string Name
-        {
-            get => _name;
-            set => Set(ref _name, value);
-        }
+        public string Description => $"Replace '{TextToReplace}' with '{ReplaceWithText}'";
 
         public string TypeDisplayName => "Text";
         public string FieldKey => Key;

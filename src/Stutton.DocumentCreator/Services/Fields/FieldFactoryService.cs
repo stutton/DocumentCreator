@@ -13,58 +13,47 @@ namespace Stutton.DocumentCreator.Services.Fields
     {
         private readonly Func<Type, IField> _fieldResolver;
 
-        private readonly List<(string key, string typeName, Type type)> _fieldTypes = new List<(string key, string typeName, Type type)>();
+        private Dictionary<string, Type> _fieldTypes;
 
         public FieldFactoryService(Func<Type, IField> fieldResolver)
         {
             _fieldResolver = fieldResolver;
         }
 
-        public async Task<IResponse<IField>> CreateField(string fieldKey)
+        public IResponse<IField> CreateField(Type fieldType)
         {
-            if (!_fieldTypes.Any())
+            if (!typeof(IField).IsAssignableFrom(fieldType))
             {
-                await GetAllFieldTypes();
+                return Response<IField>.FromFailure($"Type '{fieldType.Name}' is not an IField");
             }
 
-            if (_fieldTypes.All(t => t.key != fieldKey))
-            {
-                return Response<IField>.FromFailure($"No such field '{fieldKey}'");
-            }
-            var field = _fieldResolver(_fieldTypes.First(t => t.key == fieldKey).type);
+            var field = _fieldResolver(fieldType);
             if (field == null)
             {
-                return Response<IField>.FromFailure($"Failed to create field of type '{fieldKey}'");
+                return Response<IField>.FromFailure($"Failed to create field of type '{fieldType.Name}'");
             }
 
             return Response<IField>.FromSuccess(field);
         }
 
-        public async Task<IResponse<IEnumerable<(string key, string typeName)>>> GetAllFieldKeys()
+        public IResponse<Dictionary<string, Type>> GetAllFieldKeys()
         {
-            if (!_fieldTypes.Any())
+            if (_fieldTypes != null)
             {
-                await GetAllFieldTypes();
+                return Response<Dictionary<string, Type>>.FromSuccess(_fieldTypes);
             }
 
-            return !_fieldTypes.Any()
-                ? Response<IEnumerable<(string key, string typeName)>>.FromFailure("No field types found")
-                : Response<IEnumerable<(string key, string typeName)>>.FromSuccess(_fieldTypes.Select(t => (t.key, t.typeName)));
-        }
-
-        private Task GetAllFieldTypes()
-        {
-            return Task.Run(() =>
+            _fieldTypes = new Dictionary<string, Type>();
+            var fieldTypes = typeof(IField).Assembly.GetInheritingTypes<IField>();
+            foreach (var fieldType in fieldTypes)
             {
-                var fieldModelTypes = typeof(IField).Assembly.GetInheritingTypes<IField>();
-                foreach (var fieldType in fieldModelTypes)
+                if (_fieldResolver(fieldType) is IField field)
                 {
-                    if (_fieldResolver(fieldType) is IField field)
-                    {
-                        _fieldTypes.Add((field.FieldKey, field.TypeDisplayName, field.GetType()));
-                    }
+                    _fieldTypes.Add(field.TypeDisplayName, fieldType);
                 }
-            });
+            }
+
+            return Response<Dictionary<string, Type>>.FromSuccess(_fieldTypes);
         }
     }
 }

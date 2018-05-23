@@ -24,9 +24,16 @@ namespace Stutton.DocumentCreator.Shared
             return true;
         }
 
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+
+        }
+
         private void RaisePropetyChanged(string property)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            var eventArgs = new PropertyChangedEventArgs(property);
+            OnPropertyChanged(eventArgs);
+            PropertyChanged?.Invoke(this, eventArgs);
         }
     }
 }

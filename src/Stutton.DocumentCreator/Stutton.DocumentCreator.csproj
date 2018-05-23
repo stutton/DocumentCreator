@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Documents\Automations\AttachToWorkItemAutomation.cs" />
     <Compile Include="Models\Documents\Automations\IAutomation.cs" />
     <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
     <Compile Include="Models\Documents\DocumentType.cs" />
@@ -69,12 +70,15 @@
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionOperator.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryInValue.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryModel.cs" />
+    <Compile Include="Services\Automations\AutomationFactoryService.cs" />
+    <Compile Include="Services\Automations\IAutomationFactoryService.cs" />
     <Compile Include="Services\Documents\DocumentsService.cs" />
     <Compile Include="Services\Documents\IDocumentsService.cs" />
     <Compile Include="Services\Fields\FieldFactoryService.cs" />
     <Compile Include="Services\Fields\IFieldFactoryService.cs" />
     <Compile Include="Shared\Extensions.cs" />
     <Compile Include="Shared\IResponse.cs" />
+    <Compile Include="Shared\ObservableDictionary.cs" />
     <Compile Include="Shared\ResponseCode.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
@@ -84,6 +88,7 @@
     <Compile Include="Services\Tfs\TfsService.cs" />
     <Compile Include="Services\Tfs\TfsWorkItemMapper.cs" />
     <Compile Include="Setup.cs" />
+    <Compile Include="ViewModels\Dialogs\AddTemplateAutomationDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\AddTemplateFieldDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\AddWorkItemExpressionDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
@@ -114,6 +119,9 @@
     <Compile Include="Models\WorkItems\IWorkItem.cs" />
     <Compile Include="ViewModels\WorkItems\WorkItemViewModel.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
+    <Compile Include="Views\Controls\TemplateSteps\AutomationsStep.xaml.cs">
+      <DependentUpon>AutomationsStep.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\TemplateSteps\DetailsStep.xaml.cs">
       <DependentUpon>DetailsStep.xaml</DependentUpon>
     </Compile>
@@ -128,6 +136,12 @@
     <Compile Include="Views\Converters\SideBarOffsetConverter.cs" />
     <Compile Include="Views\Converters\ValueCompareConverterBase.cs" />
     <Compile Include="Views\Converters\ValueCompareToVisibilityConverter.cs" />
+    <Compile Include="Views\Dialogs\AddTemplateAutomationDialog.xaml.cs">
+      <DependentUpon>AddTemplateAutomationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\AddTemplateFieldDialog.xaml.cs">
+      <DependentUpon>AddTemplateFieldDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\AddWorkItemExpressionDialog.xaml.cs">
       <DependentUpon>AddWorkItemExpressionDialog.xaml</DependentUpon>
     </Compile>
@@ -166,6 +180,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Controls\TemplateSteps\AutomationsStep.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controls\TemplateSteps\DetailsStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -175,6 +193,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\TemplateSteps\WorkItemQueryStep.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\AddTemplateAutomationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\AddTemplateFieldDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

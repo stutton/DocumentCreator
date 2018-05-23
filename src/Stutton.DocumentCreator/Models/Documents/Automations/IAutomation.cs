@@ -7,7 +7,7 @@ namespace Stutton.DocumentCreator.Models.Documents.Automations
     {
         string Name { get; }
 
-        string Description { get; set; }
+        string Description { get; }
 
         Task<IResponse> Execute();
     }

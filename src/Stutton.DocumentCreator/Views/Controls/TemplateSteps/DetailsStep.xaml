@@ -16,7 +16,7 @@
     </UserControl.Resources>
     <StackPanel>
         <TextBox Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 materialDesign:HintAssist.Hint="Name"/>
+                 materialDesign:HintAssist.Hint="Description"/>
 
         <TextBox Text="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  materialDesign:HintAssist.Hint="Description"/>

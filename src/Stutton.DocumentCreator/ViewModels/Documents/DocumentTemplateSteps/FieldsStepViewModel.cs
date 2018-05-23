@@ -5,15 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.Documents.Fields;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Shared;
+using Stutton.DocumentCreator.ViewModels.Dialogs;
 
 namespace Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps
 {
     public class FieldsStepViewModel : Observable
     {
         private readonly IFieldFactoryService _fieldFactoryService;
+
         public ObservableCollection<IField> Fields { get; }
 
         public ObservableCollection<string> AvailableFieldTypes
@@ -25,11 +28,16 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps
         #region ICommand AddFieldCommand
 
         private ICommand _addFieldCommand;
-        public ICommand AddFieldCommand => _addFieldCommand ?? (_addFieldCommand = new RelayCommand(AddField));
+        public ICommand AddFieldCommand => _addFieldCommand ?? (_addFieldCommand = new RelayCommand(async () => await AddField()));
 
-        private void AddField()
+        private async Task AddField()
         {
-            
+            var dialogVm = new AddTemplateFieldDialogViewModel(_fieldFactoryService);
+            await dialogVm.InitializeAsync();
+            if ((bool) await DialogHost.Show(dialogVm, MainWindow.RootDialog))
+            {
+                Fields.Add(dialogVm.CurrentField);
+            }
         }
 
         #endregion
@@ -51,12 +59,6 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps
         {
             _fieldFactoryService = fieldFactoryService;
             Fields = fields;
-        }
-
-        public async Task InitializeAsync()
-        {
-            var fieldsResponse = await _fieldFactoryService.GetAllFieldKeys();
-            
         }
     }
 }

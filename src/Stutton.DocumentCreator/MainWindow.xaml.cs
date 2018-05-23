@@ -23,6 +23,8 @@ namespace Stutton.DocumentCreator
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const string RootDialog = "RootDialog";
+
         private readonly IUnityContainer _container;
         private readonly ShellViewModel _shellViewModel;
 

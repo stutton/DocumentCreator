@@ -2,7 +2,7 @@
 {
     public interface IField
     {
-        string Name { get; set; }
+        string Description { get; }
         string TypeDisplayName { get; }
         string FieldKey { get; }
         string TextToReplace { get; set; }
