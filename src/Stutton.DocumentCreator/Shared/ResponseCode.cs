@@ -4,6 +4,7 @@
     {
         Ok,
         Error,
-        FileNotFound
+        FileNotFound,
+        Exception
     }
 }

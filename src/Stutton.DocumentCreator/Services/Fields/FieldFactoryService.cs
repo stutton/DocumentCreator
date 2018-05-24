@@ -22,38 +22,52 @@ namespace Stutton.DocumentCreator.Services.Fields
 
         public IResponse<IField> CreateField(Type fieldType)
         {
-            if (!typeof(IField).IsAssignableFrom(fieldType))
+            try
             {
-                return Response<IField>.FromFailure($"Type '{fieldType.Name}' is not an IField");
-            }
+                if (!typeof(IField).IsAssignableFrom(fieldType))
+                {
+                    return Response<IField>.FromFailure($"Type '{fieldType.Name}' is not an IField");
+                }
 
-            var field = _fieldResolver(fieldType);
-            if (field == null)
+                var field = _fieldResolver(fieldType);
+                if (field == null)
+                {
+                    return Response<IField>.FromFailure($"Failed to create field of type '{fieldType.Name}'");
+                }
+
+                return Response<IField>.FromSuccess(field);
+            }
+            catch (Exception ex)
             {
-                return Response<IField>.FromFailure($"Failed to create field of type '{fieldType.Name}'");
+                return Response<IField>.FromException("Failed to create field for unknown reason", ex);
             }
-
-            return Response<IField>.FromSuccess(field);
         }
 
         public IResponse<Dictionary<string, Type>> GetAllFieldKeys()
         {
-            if (_fieldTypes != null)
+            try
             {
+                if (_fieldTypes != null)
+                {
+                    return Response<Dictionary<string, Type>>.FromSuccess(_fieldTypes);
+                }
+
+                _fieldTypes = new Dictionary<string, Type>();
+                var fieldTypes = typeof(IField).Assembly.GetInheritingTypes<IField>();
+                foreach (var fieldType in fieldTypes)
+                {
+                    if (_fieldResolver(fieldType) is IField field)
+                    {
+                        _fieldTypes.Add(field.TypeDisplayName, fieldType);
+                    }
+                }
+
                 return Response<Dictionary<string, Type>>.FromSuccess(_fieldTypes);
             }
-
-            _fieldTypes = new Dictionary<string, Type>();
-            var fieldTypes = typeof(IField).Assembly.GetInheritingTypes<IField>();
-            foreach (var fieldType in fieldTypes)
+            catch (Exception ex)
             {
-                if (_fieldResolver(fieldType) is IField field)
-                {
-                    _fieldTypes.Add(field.TypeDisplayName, fieldType);
-                }
+                return Response<Dictionary<string, Type>>.FromException("Failed to get all field keys", ex);
             }
-
-            return Response<Dictionary<string, Type>>.FromSuccess(_fieldTypes);
         }
     }
 }

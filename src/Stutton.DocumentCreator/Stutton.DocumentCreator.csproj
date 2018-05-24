@@ -76,6 +76,8 @@
     <Compile Include="Services\Documents\IDocumentsService.cs" />
     <Compile Include="Services\Fields\FieldFactoryService.cs" />
     <Compile Include="Services\Fields\IFieldFactoryService.cs" />
+    <Compile Include="Services\Telemetry\ITelemetryService.cs" />
+    <Compile Include="Services\Telemetry\TelemetryService.cs" />
     <Compile Include="Shared\Extensions.cs" />
     <Compile Include="Shared\IResponse.cs" />
     <Compile Include="Shared\ObservableDictionary.cs" />
@@ -317,6 +319,9 @@
     </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
       <Version>2.4.0.1044</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.ApplicationInsights">
+      <Version>2.6.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.TeamFoundationServer.Client">
       <Version>15.112.1</Version>

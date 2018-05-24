@@ -24,26 +24,22 @@ namespace Stutton.DocumentCreator
     public partial class MainWindow : Window
     {
         public const string RootDialog = "RootDialog";
-
-        private readonly IUnityContainer _container;
+        
         private readonly ShellViewModel _shellViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _container = new UnityContainer();
+            Setup.DoSetup(MainSnackbar.MessageQueue);
 
-            Setup.Configure(_container, MainSnackbar.MessageQueue);
-            Setup.LoadPages(_container);
-
-            _shellViewModel = _container.Resolve<ShellViewModel>();
+            _shellViewModel = Setup.GetShellViewModel();
             ShellView.DataContext = _shellViewModel;
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            _container.Dispose();
+            Setup.Dispose();
         }
 
         private async void DialogHost_OnLoaded(object sender, RoutedEventArgs e)

@@ -11,6 +11,7 @@ using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Services.Automations;
 using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Services.Fields;
+using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps;
@@ -29,6 +30,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly IFieldFactoryService _fieldFactoryService;
         private readonly IAutomationFactoryService _automationFactoryService;
         private readonly IDocumentsService _documentsService;
+        private readonly ITelemetryService _telemetryService;
         private DocumentModel _model;
         private List<IStep> _steps;
 
@@ -41,12 +43,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public DocumentTemplatePageViewModel(INavigationService navigationService, 
             IFieldFactoryService fieldFactoryService, 
             IAutomationFactoryService automationFactoryService, 
-            IDocumentsService documentsService)
+            IDocumentsService documentsService,
+            ITelemetryService telemetryService)
         {
             _navigationService = navigationService;
             _fieldFactoryService = fieldFactoryService;
             _automationFactoryService = automationFactoryService;
             _documentsService = documentsService;
+            _telemetryService = telemetryService;
             IsInEditMode = true;
         }
 
@@ -78,6 +82,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             var response = await _documentsService.SaveDocumentTemplate(Model);
             if (!response.Success)
             {
+                _telemetryService.TrackFailedResponse(response);
                 await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
             }
             await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
@@ -87,6 +92,8 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         public override async Task NavigatedTo(object parameter)
         {
+            _telemetryService.TrackPageView(Key);
+
             if (parameter == null || !(parameter is DocumentModel model))
             {
                 model = new DocumentModel();

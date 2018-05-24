@@ -16,22 +16,29 @@ namespace Stutton.DocumentCreator.Services.Documents
             $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Templates";
         public IResponse<IEnumerable<DocumentModel>> GetDocuments()
         {
-            var sampleDoc1 = new DocumentModel();
-            sampleDoc1.Details.Name = "Sample Test Doc";
-            sampleDoc1.Details.Description = "This will create a sample test doc.";
-            sampleDoc1.Details.DocumentType = DocumentType.Word;
+            try
+            {
+                var sampleDoc1 = new DocumentModel();
+                sampleDoc1.Details.Name = "Sample Test Doc";
+                sampleDoc1.Details.Description = "This will create a sample test doc.";
+                sampleDoc1.Details.DocumentType = DocumentType.Word;
 
-            var sampleDoc2 = new DocumentModel();
-            sampleDoc2.Details.Name = "Sample Release Doc";
-            sampleDoc2.Details.Description = "This will create a sample release doc.";
-            sampleDoc2.Details.DocumentType = DocumentType.Word;
+                var sampleDoc2 = new DocumentModel();
+                sampleDoc2.Details.Name = "Sample Release Doc";
+                sampleDoc2.Details.Description = "This will create a sample release doc.";
+                sampleDoc2.Details.DocumentType = DocumentType.Word;
 
-            return Response<IEnumerable<DocumentModel>>.FromSuccess(
-                new List<DocumentModel>
-                {
-                    sampleDoc1,
-                    sampleDoc2
-                });
+                return Response<IEnumerable<DocumentModel>>.FromSuccess(
+                    new List<DocumentModel>
+                    {
+                        sampleDoc1,
+                        sampleDoc2
+                    });
+            }
+            catch (Exception ex)
+            {
+                return Response<IEnumerable<DocumentModel>>.FromException("Failed to get saved documents", ex);
+            }
         }
 
         public async Task<IResponse> SaveDocumentTemplate(DocumentModel document)
@@ -49,7 +56,7 @@ namespace Stutton.DocumentCreator.Services.Documents
             }
             catch (Exception ex)
             {
-                return Response.FromFailure($"Failed to save document {document.Details.Name}: {ex.Message}");
+                return Response.FromException($"Failed to save document {document.Details.Name}", ex);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Stutton.DocumentCreator.Services;
+﻿using System;
+using Stutton.DocumentCreator.Services;
 
 namespace Stutton.DocumentCreator.Shared
 {
@@ -7,13 +8,14 @@ namespace Stutton.DocumentCreator.Shared
         bool Success { get; }
         ResponseCode Code { get; }
         string Message { get; }
+        string CallerMemberName { get; }
+        int LineNumber { get; }
+        Exception Exception { get; }
+        Guid Id { get; }
     }
 
-    public interface IResponse<out T>
+    public interface IResponse<out T> : IResponse
     {
-        bool Success { get; }
-        ResponseCode Code { get; }
-        string Message { get; }
         T Value { get; }
     }
 }

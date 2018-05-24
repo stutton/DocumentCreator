@@ -8,6 +8,7 @@ using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Services.Documents;
+using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Documents;
@@ -25,11 +26,13 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         private readonly IDocumentsService _documentsService;
         private readonly INavigationService _navigationService;
+        private readonly ITelemetryService _telemetryService;
 
-        public DocumentsPageViewModel(IDocumentsService documentsService, INavigationService navigationService)
+        public DocumentsPageViewModel(IDocumentsService documentsService, INavigationService navigationService, ITelemetryService telemetryService)
         {
             _documentsService = documentsService;
             _navigationService = navigationService;
+            _telemetryService = telemetryService;
         }
 
         private ObservableCollection<DocumentCardViewModel> _propertyName;
@@ -54,10 +57,13 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         public override async Task NavigatedTo(object parameter)
         {
+            _telemetryService.TrackPageView(Key);
+
             var documentResponse = _documentsService.GetDocuments();
 
             if (!documentResponse.Success)
             {
+                _telemetryService.TrackFailedResponse(documentResponse);
                 await DialogHost.Show(new ErrorMessageDialogViewModel(documentResponse.Message));
                 return;
             }

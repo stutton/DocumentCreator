@@ -44,5 +44,14 @@ namespace Stutton.DocumentCreator.Models.Settings
             get => _workItemQuery;
             set => Set(ref _workItemQuery, value);
         }
+
+        private string _applicationInsightsKey;
+
+        [DataMember]
+        public string ApplicationInsightsKey
+        {
+            get => _applicationInsightsKey;
+            set => Set(ref _applicationInsightsKey, value);
+        }
     }
 }

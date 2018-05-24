@@ -33,7 +33,7 @@ namespace Stutton.DocumentCreator.Services.Settings
             }
             catch (Exception ex)
             {
-                return Response.FromFailure($"Failed to save settings: {ex.Message}");
+                return Response.FromException($"Failed to save settings", ex);
             }
         }
 
@@ -59,7 +59,7 @@ namespace Stutton.DocumentCreator.Services.Settings
             }
             catch(Exception ex)
             {
-                return Response<SettingsModel>.FromFailure($"Failed to load settings: {ex.Message}");
+                return Response<SettingsModel>.FromException($"Failed to load settings", ex);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Stutton.DocumentCreator.Services.Settings
             }
             catch (Exception ex)
             {
-                return Response<SettingsTransformModel>.FromFailure($"Failed to load settings transform: {ex.Message}");
+                return Response<SettingsTransformModel>.FromException($"Failed to load settings transform", ex);
             }
         }
     }

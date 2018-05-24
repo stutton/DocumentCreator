@@ -31,26 +31,34 @@ namespace Stutton.DocumentCreator.Services.Tfs
 
         public async Task<IResponse<IWorkItem>> GetWorkItemAsync(int id)
         {
-            var connectionResponse = await GetUpdatedVssConnection();
-
-            if (!connectionResponse.Success)
+            try
             {
-                return Response<IWorkItem>.FromFailure(connectionResponse.Message);
+                var connectionResponse = await GetUpdatedVssConnection();
+
+                if (!connectionResponse.Success)
+                {
+                    return Response<IWorkItem>.FromFailure(connectionResponse.Message);
+                }
+
+                var connection = connectionResponse.Value;
+
+                var workItemClient =
+                    await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
+                var workItem = await workItemClient.GetWorkItemAsync(id).ConfigureAwait(false);
+                if (workItem?.Id == null)
+                {
+                    //_logger.Warn($"Getting work item '{_workItemId}' returned null");
+                    return Response<IWorkItem>.FromFailure($"No work item with ID '{id}' returned");
+                }
+
+                var model = TfsWorkItemMapper.MapToModel(workItem);
+
+                return Response<IWorkItem>.FromSuccess(model);
             }
-
-            var connection = connectionResponse.Value;
-
-            var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
-            var workItem = await workItemClient.GetWorkItemAsync(id).ConfigureAwait(false);
-            if (workItem?.Id == null)
+            catch(Exception ex)
             {
-                //_logger.Warn($"Getting work item '{_workItemId}' returned null");
-                return Response<IWorkItem>.FromFailure($"No work item {id} returned");
+                return Response<IWorkItem>.FromException($"Failure while attempting to retrieve work item '{id}'", ex);
             }
-
-            var model = TfsWorkItemMapper.MapToModel(workItem);
-
-            return Response<IWorkItem>.FromSuccess(model);
         }
 
         public async Task<IResponse<IEnumerable<IWorkItem>>> GetWorkItemsAsync(WorkItemQueryModel query)
@@ -132,7 +140,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
             }
             catch (Exception ex)
             {
-                return Response<IEnumerable<IWorkItem>>.FromFailure($"Failed to get work items: {ex.Message}");
+                return Response<IEnumerable<IWorkItem>>.FromException($"Failed to get requested work items", ex);
             }
         }
 
@@ -148,29 +156,36 @@ namespace Stutton.DocumentCreator.Services.Tfs
 
         public async Task<IResponse<ProfileModel>> GetUserProfileAsync()
         {
-            var connectionResponse = await GetUpdatedVssConnection();
-
-            if (!connectionResponse.Success)
+            try
             {
-                return Response<ProfileModel>.FromFailure(connectionResponse.Message);
+                var connectionResponse = await GetUpdatedVssConnection();
+
+                if (!connectionResponse.Success)
+                {
+                    return Response<ProfileModel>.FromFailure(connectionResponse.Message);
+                }
+
+                var connection = connectionResponse.Value;
+                var profileClient = await connection.GetClientAsync<ProfileHttpClient>();
+                var name = await profileClient.GetDisplayNameAsync(null);
+                var avatar = await profileClient.GetAvatarAsync(AvatarSize.Large);
+
+                var result = new ProfileModel {Name = name};
+                var imageBytes = avatar.Value;
+
+                BitmapSource image;
+                using (var stream = new MemoryStream(imageBytes))
+                {
+                    image = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                }
+
+                result.ProfilePicture = image;
+                return Response<ProfileModel>.FromSuccess(result);
             }
-
-            var connection = connectionResponse.Value;
-            var profileClient = await connection.GetClientAsync<ProfileHttpClient>();
-            var name = await profileClient.GetDisplayNameAsync(null);
-            var avatar = await profileClient.GetAvatarAsync(AvatarSize.Large);
-
-            var result = new ProfileModel { Name = name };
-            var imageBytes = avatar.Value;
-
-            BitmapSource image;
-            using (var stream = new MemoryStream(imageBytes))
+            catch (Exception ex)
             {
-                image = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                return Response<ProfileModel>.FromException("Failed to get user profile", ex);
             }
-
-            result.ProfilePicture = image;
-            return Response<ProfileModel>.FromSuccess(result);
         }
 
         private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)

@@ -22,38 +22,53 @@ namespace Stutton.DocumentCreator.Services.Automations
 
         public IResponse<IAutomation> CreateAutomation(Type automationType)
         {
-            if (!typeof(IAutomation).IsAssignableFrom(automationType))
+            try
             {
-                return Response<IAutomation>.FromFailure(
-                    $"Type '{automationType.Name}' does not inherit from IAutomation");
-            }
+                if (!typeof(IAutomation).IsAssignableFrom(automationType))
+                {
+                    return Response<IAutomation>.FromFailure(
+                        $"Type '{automationType.Name}' does not inherit from IAutomation");
+                }
 
-            var automation = _automationResolver(automationType);
-            if (automation == null)
+                var automation = _automationResolver(automationType);
+                if (automation == null)
+                {
+                    return Response<IAutomation>.FromFailure($"Failed to create field of type '{automationType.Name}'");
+                }
+
+                return Response<IAutomation>.FromSuccess(automation);
+            }
+            catch (Exception ex)
             {
-                return Response<IAutomation>.FromFailure($"Failed to create field of type '{automationType.Name}'");
+                return Response<IAutomation>.FromException("Failed to create field for unknown reason", ex);
             }
-
-            return Response<IAutomation>.FromSuccess(automation);
         }
 
         public IResponse<Dictionary<string, Type>> GetAllAutomationKeys()
         {
-            if (_automationTypes != null)
+            try
             {
+                if (_automationTypes != null)
+                {
+                    return Response<Dictionary<string, Type>>.FromSuccess(_automationTypes);
+                }
+
+                _automationTypes = new Dictionary<string, Type>();
+                var automationTypes = typeof(IAutomation).Assembly.GetInheritingTypes<IAutomation>();
+                foreach (var automationType in automationTypes)
+                {
+                    if (_automationResolver(automationType) is IAutomation automation)
+                    {
+                        _automationTypes.Add(automation.Name, automationType);
+                    }
+                }
+
                 return Response<Dictionary<string, Type>>.FromSuccess(_automationTypes);
             }
-            _automationTypes = new Dictionary<string, Type>();
-            var automationTypes = typeof(IAutomation).Assembly.GetInheritingTypes<IAutomation>();
-            foreach (var automationType in automationTypes)
+            catch (Exception ex)
             {
-                if (_automationResolver(automationType) is IAutomation automation)
-                {
-                    _automationTypes.Add(automation.Name, automationType);
-                }
+                return Response<Dictionary<string, Type>>.FromException("Failed to get all automation keys", ex);
             }
-
-            return Response<Dictionary<string, Type>>.FromSuccess(_automationTypes);
         }
     }
 }
