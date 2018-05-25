@@ -16,8 +16,8 @@
         <pages:SettingsPage/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type pageViewModels:DocumentTemplatePageViewModel}">
-        <pages:DocumentTemplatePage/>
+    <DataTemplate DataType="{x:Type pageViewModels:EditTemplatePageViewModel}">
+        <pages:EditTemplatePage/>
     </DataTemplate>
 
 </ResourceDictionary>

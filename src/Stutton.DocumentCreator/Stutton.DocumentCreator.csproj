@@ -99,15 +99,15 @@
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentCardViewModel.cs" />
-    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\AutomationsStepViewModel.cs" />
-    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\DetailsStepViewModel.cs" />
-    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\FieldsStepViewModel.cs" />
-    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\SummaryStepViewModel.cs" />
-    <Compile Include="ViewModels\Documents\DocumentTemplateSteps\WorkItemQueryStepViewModel.cs" />
+    <Compile Include="ViewModels\Templates\TemplateSteps\AutomationsStepViewModel.cs" />
+    <Compile Include="ViewModels\Templates\TemplateSteps\DetailsStepViewModel.cs" />
+    <Compile Include="ViewModels\Templates\TemplateSteps\FieldsStepViewModel.cs" />
+    <Compile Include="ViewModels\Templates\TemplateSteps\SummaryStepViewModel.cs" />
+    <Compile Include="ViewModels\Templates\TemplateSteps\WorkItemQueryStepViewModel.cs" />
     <Compile Include="ViewModels\Navigation\INavigationService.cs" />
     <Compile Include="ViewModels\Pages\DocumentCreatorPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\DocumentsPageViewModel.cs" />
-    <Compile Include="ViewModels\Pages\DocumentTemplatePageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\EditTemplatePageViewModel.cs" />
     <Compile Include="ViewModels\Pages\IPage.cs" />
     <Compile Include="ViewModels\Navigation\NavigationService.cs" />
     <Compile Include="ViewModels\Pages\PageBase.cs" />
@@ -122,19 +122,19 @@
     <Compile Include="Models\WorkItems\IWorkItem.cs" />
     <Compile Include="ViewModels\WorkItems\WorkItemViewModel.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
-    <Compile Include="Views\Controls\TemplateSteps\AutomationsStep.xaml.cs">
+    <Compile Include="Views\Templates\TemplateSteps\AutomationsStep.xaml.cs">
       <DependentUpon>AutomationsStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\TemplateSteps\DetailsStep.xaml.cs">
+    <Compile Include="Views\Templates\TemplateSteps\DetailsStep.xaml.cs">
       <DependentUpon>DetailsStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\TemplateSteps\FieldsStep.xaml.cs">
+    <Compile Include="Views\Templates\TemplateSteps\FieldsStep.xaml.cs">
       <DependentUpon>FieldsStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\TemplateSteps\SummaryStep.xaml.cs">
+    <Compile Include="Views\Templates\TemplateSteps\SummaryStep.xaml.cs">
       <DependentUpon>SummaryStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\TemplateSteps\WorkItemQueryStep.xaml.cs">
+    <Compile Include="Views\Templates\TemplateSteps\WorkItemQueryStep.xaml.cs">
       <DependentUpon>WorkItemQueryStep.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\TilePanel.cs" />
@@ -164,8 +164,8 @@
     <Compile Include="Views\Pages\DocumentsPage.xaml.cs">
       <DependentUpon>DocumentsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Pages\DocumentTemplatePage.xaml.cs">
-      <DependentUpon>DocumentTemplatePage.xaml</DependentUpon>
+    <Compile Include="Views\Pages\EditTemplatePage.xaml.cs">
+      <DependentUpon>EditTemplatePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -189,23 +189,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Controls\TemplateSteps\AutomationsStep.xaml">
+    <Page Include="Views\Templates\TemplateSteps\AutomationsStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\TemplateSteps\DetailsStep.xaml">
+    <Page Include="Views\Templates\TemplateSteps\DetailsStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\TemplateSteps\FieldsStep.xaml">
+    <Page Include="Views\Templates\TemplateSteps\FieldsStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\TemplateSteps\SummaryStep.xaml">
+    <Page Include="Views\Templates\TemplateSteps\SummaryStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\TemplateSteps\WorkItemQueryStep.xaml">
+    <Page Include="Views\Templates\TemplateSteps\WorkItemQueryStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -241,7 +241,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\DocumentTemplatePage.xaml">
+    <Page Include="Views\Pages\EditTemplatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

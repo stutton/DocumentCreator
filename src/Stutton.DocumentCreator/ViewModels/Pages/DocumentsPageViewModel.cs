@@ -50,7 +50,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         private void CreateDocumentTemplate()
         {
-            _navigationService.NavigateTo(DocumentTemplatePageViewModel.Key);
+            _navigationService.NavigateTo(EditTemplatePageViewModel.Key);
         }
 
         #endregion

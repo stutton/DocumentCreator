@@ -12,17 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps;
 using Stutton.DocumentCreator.ViewModels.Pages;
+using Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps;
 
 namespace Stutton.DocumentCreator.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for DocumentTemplatePage.xaml
+    /// Interaction logic for EditTemplatePage.xaml
     /// </summary>
-    public partial class DocumentTemplatePage : UserControl
+    public partial class EditTemplatePage : UserControl
     {
-        public DocumentTemplatePage()
+        public EditTemplatePage()
         {
             InitializeComponent();
         }
@@ -31,7 +31,7 @@ namespace Stutton.DocumentCreator.Views.Pages
         {
             if (TemplateStepper.ActiveStep.Content is SummaryStepViewModel)
             {
-                if (DataContext is DocumentTemplatePageViewModel vm)
+                if (DataContext is EditTemplatePageViewModel vm)
                 {
                     if (vm.FinishCommand.CanExecute(null))
                     {

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using MaterialDesignExtensions.Model;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.Documents.Details;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 
-namespace Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps
+namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 {
     public class DetailsStepViewModel
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
@@ -11,7 +7,7 @@ using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 
-namespace Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps
+namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 {
     public class FieldsStepViewModel : Observable
     {

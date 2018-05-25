@@ -42,7 +42,7 @@ namespace Stutton.DocumentCreator.ViewModels.Documents
 
         private void Edit()
         {
-            _navigator.NavigateTo(DocumentTemplatePageViewModel.Key, Model);
+            _navigator.NavigateTo(EditTemplatePageViewModel.Key, Model);
         }
 
         #endregion

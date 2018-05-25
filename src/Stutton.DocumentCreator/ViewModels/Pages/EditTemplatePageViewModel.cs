@@ -14,14 +14,14 @@ using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
-using Stutton.DocumentCreator.ViewModels.Documents.DocumentTemplateSteps;
 using Stutton.DocumentCreator.ViewModels.Navigation;
+using Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps;
 
 namespace Stutton.DocumentCreator.ViewModels.Pages
 {
-    public class DocumentTemplatePageViewModel : PageBase
+    public class EditTemplatePageViewModel : PageBase
     {
-        public const string Key = "DocumentTemplatePage";
+        public const string Key = "EditTemplatePage";
         public override string PageKey => Key;
         public override string Title => "Document Template";
         public override bool IsOnDemandPage => true;
@@ -40,7 +40,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             set => Set(ref _model, value);
         }
 
-        public DocumentTemplatePageViewModel(INavigationService navigationService, 
+        public EditTemplatePageViewModel(INavigationService navigationService, 
             IFieldFactoryService fieldFactoryService, 
             IAutomationFactoryService automationFactoryService, 
             IDocumentsService documentsService,
