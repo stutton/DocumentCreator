@@ -10,7 +10,7 @@ namespace Stutton.DocumentCreator.Services.Documents
 {
     public interface IDocumentsService
     {
-        IResponse<IEnumerable<DocumentModel>> GetDocuments();
+        Task<IResponse<IEnumerable<DocumentModel>>> GetDocuments();
         Task<IResponse> SaveDocumentTemplate(DocumentModel document);
     }
 }

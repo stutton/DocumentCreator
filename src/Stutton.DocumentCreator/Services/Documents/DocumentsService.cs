@@ -14,26 +14,37 @@ namespace Stutton.DocumentCreator.Services.Documents
     {
         private readonly string _documentTemplatesDirectoryName =
             $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Templates";
-        public IResponse<IEnumerable<DocumentModel>> GetDocuments()
+        private readonly string _documentTemplateFileExtension = "template";
+
+        public async Task<IResponse<IEnumerable<DocumentModel>>> GetDocuments()
         {
             try
             {
-                var sampleDoc1 = new DocumentModel();
-                sampleDoc1.Details.Name = "Sample Test Doc";
-                sampleDoc1.Details.Description = "This will create a sample test doc.";
-                sampleDoc1.Details.DocumentType = DocumentType.Word;
+                if (!Directory.Exists(_documentTemplatesDirectoryName))
+                {
+                    return Response<IEnumerable<DocumentModel>>.FromSuccess(new List<DocumentModel>());
+                }
 
-                var sampleDoc2 = new DocumentModel();
-                sampleDoc2.Details.Name = "Sample Release Doc";
-                sampleDoc2.Details.Description = "This will create a sample release doc.";
-                sampleDoc2.Details.DocumentType = DocumentType.Word;
+                var templateFiles = await Task.Run(() =>
+                    Directory.GetFiles(_documentTemplatesDirectoryName, $"*.{_documentTemplateFileExtension}"));
 
-                return Response<IEnumerable<DocumentModel>>.FromSuccess(
-                    new List<DocumentModel>
+                if (!templateFiles.Any())
+                {
+                    return Response<IEnumerable<DocumentModel>>.FromSuccess(new List<DocumentModel>());
+                }
+
+                var templates = new List<DocumentModel>();
+                foreach (var templateFile in templateFiles)
+                {
+                    var templateJson = await Task.Run(() => File.ReadAllText(templateFile));
+                    var template = await Task.Run(() => JsonConvert.DeserializeObject<DocumentModel>(templateJson, new JsonSerializerSettings
                     {
-                        sampleDoc1,
-                        sampleDoc2
-                    });
+                        TypeNameHandling = TypeNameHandling.Objects
+                    }));
+                    templates.Add(template);
+                }
+
+                return Response<IEnumerable<DocumentModel>>.FromSuccess(templates);
             }
             catch (Exception ex)
             {
@@ -50,8 +61,12 @@ namespace Stutton.DocumentCreator.Services.Documents
                     Directory.CreateDirectory(_documentTemplatesDirectoryName);
                 }
 
-                var documentJson = await Task.Run(() => JsonConvert.SerializeObject(document));
-                await Task.Run(() => File.WriteAllText($"{_documentTemplatesDirectoryName}\\{DateTime.Now:yyyyMMddHHmmss}.template", documentJson));
+                var documentJson = await Task.Run(() => JsonConvert.SerializeObject(document, Formatting.Indented, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects,
+                    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+                }));
+                await Task.Run(() => File.WriteAllText($"{_documentTemplatesDirectoryName}\\{DateTime.Now:yyyyMMddHHmmss}.{_documentTemplateFileExtension}", documentJson));
                 return Response.FromSuccess();
             }
             catch (Exception ex)

@@ -59,7 +59,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         {
             _telemetryService.TrackPageView(Key);
 
-            var documentResponse = _documentsService.GetDocuments();
+            var documentResponse = await _documentsService.GetDocuments();
 
             if (!documentResponse.Success)
             {
