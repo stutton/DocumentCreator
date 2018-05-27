@@ -20,4 +20,8 @@
         <pages:EditTemplatePage/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type pageViewModels:DocumentCreatorPageViewModel}">
+        <pages:DocumentCreatorPage/>
+    </DataTemplate>
+
 </ResourceDictionary>

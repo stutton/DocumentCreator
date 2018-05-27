@@ -121,7 +121,12 @@
     <Compile Include="Shared\RelayCommand.cs" />
     <Compile Include="Models\WorkItems\IWorkItem.cs" />
     <Compile Include="ViewModels\WorkItems\WorkItemViewModel.cs" />
+    <Compile Include="Views\Controls\EditorExpander.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
+    <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Views\Pages\DocumentCreatorPage.xaml.cs">
+      <DependentUpon>DocumentCreatorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Templates\TemplateSteps\AutomationsStep.xaml.cs">
       <DependentUpon>AutomationsStep.xaml</DependentUpon>
     </Compile>
@@ -189,6 +194,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Pages\DocumentCreatorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Templates\TemplateSteps\AutomationsStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -266,6 +275,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Themes\DocumentTemplateStepTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Themes\EditorExpander.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
