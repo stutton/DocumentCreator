@@ -1,22 +1,22 @@
 ﻿<UserControl x:Class="Stutton.DocumentCreator.Views.Templates.TemplateSteps.FieldsStep"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.Views.Templates.TemplateSteps"
-             xmlns:templateSteps1="clr-namespace:Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps"
              xmlns:fields="clr-namespace:Stutton.DocumentCreator.Models.Documents.Fields"
              xmlns:materialConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
-             xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.Views.Templates.TemplateSteps"
+             xmlns:templateSteps1="clr-namespace:Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps"
+             d:DataContext="{d:DesignInstance templateSteps1:FieldsStepViewModel}"
+             d:DesignHeight="450"
              d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance templateSteps1:FieldsStepViewModel}">
+             mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Themes/EditorExpander.xaml"/>
+                <ResourceDictionary Source="../../Themes/EditorExpander.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type fields:TextFieldModel}">
@@ -24,27 +24,29 @@
                     <Expander.Header>
                         <Grid Height="32">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding TypeDisplayName}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Description}"/>
-                            
+                            <TextBlock VerticalAlignment="Center" Text="{Binding TypeDisplayName}" />
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Description}" />
+
                         </Grid>
                     </Expander.Header>
-                    <Grid>
+                    <Grid Margin="0,16">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding TextToReplace}"
-                                 Margin="0,0,16,0"
+                        <TextBox Margin="0,0,16,0"
                                  materialDesign:HintAssist.Hint="Replace This"
-                                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"/>
-                        <TextBox Grid.Column="1" 
-                                 Text="{Binding ReplaceWithText}"
+                                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Text="{Binding TextToReplace}" />
+                        <TextBox Grid.Column="1"
                                  materialDesign:HintAssist.Hint="With This"
-                                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"/>
+                                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                                 Text="{Binding ReplaceWithText}" />
                     </Grid>
                 </controls:EditorExpander>
             </DataTemplate>
@@ -53,42 +55,24 @@
 
     <StackPanel>
 
-        <!--<ListView ItemsSource="{Binding Fields}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="288"
-                                    Header="Type"
-                                    DisplayMemberBinding="{Binding TypeDisplayName}"/>
-                    <GridViewColumn Width="288"
-                                    Header="Description"
-                                    DisplayMemberBinding="{Binding Description}"/>
-                    <GridViewColumn>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <materialDesign:PopupBox DockPanel.Dock="Right"
-                                                         PlacementMode="BottomAndAlignRightEdges"
-                                                         StaysOpen="False">
-                                    <StackPanel>
-                                        <Button Command="{Binding DataContext.DeleteFieldCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type templateSteps:FieldsStep}}}"
-                                                CommandParameter="{Binding}"
-                                                Content="Delete"/>
-                                    </StackPanel>
-                                </materialDesign:PopupBox>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>-->
+        <ItemsControl ItemsSource="{Binding Fields}" />
 
-        <ItemsControl ItemsSource="{Binding Fields}"/>
+        <DockPanel Margin="24,4,0,0">
+            <Button Command="{Binding AddFieldCommand}"
+                    DockPanel.Dock="Right"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         Kind="Plus" />
+            </Button>
 
-            <Button Margin="0,8,0,0"
-                HorizontalAlignment="Right"
-                Command="{Binding AddFieldCommand}"
-                Content="ADD"
-                Style="{StaticResource MaterialDesignFlatButton}"
-                ToolTip="Add Criteria" />
+            <ComboBox Margin="0,0,8,0"
+                      materialDesign:HintAssist.Hint="New Field Type"
+                      DisplayMemberPath="Key"
+                      ItemsSource="{Binding AvailableFieldTypes}"
+                      SelectedValue="{Binding SelectedType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValuePath="Value" />
+        </DockPanel>
 
     </StackPanel>
 </UserControl>

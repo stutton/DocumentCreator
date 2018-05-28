@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -91,7 +92,6 @@
     <Compile Include="Services\Tfs\TfsWorkItemMapper.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="ViewModels\Dialogs\AddTemplateAutomationDialogViewModel.cs" />
-    <Compile Include="ViewModels\Dialogs\AddTemplateFieldDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\AddWorkItemExpressionDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MaterialOpenFileDialogViewModel.cs" />
@@ -150,9 +150,6 @@
     <Compile Include="Views\Dialogs\AddTemplateAutomationDialog.xaml.cs">
       <DependentUpon>AddTemplateAutomationDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Dialogs\AddTemplateFieldDialog.xaml.cs">
-      <DependentUpon>AddTemplateFieldDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Dialogs\AddWorkItemExpressionDialog.xaml.cs">
       <DependentUpon>AddWorkItemExpressionDialog.xaml</DependentUpon>
     </Compile>
@@ -182,6 +179,7 @@
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UIExtensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -219,10 +217,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\AddTemplateAutomationDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Dialogs\AddTemplateFieldDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

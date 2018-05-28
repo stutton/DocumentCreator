@@ -1,12 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:materialConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+                    xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
                     xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
-                    xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls">
+                    xmlns:materialConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
-    <materialConverters:MathMultipleConverter x:Key="MathMlpMultipleConverter" Operation="Multiply"/>
-    <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    <materialConverters:MathMultipleConverter x:Key="MathMlpMultipleConverter" Operation="Multiply" />
+    <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
     <Style x:Key="EditorExpanderHeaderStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
@@ -15,13 +15,13 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{TemplateBinding Background}" Padding="24,4,24,4">
-                        <ContentPresenter Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                              VerticalAlignment="Center"
-                                              Margin="0,0,16,0" />
+                    <Border Padding="24,4,24,4" Background="{TemplateBinding Background}">
+                        <ContentPresenter Margin="0,0,16,0"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -31,9 +31,9 @@
     <Style x:Key="EditorExpanderStyle" TargetType="{x:Type controls:EditorExpander}">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"/>
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:EditorExpander}">
@@ -43,7 +43,7 @@
                                 <VisualStateGroup.Transitions>
                                     <VisualTransition GeneratedDuration="0" To="Expanded">
                                         <VisualTransition.GeneratedEasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
+                                            <CubicEase EasingMode="EaseOut" />
                                         </VisualTransition.GeneratedEasingFunction>
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Content" Storyboard.TargetProperty="Visibility">
@@ -52,14 +52,23 @@
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundCard" Storyboard.TargetProperty="Visibility">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                             </ObjectAnimationUsingKeyFrames>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PART_Content" To="1" Duration="0:0:0.3"/>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BackgroundCard" To="1" Duration="0:0:0.3"/>
-                                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="RootGrid" To="-32,0,-32,0" Duration="0:0:0.3" />
+                                            <DoubleAnimation Storyboard.TargetName="PART_Content"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="1"
+                                                             Duration="0:0:0.3" />
+                                            <DoubleAnimation Storyboard.TargetName="BackgroundCard"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="1"
+                                                             Duration="0:0:0.3" />
+                                            <ThicknessAnimation Storyboard.TargetName="RootGrid"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                To="-32,0,-32,0"
+                                                                Duration="0:0:0.3" />
                                         </Storyboard>
                                     </VisualTransition>
                                     <VisualTransition GeneratedDuration="0" To="Collapsed">
                                         <VisualTransition.GeneratedEasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
+                                            <CubicEase EasingMode="EaseOut" />
                                         </VisualTransition.GeneratedEasingFunction>
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Content" Storyboard.TargetProperty="Visibility">
@@ -68,36 +77,63 @@
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundCard" Storyboard.TargetProperty="Visibility">
                                                 <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}" />
                                             </ObjectAnimationUsingKeyFrames>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PART_Content" To="0" Duration="0:0:0.3"/>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BackgroundCard" To="0" Duration="0:0:0.3"/>
-                                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="RootGrid" To="0,0,0,0" Duration="0:0:0.3" />
+                                            <DoubleAnimation Storyboard.TargetName="PART_Content"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0"
+                                                             Duration="0:0:0.3" />
+                                            <DoubleAnimation Storyboard.TargetName="BackgroundCard"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0"
+                                                             Duration="0:0:0.3" />
+                                            <ThicknessAnimation Storyboard.TargetName="RootGrid"
+                                                                Storyboard.TargetProperty="Margin"
+                                                                To="0,0,0,0"
+                                                                Duration="0:0:0.3" />
                                         </Storyboard>
                                     </VisualTransition>
                                 </VisualStateGroup.Transitions>
                                 <VisualState x:Name="Expanded">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PART_Content" To="1" Duration="0"/>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BackgroundCard" To="1" Duration="0"/>
+                                        <DoubleAnimation Storyboard.TargetName="PART_Content"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="BackgroundCard"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Content" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundCard" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="RootGrid" To="-32,0,-32,0" Duration="0" />
+                                        <ThicknessAnimation Storyboard.TargetName="RootGrid"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            To="-32,0,-32,0"
+                                                            Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Collapsed">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="PART_Content" To="0" Duration="0"/>
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BackgroundCard" To="0" Duration="0"/>
+                                        <DoubleAnimation Storyboard.TargetName="PART_Content"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"
+                                                         Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="BackgroundCard"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"
+                                                         Duration="0" />
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_Content" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundCard" Storyboard.TargetProperty="Visibility">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="RootGrid" To="0,0,0,0" Duration="0" />
+                                        <ThicknessAnimation Storyboard.TargetName="RootGrid"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            To="0,0,0,0"
+                                                            Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -108,73 +144,75 @@
                                                  HorizontalAlignment="Stretch"
                                                  VerticalAlignment="Stretch"
                                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                                 Visibility="Collapsed"/>
+                                                 Visibility="Collapsed" />
 
                             <DockPanel>
 
                                 <DockPanel DockPanel.Dock="Top">
 
-                                    <Rectangle DockPanel.Dock="Bottom"
-                                               VerticalAlignment="Bottom"
+                                    <Rectangle Height="1"
                                                HorizontalAlignment="Stretch"
-                                               Height="1"
+                                               VerticalAlignment="Bottom"
+                                               DockPanel.Dock="Bottom"
                                                Fill="Black"
-                                               Opacity="0.1"/>
+                                               Opacity="0.1" />
 
-                                    <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                            Visibility="{TemplateBinding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                            Name="PART_CollapseButton"
-                                            DockPanel.Dock="Right">
-                                        <materialDesign:PackIcon Kind="Check"
-                                                                 Width="24"
-                                                                 Height="24"/>
-                                    </Button>
-
-                                    <Button Name="PART_ExpandButton" 
+                                    <Button Name="PART_CollapseButton"
                                             DockPanel.Dock="Right"
                                             Style="{DynamicResource MaterialDesignFlatButton}"
-                                            Visibility="{TemplateBinding IsExpanded, Converter={StaticResource InverseBoolToVisConverter}}"
-                                            CommandParameter="{Binding}">
-                                        <materialDesign:PackIcon Kind="Pencil"
-                                                                 Width="24"
-                                                                 Height="24" />
+                                            Visibility="{TemplateBinding IsExpanded,
+                                                                         Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <materialDesign:PackIcon Width="24"
+                                                                 Height="24"
+                                                                 Kind="Check" />
+                                    </Button>
+
+                                    <Button Name="PART_ExpandButton"
+                                            CommandParameter="{Binding}"
+                                            DockPanel.Dock="Right"
+                                            Style="{DynamicResource MaterialDesignFlatButton}"
+                                            Visibility="{TemplateBinding IsExpanded,
+                                                                         Converter={StaticResource InverseBoolToVisConverter}}">
+                                        <materialDesign:PackIcon Width="24"
+                                                                 Height="24"
+                                                                 Kind="Pencil" />
                                     </Button>
 
                                     <Button BorderThickness="0"
-                                              Style="{StaticResource EditorExpanderHeaderStyle}"
-                                              Foreground="{TemplateBinding Foreground}"
-                                              Content="{TemplateBinding Header}"
-                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
-                                              ContentStringFormat="{TemplateBinding HeaderStringFormat}"/>
+                                            Content="{TemplateBinding Header}"
+                                            ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                            ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            Style="{StaticResource EditorExpanderHeaderStyle}" />
                                 </DockPanel>
 
                                 <Border Name="ContentSite"
-                                        DockPanel.Dock="Bottom"
-                                        Margin="24,0,24,4">
+                                        Margin="24,0,24,4"
+                                        DockPanel.Dock="Bottom">
 
                                     <StackPanel Name="ContentPanel"
-                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                 Margin="{TemplateBinding Padding}"
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                         <StackPanel.Height>
                                             <MultiBinding Converter="{StaticResource MathMlpMultipleConverter}">
-                                                <Binding ElementName="PART_Content" Path="ActualHeight"/>
-                                                <Binding ElementName="PART_Content" Path="Opacity"/>
+                                                <Binding ElementName="PART_Content" Path="ActualHeight" />
+                                                <Binding ElementName="PART_Content" Path="Opacity" />
                                             </MultiBinding>
                                         </StackPanel.Height>
                                         <StackPanel.Width>
                                             <MultiBinding Converter="{StaticResource MathMlpMultipleConverter}">
-                                                <Binding ElementName="PART_Content" Path="ActualWidth"/>
-                                                <Binding ElementName="PART_Content" Path="Opacity"/>
+                                                <Binding ElementName="PART_Content" Path="ActualWidth" />
+                                                <Binding ElementName="PART_Content" Path="Opacity" />
                                             </MultiBinding>
                                         </StackPanel.Width>
 
-                                        <ContentPresenter Name="PART_Content" 
-                                                          Focusable="False"
-                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        <ContentPresenter Name="PART_Content"
                                                           ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                                          Focusable="False" />
 
                                     </StackPanel>
                                 </Border>
@@ -184,13 +222,13 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="ExpandDirection" Value="Down">
-                            <Setter Property="Orientation" TargetName="ContentPanel" Value="Vertical"/>
-                            <Setter Property="Width" TargetName="ContentPanel" Value="Auto"/>
+                            <Setter TargetName="ContentPanel" Property="Orientation" Value="Vertical" />
+                            <Setter TargetName="ContentPanel" Property="Width" Value="Auto" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
 </ResourceDictionary>

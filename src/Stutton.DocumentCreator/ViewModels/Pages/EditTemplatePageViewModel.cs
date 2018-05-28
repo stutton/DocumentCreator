@@ -101,11 +101,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
             Model = model;
 
+            var fieldsVm = new FieldsStepViewModel(Model.Fields, _fieldFactoryService);
+            await fieldsVm.InitializeAsync();
+
             Steps = new List<IStep>
             {
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Details"}, Content = new DetailsStepViewModel(Model.Details)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Query"}, Content = new WorkItemQueryStepViewModel(Model.Details.WorkItemQuery)},
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = new FieldsStepViewModel(Model.Fields, _fieldFactoryService)},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = fieldsVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = new AutomationsStepViewModel(Model.Automations, _automationFactoryService)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Finish"}, Content = new SummaryStepViewModel(Model)}
             };
