@@ -27,7 +27,7 @@ namespace Stutton.DocumentCreator.Services.Settings
                 {
                     Directory.CreateDirectory(_settingsDirectoryName);
                 }
-                var settingsJson = await Task.Run(() => JsonConvert.SerializeObject(settings));
+                var settingsJson = await Task.Run(() => JsonConvert.SerializeObject(settings, Formatting.Indented));
                 await Task.Run(() => File.WriteAllText(_settingsFileName, settingsJson));
                 return Response.FromSuccess();
             }
@@ -63,7 +63,7 @@ namespace Stutton.DocumentCreator.Services.Settings
             }
         }
 
-        public async Task<IResponse<SettingsTransformModel>> GetSettingsTransformAsync()
+        public async Task<IResponse<SettingsModel>> GetSettingsTransformAsync()
         {
             try
             {
@@ -71,19 +71,19 @@ namespace Stutton.DocumentCreator.Services.Settings
                 var files = Directory.GetFiles(baseDirectory, "*.settings.transform");
                 if (!files.Any())
                 {
-                    return Response<SettingsTransformModel>.FromFailure("No settings transforms found",
+                    return Response<SettingsModel>.FromFailure("No settings transforms found",
                         ResponseCode.FileNotFound);
                 }
 
                 var transformPath = files.First();
                 var transformJson = await Task.Run(() => File.ReadAllText(transformPath));
                 var transformModel =
-                    await Task.Run(() => JsonConvert.DeserializeObject<SettingsTransformModel>(transformJson));
-                return Response<SettingsTransformModel>.FromSuccess(transformModel);
+                    await Task.Run(() => JsonConvert.DeserializeObject<SettingsModel>(transformJson));
+                return Response<SettingsModel>.FromSuccess(transformModel);
             }
             catch (Exception ex)
             {
-                return Response<SettingsTransformModel>.FromException($"Failed to load settings transform", ex);
+                return Response<SettingsModel>.FromException($"Failed to load settings transform", ex);
             }
         }
     }

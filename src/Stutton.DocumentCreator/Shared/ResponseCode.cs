@@ -5,6 +5,7 @@
         Ok,
         Error,
         FileNotFound,
-        Exception
+        Exception,
+        Disabled
     }
 }

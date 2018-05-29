@@ -25,16 +25,11 @@ namespace Stutton.DocumentCreator
     {
         public const string RootDialog = "RootDialog";
         
-        private readonly ShellViewModel _shellViewModel;
+        private ShellViewModel _shellViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            Setup.DoSetup(MainSnackbar.MessageQueue);
-
-            _shellViewModel = Setup.GetShellViewModel();
-            ShellView.DataContext = _shellViewModel;
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
@@ -44,6 +39,11 @@ namespace Stutton.DocumentCreator
 
         private async void DialogHost_OnLoaded(object sender, RoutedEventArgs e)
         {
+            await Setup.DoSetup(MainSnackbar.MessageQueue);
+
+            _shellViewModel = Setup.GetShellViewModel();
+            ShellView.DataContext = _shellViewModel;
+
             ShellView.EnableNavigation();
             await _shellViewModel.LoadAsync();
         }

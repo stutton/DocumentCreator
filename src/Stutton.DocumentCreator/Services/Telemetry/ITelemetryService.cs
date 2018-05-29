@@ -13,5 +13,6 @@ namespace Stutton.DocumentCreator.Services.Telemetry
         IResponse TrackPageView(string pageKey);
         IResponse TrackFailedResponse(IResponse response);
         IResponse TrackException(Exception ex);
+        bool Enabled { get; set; }
     }
 }

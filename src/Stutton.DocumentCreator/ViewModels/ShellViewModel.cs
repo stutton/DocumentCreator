@@ -19,13 +19,8 @@ namespace Stutton.DocumentCreator.ViewModels
 {
     public class ShellViewModel : Observable
     {
-        private readonly ISettingsService _settingsService;
-        private readonly ITfsService _tfsService;
-
-        public ShellViewModel(INavigationService navigationService, ISettingsService settingsService, ITfsService tfsService)
+        public ShellViewModel(INavigationService navigationService)
         {
-            _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
-            _tfsService = tfsService ?? throw new ArgumentNullException(nameof(tfsService));
             Navigator = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
@@ -44,101 +39,7 @@ namespace Stutton.DocumentCreator.ViewModels
 
         public async Task LoadAsync()
         {
-            await LoadInitialSettings();
             await Navigator.NavigateTo(DocumentsPageViewModel.Key);
-        }
-
-        private async Task LoadInitialSettings()
-        {
-            // Load settings
-            var settingsResponse = await _settingsService.GetSettings();
-            var settings = new SettingsModel();
-            if (!settingsResponse.Success)
-            {
-                if (settingsResponse.Code != ResponseCode.FileNotFound)
-                {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(settingsResponse.Message), "RootDialog");
-                    return;
-                }
-            }
-            else
-            {
-                settings = settingsResponse.Value;
-            }
-
-            // Load settings transform
-            var transformResponse = await _settingsService.GetSettingsTransformAsync();
-            var transform = new SettingsTransformModel();
-            if (!transformResponse.Success)
-            {
-                if (transformResponse.Code != ResponseCode.FileNotFound)
-                {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(transformResponse.Message), "RootDialog");
-                    return;
-                }
-            }
-            else
-            {
-                transform = transformResponse.Value;
-            }
-
-            // Load TfsUrl
-            if (string.IsNullOrEmpty(settings.TfsUrl))
-            {
-                if (string.IsNullOrEmpty(transform.TfsUrl))
-                {
-                    var tfsUrlDialog = new TfsUrlDialogViewModel();
-                    if (!(bool) await DialogHost.Show(tfsUrlDialog, "RootDialog"))
-                    {
-                        await DialogHost.Show(new ErrorMessageDialogViewModel("Connecting to VSTS/TFS canceled by user"), "RootDialog");
-                        return;
-                    }
-
-                    settings.TfsUrl = tfsUrlDialog.TfsUrl;
-                }
-                else
-                {
-                    settings.TfsUrl = transform.TfsUrl;
-                }
-            }
-
-            // Load TfsDefaultCollection
-            if (string.IsNullOrEmpty(settings.TfsDefaultCollection))
-            {
-                settings.TfsDefaultCollection = string.IsNullOrEmpty(transform.TfsDefaultCollection)
-                    ? Resources.TfsDefaultCollection_DefaultValue
-                    : transform.TfsDefaultCollection;
-            }
-
-            // Load TfsUserName
-            if (string.IsNullOrEmpty(settings.TfsUserName))
-            {
-                var tfsProfileResponse = await _tfsService.GetUserProfileAsync();
-                if (!tfsProfileResponse.Success)
-                {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(tfsProfileResponse.Message), "RootDialog");
-                    return;
-                }
-
-                settings.TfsUserName = tfsProfileResponse.Value.Name;
-                // TODO: Save profile picture
-            }
-
-            // Load WorkItemQuery
-            if (!settings.WorkItemQuery.Expressions.Any())
-            {
-                if (transform.WorkItemQuery.Expressions.Any())
-                {
-                    settings.WorkItemQuery = transform.WorkItemQuery;
-                }
-            }
-
-            // Save settings
-            var saveSettingsResponse = await _settingsService.SaveSettings(settings);
-            if (!saveSettingsResponse.Success)
-            {
-                await DialogHost.Show(new ErrorMessageDialogViewModel(saveSettingsResponse.Message), "RootDialog");
-            }
         }
     }
 }

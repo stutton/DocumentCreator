@@ -18,6 +18,8 @@ namespace Stutton.DocumentCreator.Services.Telemetry
         private TelemetryClient _telemetryClient;
         private bool _initialized;
 
+        public bool Enabled { get; set; }
+
         public TelemetryService(ISettingsService settingsService)
         {
             _settingsService = settingsService;
@@ -25,6 +27,11 @@ namespace Stutton.DocumentCreator.Services.Telemetry
 
         public async Task<IResponse> Initialize()
         {
+            if (!Enabled)
+            {
+                return Response.FromFailure("Telemetry Service is disabled", ResponseCode.Disabled);
+            }
+
             if (_initialized)
             {
                 return Response.FromSuccess();
@@ -54,6 +61,11 @@ namespace Stutton.DocumentCreator.Services.Telemetry
 
         public IResponse TrackPageView(string pageKey)
         {
+            if (!Enabled)
+            {
+                return Response.FromFailure("Telemetry Service is disabled", ResponseCode.Disabled);
+            }
+
             if (!_initialized)
             {
                 return Response.FromFailure("Telemetry service must be initialized before use");
@@ -65,6 +77,11 @@ namespace Stutton.DocumentCreator.Services.Telemetry
 
         public IResponse TrackFailedResponse(IResponse response)
         {
+            if (!Enabled)
+            {
+                return Response.FromFailure("Telemetry Service is disabled", ResponseCode.Disabled);
+            }
+
             if (!_initialized)
             {
                 return Response.FromFailure("Telemetry service must be initialized before use");
@@ -88,6 +105,11 @@ namespace Stutton.DocumentCreator.Services.Telemetry
 
         public IResponse TrackException(Exception ex)
         {
+            if (!Enabled)
+            {
+                return Response.FromFailure("Telemetry Service is disabled", ResponseCode.Disabled);
+            }
+
             if (!_initialized)
             {
                 return Response.FromFailure("Telemetry service must be initialized before use");
@@ -119,6 +141,10 @@ namespace Stutton.DocumentCreator.Services.Telemetry
 
         public void Dispose()
         {
+            if (!Enabled || !_initialized)
+            {
+                return;
+            }
             _telemetryClient.Flush();
         }
     }

@@ -12,6 +12,6 @@ namespace Stutton.DocumentCreator.Services.Settings
     {
         Task<IResponse> SaveSettings(SettingsModel settings);
         Task<IResponse<SettingsModel>> GetSettings();
-        Task<IResponse<SettingsTransformModel>> GetSettingsTransformAsync();
+        Task<IResponse<SettingsModel>> GetSettingsTransformAsync();
     }
 }
