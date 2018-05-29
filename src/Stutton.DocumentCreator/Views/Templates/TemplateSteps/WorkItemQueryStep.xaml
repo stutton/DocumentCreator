@@ -49,6 +49,11 @@
                                        Text="{Binding Operator}" />
                             <TextBlock Grid.Column="2"
                                        VerticalAlignment="Center"
+                                       Visibility="{Binding Operator, Converter={StaticResource InverseInOpToVisibilityConverter}}"
+                                       Text="{Binding Value}"/>
+                            <TextBlock Grid.Column="2"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding Operator, Converter={StaticResource InOpToVisibilityConverter}}"
                                        Text="{Binding Values, Converter={StaticResource ListOfStringExpanderConverter}}" />
                         </Grid>
                     </Expander.Header>
@@ -89,7 +94,7 @@
                                  VerticalAlignment="Top"
                                  materialDesign:HintAssist.Hint="Value"
                                  Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
-                                 Text="{Binding Values}"
+                                 Text="{Binding Value}"
                                  Visibility="{Binding Operator, Converter={StaticResource InverseInOpToVisibilityConverter}}" />
 
                         <StackPanel Grid.Column="2"
