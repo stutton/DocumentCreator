@@ -66,11 +66,6 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             //TODO: Get work item fields
             //var workItemFields = _tfsService.GetWorkItemFieldsAsync();
             var workItemFields = new List<string> {"Field 1", "Field 2", "Field 3"};
-            var expressionDialogVm = new AddWorkItemExpressionDialogViewModel(workItemFields);
-            if((bool) await DialogHost.Show(expressionDialogVm, "RootDialog"))
-            {
-                Settings.WorkItemQuery.Expressions.Add(expressionDialogVm.Model);
-            }
         }
 
         #endregion

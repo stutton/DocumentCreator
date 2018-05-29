@@ -15,12 +15,9 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Themes/EditorExpander.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type fields:TextFieldModel}">
-                <controls:EditorExpander Style="{StaticResource EditorExpanderStyle}">
+                <controls:EditorExpander>
                     <Expander.Header>
                         <Grid Height="32">
                             <Grid.ColumnDefinitions>
@@ -50,6 +47,7 @@
                     </Grid>
                 </controls:EditorExpander>
             </DataTemplate>
+
         </ResourceDictionary>
     </UserControl.Resources>
 

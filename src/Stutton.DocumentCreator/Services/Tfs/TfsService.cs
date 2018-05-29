@@ -188,6 +188,27 @@ namespace Stutton.DocumentCreator.Services.Tfs
             }
         }
 
+        public async Task<IResponse<IEnumerable<string>>> GetWorkItemFields()
+        {
+            try
+            {
+                var connectionResponse = await GetUpdatedVssConnection();
+                if (!connectionResponse.Success)
+                {
+                    return Response<IEnumerable<string>>.FromFailure(connectionResponse.Message);
+                }
+
+                var connection = connectionResponse.Value;
+                var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
+                var result = await workItemClient.GetFieldsAsync().ConfigureAwait(false);
+                return Response<IEnumerable<string>>.FromSuccess(result.Select(f => f.Name).ToList());
+            }
+            catch (Exception ex)
+            {
+                return Response<IEnumerable<string>>.FromException("Failed to get work item fields", ex);
+            }
+        }
+
         private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)
         {
             switch (op)

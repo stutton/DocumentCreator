@@ -16,8 +16,9 @@
 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepOrange.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.LightBlue.xaml" />
-                
-                <ResourceDictionary Source="Views/Themes/SideBarHost.xaml"/>
+
+                <ResourceDictionary Source="Views/Themes/SideBarHost.xaml" />
+                <ResourceDictionary Source="Views/Themes/EditorExpander.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -1,27 +1,23 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Stutton.DocumentCreator.Views"
                     xmlns:dialogVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Dialogs"
-                    xmlns:dialogs="clr-namespace:Stutton.DocumentCreator.Views.Dialogs">
+                    xmlns:dialogs="clr-namespace:Stutton.DocumentCreator.Views.Dialogs"
+                    xmlns:local="clr-namespace:Stutton.DocumentCreator.Views">
 
     <DataTemplate DataType="{x:Type dialogVms:MessageDialogViewModel}">
         <dialogs:MessageDialog />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type dialogVms:AddWorkItemExpressionDialogViewModel}">
-        <dialogs:AddWorkItemExpressionDialog />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type dialogVms:TfsUrlDialogViewModel}">
-        <dialogs:TfsUrlDialog/>
+        <dialogs:TfsUrlDialog />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type dialogVms:AddTemplateAutomationDialogViewModel}">
-        <dialogs:AddTemplateAutomationDialog/>
+        <dialogs:AddTemplateAutomationDialog />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type dialogVms:MaterialOpenFileDialogViewModel}">
-        <dialogs:MaterialOpenFileDialog/>
+        <dialogs:MaterialOpenFileDialog />
     </DataTemplate>
 
 </ResourceDictionary>

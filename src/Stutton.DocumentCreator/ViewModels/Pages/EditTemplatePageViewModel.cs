@@ -12,6 +12,7 @@ using Stutton.DocumentCreator.Services.Automations;
 using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Services.Telemetry;
+using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Navigation;
@@ -31,6 +32,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly IAutomationFactoryService _automationFactoryService;
         private readonly IDocumentsService _documentsService;
         private readonly ITelemetryService _telemetryService;
+        private readonly ITfsService _tfsService;
         private DocumentModel _model;
         private List<IStep> _steps;
 
@@ -44,13 +46,15 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             IFieldFactoryService fieldFactoryService, 
             IAutomationFactoryService automationFactoryService, 
             IDocumentsService documentsService,
-            ITelemetryService telemetryService)
+            ITelemetryService telemetryService,
+            ITfsService tfsService)
         {
             _navigationService = navigationService;
             _fieldFactoryService = fieldFactoryService;
             _automationFactoryService = automationFactoryService;
             _documentsService = documentsService;
             _telemetryService = telemetryService;
+            _tfsService = tfsService;
             IsInEditMode = true;
         }
 
@@ -92,6 +96,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         public override async Task NavigatedTo(object parameter)
         {
+            IsBusy = true;
             _telemetryService.TrackPageView(Key);
 
             if (parameter == null || !(parameter is DocumentModel model))
@@ -104,14 +109,18 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             var fieldsVm = new FieldsStepViewModel(Model.Fields, _fieldFactoryService);
             await fieldsVm.InitializeAsync();
 
+            var queryVm = new WorkItemQueryStepViewModel(Model.Details.WorkItemQuery, _tfsService);
+            await queryVm.Initialize();
+
             Steps = new List<IStep>
             {
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Details"}, Content = new DetailsStepViewModel(Model.Details)},
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Query"}, Content = new WorkItemQueryStepViewModel(Model.Details.WorkItemQuery)},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Query"}, Content = queryVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = fieldsVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = new AutomationsStepViewModel(Model.Automations, _automationFactoryService)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Finish"}, Content = new SummaryStepViewModel(Model)}
             };
+            IsBusy = false;
         }
     }
 }
