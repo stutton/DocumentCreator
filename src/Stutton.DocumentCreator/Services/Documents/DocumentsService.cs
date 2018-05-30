@@ -66,7 +66,7 @@ namespace Stutton.DocumentCreator.Services.Documents
                     TypeNameHandling = TypeNameHandling.Objects,
                     TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
                 }));
-                await Task.Run(() => File.WriteAllText($"{_documentTemplatesDirectoryName}\\{DateTime.Now:yyyyMMddHHmmss}.{_documentTemplateFileExtension}", documentJson));
+                await Task.Run(() => File.WriteAllText($"{_documentTemplatesDirectoryName}\\{document.Id}.{_documentTemplateFileExtension}", documentJson));
                 return Response.FromSuccess();
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using Stutton.DocumentCreator.Models.Documents.Automations;
 using Stutton.DocumentCreator.Models.Documents.Details;
@@ -10,6 +11,9 @@ namespace Stutton.DocumentCreator.Models.Documents
     [DataContract(Name = "DocumentTemplate")]
     public class DocumentModel : Observable
     {
+        [DataMember]
+        public string Id { get; set; } = $@"{Guid.NewGuid()}";
+
         [DataMember]
         public DocumentDetailsModel Details { get; } = new DocumentDetailsModel();
 
