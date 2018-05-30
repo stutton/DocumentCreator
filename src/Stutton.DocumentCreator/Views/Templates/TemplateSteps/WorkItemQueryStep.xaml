@@ -64,13 +64,16 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <ComboBox MinWidth="200"
+                        <!-- There seems to be an issue with this ItemsSource binding that causes the Text to get cleared when
+                               the stepper moves to away from this step. Changing the binding Mode to OneTime seems to mitigate
+                               the problem and should be OK for this use case. -->
+                        <ComboBox Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding DataContext.WorkItemFields, Mode=OneTime, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemQueryStep}}}"
+                                  MinWidth="200"
                                   VerticalAlignment="Top"
                                   materialDesign:HintAssist.Hint="Field"
                                   IsEditable="True"
-                                  ItemsSource="{Binding DataContext.WorkItemFields, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemQueryStep}}}"
-                                  Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
-                                  Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                  Style="{DynamicResource MaterialDesignFloatingHintComboBox}">
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel />
