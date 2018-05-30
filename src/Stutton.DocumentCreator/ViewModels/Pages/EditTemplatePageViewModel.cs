@@ -112,12 +112,15 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             var queryVm = new WorkItemQueryStepViewModel(Model.Details.WorkItemQuery, _tfsService);
             await queryVm.Initialize();
 
+            var automationsVm = new AutomationsStepViewModel(Model.Automations, _automationFactoryService, _telemetryService);
+            await automationsVm.InitializeAsync();
+
             Steps = new List<IStep>
             {
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Details"}, Content = new DetailsStepViewModel(Model.Details)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Query"}, Content = queryVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = fieldsVm},
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = new AutomationsStepViewModel(Model.Automations, _automationFactoryService)},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = automationsVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Finish"}, Content = new SummaryStepViewModel(Model)}
             };
             IsBusy = false;

@@ -6,45 +6,98 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.Views.Templates.TemplateSteps"
              xmlns:templateSteps1="clr-namespace:Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps"
+             xmlns:automations="clr-namespace:Stutton.DocumentCreator.Models.Documents.Automations"
+             xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance templateSteps1:AutomationsStepViewModel}">
-    <StackPanel>
-        <ListView ItemsSource="{Binding Automations}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="288"
-                                    Header="Type"
-                                    DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Width="288"
-                                    Header="Description"
-                                    DisplayMemberBinding="{Binding Description}"/>
-                    <GridViewColumn>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <materialDesign:PopupBox DockPanel.Dock="Right"
-                                                         PlacementMode="BottomAndAlignRightEdges"
-                                                         StaysOpen="False">
-                                    <StackPanel>
-                                        <Button Command="{Binding DataContext.DeleteAutomationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type templateSteps:AutomationsStep}}}"
-                                                CommandParameter="{Binding}"
-                                                Content="Delete"/>
-                                    </StackPanel>
-                                </materialDesign:PopupBox>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+    <UserControl.Resources>
+        <ResourceDictionary>
 
-        <Button Margin="0,8,0,0"
-                HorizontalAlignment="Right"
-                Command="{Binding AddAutomationCommand}"
-                Content="ADD"
-                Style="{StaticResource MaterialDesignFlatButton}"
-                ToolTip="Add Automation" />
+            <DataTemplate DataType="{x:Type automations:AttachToWorkItemAutomation}">
+                <controls:EditorExpander>
+                    <Expander.Header>
+                        <Grid Height="32">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     VerticalAlignment="Center"
+                                                     Kind="Paperclip"
+                                                     Margin="0,0,4,0"/>
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Name}" />
+                            <TextBlock Grid.Column="2"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Description}"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </Grid>
+                    </Expander.Header>
+                    <Grid Margin="0,16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="Attach to work item"
+                                   Style="{DynamicResource MaterialDesignSubheadingTextBlock}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                   Opacity="0.5">
+                            <Run Text="Uploads and attaches the document to the selected work item" />
+                            <LineBreak />
+                            <Run Text="Note: No additional info is required to use this field type" />
+                        </TextBlock>
+
+                        <materialDesign:PackIcon Width="48"
+                                                 Height="48"
+                                                 Grid.Row="0"
+                                                 Grid.RowSpan="2"
+                                                 Grid.Column="1"
+                                                 VerticalAlignment="Center"
+                                                 Kind="Paperclip"
+                                                 Margin="0,0,4,0"
+                                                 Opacity="0.5"/>
+
+                    </Grid>
+                </controls:EditorExpander>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel>
+        
+        <ItemsControl ItemsSource="{Binding Automations}"/>
+
+        <DockPanel Margin="24,4,0,0">
+            <Button Command="{Binding AddAutomationCommand}"
+                    DockPanel.Dock="Right"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         Kind="Plus" />
+            </Button>
+
+            <ComboBox Margin="0,0,8,0"
+                      materialDesign:HintAssist.Hint="New Automation Type"
+                      DisplayMemberPath="Key"
+                      ItemsSource="{Binding AvailableAutomationTypes}"
+                      SelectedValue="{Binding SelectedType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValuePath="Value" />
+        </DockPanel>
 
     </StackPanel>
 </UserControl>

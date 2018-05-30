@@ -12,10 +12,6 @@
         <dialogs:TfsUrlDialog />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type dialogVms:AddTemplateAutomationDialogViewModel}">
-        <dialogs:AddTemplateAutomationDialog />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type dialogVms:MaterialOpenFileDialogViewModel}">
         <dialogs:MaterialOpenFileDialog />
     </DataTemplate>

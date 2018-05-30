@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.Documents.Automations;
 using Stutton.DocumentCreator.Services.Automations;
+using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 
@@ -12,7 +14,32 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
     public class AutomationsStepViewModel : Observable
     {
         private readonly IAutomationFactoryService _automationFactoryService;
+        private readonly ITelemetryService _telemetryService;
+
         public ObservableCollection<IAutomation> Automations { get; }
+
+        private ObservableDictionary<string, Type> _availableAutomationTypes;
+        public ObservableDictionary<string, Type> AvailableAutomationTypes
+        {
+            get => _availableAutomationTypes;
+            set => Set(ref _availableAutomationTypes, value);
+        }
+
+        private Type _selectedType;
+        public Type SelectedType
+        {
+            get => _selectedType;
+            set
+            {
+                if (Set(ref _selectedType, value))
+                {
+                    if (AddAutomationCommand is RelayCommand cmd)
+                    {
+                        cmd.RaiseCanExecuteChanged();
+                    }
+                }
+            }
+        }
 
         #region ICommand AddAutomationCommand
 
@@ -21,12 +48,19 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         private async Task AddAutomation()
         {
-            var dialogVm = new AddTemplateAutomationDialogViewModel(_automationFactoryService);
-            await dialogVm.InitializeAsync();
-            if ((bool) await DialogHost.Show(dialogVm, MainWindow.RootDialog))
+            if (SelectedType == null)
             {
-                Automations.Add(dialogVm.CurrentAutomation);
+                return;
             }
+
+            var response = _automationFactoryService.CreateAutomation(SelectedType);
+            if (!response.Success)
+            {
+                _telemetryService.TrackFailedResponse(response);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                return;
+            }
+            Automations.Add(response.Value);
         }
 
         #endregion
@@ -43,10 +77,23 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         #endregion
 
-        public AutomationsStepViewModel(ObservableCollection<IAutomation> automations, IAutomationFactoryService automationFactoryService)
+        public AutomationsStepViewModel(ObservableCollection<IAutomation> automations, IAutomationFactoryService automationFactoryService, ITelemetryService telemetryService)
         {
             _automationFactoryService = automationFactoryService;
+            _telemetryService = telemetryService;
             Automations = automations;
+        }
+
+        public async Task InitializeAsync()
+        {
+            var response = _automationFactoryService.GetAllAutomationKeys();
+            if (!response.Success)
+            {
+                _telemetryService.TrackFailedResponse(response);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                return;
+            }
+            AvailableAutomationTypes = new ObservableDictionary<string, Type>(response.Value);
         }
     }
 }

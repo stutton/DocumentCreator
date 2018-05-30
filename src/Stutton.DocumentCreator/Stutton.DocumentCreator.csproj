@@ -91,7 +91,6 @@
     <Compile Include="Services\Tfs\TfsService.cs" />
     <Compile Include="Services\Tfs\TfsWorkItemMapper.cs" />
     <Compile Include="Setup.cs" />
-    <Compile Include="ViewModels\Dialogs\AddTemplateAutomationDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MaterialOpenFileDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MessageDialogViewModel.cs" />
@@ -146,9 +145,6 @@
     <Compile Include="Views\Converters\SideBarOffsetConverter.cs" />
     <Compile Include="Views\Converters\ValueCompareConverterBase.cs" />
     <Compile Include="Views\Converters\ValueCompareToVisibilityConverter.cs" />
-    <Compile Include="Views\Dialogs\AddTemplateAutomationDialog.xaml.cs">
-      <DependentUpon>AddTemplateAutomationDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Dialogs\MaterialOpenFileDialog.xaml.cs">
       <DependentUpon>MaterialOpenFileDialog.xaml</DependentUpon>
     </Compile>
@@ -209,10 +205,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Templates\TemplateSteps\WorkItemQueryStep.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Dialogs\AddTemplateAutomationDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
