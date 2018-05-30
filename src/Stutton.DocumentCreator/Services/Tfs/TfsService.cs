@@ -98,7 +98,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
                     }
                     else
                     {
-                        sb.Append($"'{expression.Values.FirstOrDefault()}' ");
+                        sb.Append($"'{expression.Value}' ");
                     }
                 }
 
