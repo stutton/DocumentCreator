@@ -48,6 +48,29 @@
                 </controls:EditorExpander>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type fields:UserNameFieldModel}">
+                <controls:EditorExpander>
+                    <Expander.Header>
+                        <Grid Height="32">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding TypeDisplayName}" />
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Description}" />
+
+                        </Grid>
+                    </Expander.Header>
+                    <TextBox Margin="0,16,16,16"
+                             materialDesign:HintAssist.Hint="Text To Replace"
+                             Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                             Text="{Binding TextToReplace}" />
+                </controls:EditorExpander>
+            </DataTemplate>
+
         </ResourceDictionary>
     </UserControl.Resources>
 

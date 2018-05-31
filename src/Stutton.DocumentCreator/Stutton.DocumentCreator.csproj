@@ -63,6 +63,7 @@
     <Compile Include="Models\Documents\Fields\IField.cs" />
     <Compile Include="Models\Documents\DocumentModel.cs" />
     <Compile Include="Models\Documents\Fields\TextFieldModel.cs" />
+    <Compile Include="Models\Documents\Fields\UserNameFieldModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Models\Settings\SettingsTransformModel.cs" />

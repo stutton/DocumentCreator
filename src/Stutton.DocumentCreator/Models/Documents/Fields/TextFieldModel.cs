@@ -1,4 +1,5 @@
-﻿using Stutton.DocumentCreator.Shared;
+﻿using System.Threading.Tasks;
+using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Models.Documents.Fields
 {
@@ -25,6 +26,11 @@ namespace Stutton.DocumentCreator.Models.Documents.Fields
         {
             get => _textToReplace;
             set => Set(ref _textToReplace, value);
+        }
+
+        public Task<IResponse<string>> GetReplaceWithText()
+        {
+            return Task.FromResult((IResponse<string>)Response<string>.FromSuccess(ReplaceWithText));
         }
     }
 }
