@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Telemetry;
@@ -26,8 +27,8 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
             set => Set(ref _workItems, value);
         }
 
-        private WorkItemModel _selectedWorkItem;
-        public WorkItemModel SelectedWorkItem
+        private IWorkItem _selectedWorkItem;
+        public IWorkItem SelectedWorkItem
         {
             get => _selectedWorkItem;
             set => Set(ref _selectedWorkItem, value);
@@ -40,6 +41,23 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
             get => _isBusy;
             set => Set(ref _isBusy, value);
         }
+
+        #region WorkItemSelected Command
+
+        private ICommand _workItemSelectedCommand;
+        public ICommand WorkItemSelectedCommand => _workItemSelectedCommand ?? (_workItemSelectedCommand = new RelayCommand<IWorkItem>(SelectWorkItem));
+
+        private void SelectWorkItem(IWorkItem workItem)
+        {
+            SelectedWorkItem = workItem;
+            workItem.Selected = true;
+            foreach (var w in WorkItems.Where(w => w != workItem))
+            {
+                w.Selected = false;
+            }
+        }
+
+        #endregion
 
         public WorkItemStepViewModel(ITfsService tfsService, WorkItemQueryModel query, ITelemetryService telemetryService)
         {

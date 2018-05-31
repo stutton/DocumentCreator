@@ -68,5 +68,13 @@ namespace Stutton.DocumentCreator.Models.WorkItems
             get => _state;
             set => Set(ref _state, value);
         }
+
+        private bool _selected;
+
+        public bool Selected
+        {
+            get => _selected;
+            set => Set(ref _selected, value);
+        }
     }
 }

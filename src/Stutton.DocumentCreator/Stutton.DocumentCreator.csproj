@@ -120,6 +120,12 @@
     <Compile Include="Shared\RelayCommand.cs" />
     <Compile Include="Models\WorkItems\IWorkItem.cs" />
     <Compile Include="ViewModels\WorkItems\WorkItemViewModel.cs" />
+    <Compile Include="Views\Controls\Cards\DocumentCard.xaml.cs">
+      <DependentUpon>DocumentCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Cards\WorkItemCard.xaml.cs">
+      <DependentUpon>WorkItemCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\EditorExpander.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
@@ -188,6 +194,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Controls\Cards\DocumentCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Cards\WorkItemCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Documents\Steps\WorkItemStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

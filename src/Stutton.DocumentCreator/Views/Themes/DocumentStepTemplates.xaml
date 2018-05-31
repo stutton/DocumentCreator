@@ -9,7 +9,11 @@
                     xmlns:steps="clr-namespace:Stutton.DocumentCreator.Views.Documents.Steps">
 
     <DataTemplate DataType="{x:Type stepVms:WorkItemStepViewModel}">
-        <steps:WorkItemStep/>
+        <StackPanel>
+            <steps:WorkItemStep />
+            <mdeControls:StepButtonBar Continue="CONTINUE"
+                                       Cancel="CANCEL" />
+        </StackPanel>
     </DataTemplate>
 
 </ResourceDictionary>

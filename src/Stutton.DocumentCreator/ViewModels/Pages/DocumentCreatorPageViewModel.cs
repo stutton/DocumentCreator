@@ -35,12 +35,12 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             set => Set(ref _document, value);
         }
 
-        private WorkItemModel _workItem;
+        private WorkItemStepViewModel _workItemStepVm;
 
-        public WorkItemModel WorkItem
+        public WorkItemStepViewModel WorkItemStepVm
         {
-            get => _workItem;
-            set => Set(ref _workItem, value);
+            get => _workItemStepVm;
+            set => Set(ref _workItemStepVm, value);
         }
 
         private List<IStep> _steps;
@@ -68,10 +68,13 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             _navigationService = navigationService;
             _tfsService = tfsService;
             _telemetryService = telemetryService;
+
+            IsInEditMode = true;
         }
 
         public override async Task NavigatedTo(object parameter)
         {
+            IsBusy = true;
             _telemetryService.TrackPageView(Key);
 
             if (parameter == null || !(parameter is DocumentModel model))
@@ -83,13 +86,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
             Document = model;
 
-            var workItemStepVm = new WorkItemStepViewModel(_tfsService, Document.Details.WorkItemQuery, _telemetryService);
-            await workItemStepVm.InitializeAsync();
+            WorkItemStepVm = new WorkItemStepViewModel(_tfsService, Document.Details.WorkItemQuery, _telemetryService);
+            await WorkItemStepVm.InitializeAsync();
 
             Steps = new List<IStep>
             {
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Work Item"}, Content = workItemStepVm}
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Work Item"}, Content = WorkItemStepVm}
             };
+            IsBusy = false;
         }
     }
 }

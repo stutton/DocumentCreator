@@ -78,7 +78,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 sb.Append($"SELECT * FROM workitems WHERE [System.AssignedTo] contains '{settings.TfsUserName}'");
                 foreach (var expression in query.Expressions)
                 {
-                    sb.Append("AND ");
+                    sb.Append(" AND ");
 
                     sb.Append($"[{expression.FieldName}] ");
 
@@ -91,14 +91,14 @@ namespace Stutton.DocumentCreator.Services.Tfs
 
                         foreach (var value in expression.Values)
                         {
-                            valueSb.Append($"'{value}', ");
+                            valueSb.Append($"'{value.Value}', ");
                         }
 
                         sb.Append($"{valueSb.ToString().TrimEnd(',', ' ')})");
                     }
                     else
                     {
-                        sb.Append($"'{expression.Value}' ");
+                        sb.Append($"'{expression.Value}'");
                     }
                 }
 

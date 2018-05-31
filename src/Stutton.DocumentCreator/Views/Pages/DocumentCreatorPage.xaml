@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Views.Pages"
              xmlns:pageVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Pages"
              xmlns:mdxControls="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+             xmlns:cards="clr-namespace:Stutton.DocumentCreator.Views.Controls.Cards"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
@@ -13,32 +14,51 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Themes/CardTemplates.xaml"/>
                 <ResourceDictionary Source="../Themes/DocumentStepTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel>
-        <Border DockPanel.Dock="Right">
-            <StackPanel>
-                <TextBlock Text="Document Template"
-                           Style="{DynamicResource MaterialDesignCaptionTextBlock}"
-                           Opacity="0.5"
-                           Margin="0,0,0,8"/>
-                <ContentControl Content="{Binding Document}"/>
+    <Grid>
+        <DockPanel>
+            <Border DockPanel.Dock="Right"
+                    Margin="16">
+                <StackPanel>
+                    <TextBlock Text="Document Template"
+                               Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                               Opacity="0.5"
+                               Margin="0,0,0,8" />
 
-                <TextBlock Text="Work Item"
-                           Style="{DynamicResource MaterialDesignCaptionTextBlock}"
-                           Opacity="0.5"
-                           Margin="0,24,0,8" />
-                <ContentControl Content="{Binding WorkItem}" />
-            </StackPanel>
-        </Border>
+                    <cards:DocumentCard DocumentName="{Binding Document.Details.Name}"
+                                        Description="{Binding Document.Details.Description}"
+                                        Type="{Binding Document.Details.DocumentType}" />
 
-        <mdxControls:Stepper x:Name="DocumentStepper"
-                             IsLinear="False"
-                             Layout="Vertical"
-                             Steps="{Binding Steps}"
-                             CancelNavigationCommand="{Binding CancelCommand}"/>
-    </DockPanel>
+                    <TextBlock Text="Work Item"
+                               Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                               Opacity="0.5"
+                               Margin="0,24,0,8" />
+
+                    <cards:WorkItemCard Title="{Binding WorkItemStepVm.SelectedWorkItem.Title}"
+                                        Description="{Binding WorkItemStepVm.SelectedWorkItem.Description}"
+                                        Id="{Binding WorkItemStepVm.SelectedWorkItem.Id}"
+                                        State="{Binding WorkItemStepVm.SelectedWorkItem.State}" />
+                </StackPanel>
+            </Border>
+
+            <mdxControls:Stepper x:Name="DocumentStepper"
+                                 IsLinear="True"
+                                 Layout="Vertical"
+                                 Steps="{Binding Steps}"
+                                 CancelNavigationCommand="{Binding CancelCommand}" />
+        </DockPanel>
+
+        <ProgressBar Width="24"
+                     Height="24"
+                     Margin="16"
+                     IsIndeterminate="True"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+                     Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                     Value="0"
+                     Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    </Grid>
 </UserControl>
