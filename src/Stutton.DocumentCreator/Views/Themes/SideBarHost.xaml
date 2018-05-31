@@ -17,22 +17,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:SideBarHost}">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <DockPanel x:Name="RootGrid">
-                            <Grid x:Name="PART_Drawer"
-                                  Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth, Converter={StaticResource SideBarOffsetConverter}}"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Stretch"
-                                  DockPanel.Dock="Left">
-                                <ContentPresenter Content="{TemplateBinding DrawerContent}"
-                                                  ContentTemplate="{TemplateBinding DrawerContentTemplate}"
-                                                  IsEnabled="{TemplateBinding IsDrawerOpen}" />
-                            </Grid>
-                            <ContentPresenter x:Name="ContentPresenter"
-                                              Content="{TemplateBinding Content}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              Opacity="1" />
-                        </DockPanel>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="Drawer">
                                 <VisualStateGroup.Transitions>
@@ -76,6 +60,22 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
+                        <DockPanel x:Name="RootGrid">
+                            <Grid x:Name="PART_Drawer"
+                                  Margin="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth, Converter={StaticResource SideBarOffsetConverter}}"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Stretch"
+                                  DockPanel.Dock="Left">
+                                <ContentPresenter Content="{TemplateBinding DrawerContent}"
+                                                  ContentTemplate="{TemplateBinding DrawerContentTemplate}"
+                                                  IsEnabled="{TemplateBinding IsDrawerOpen}" />
+                            </Grid>
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Opacity="1" />
+                        </DockPanel>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

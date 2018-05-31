@@ -89,9 +89,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             WorkItemStepVm = new WorkItemStepViewModel(_tfsService, Document.Details.WorkItemQuery, _telemetryService);
             await WorkItemStepVm.InitializeAsync();
 
+            var fieldsStep = new FieldsStepViewModel(Document.Fields);
+            var summaryStep = new SummaryStepViewModel(Document);
+
             Steps = new List<IStep>
             {
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Work Item"}, Content = WorkItemStepVm}
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Work Item"}, Content = WorkItemStepVm},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = fieldsStep},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Finish"}, Content = summaryStep}
             };
             IsBusy = false;
         }

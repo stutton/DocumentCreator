@@ -1,18 +1,35 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mdeControls="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
-                    xmlns:templateSteps1="clr-namespace:Stutton.DocumentCreator.Views.Templates.TemplateSteps"
-                    xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:mdeControls="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
                     xmlns:stepVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Documents.Steps"
-                    xmlns:steps="clr-namespace:Stutton.DocumentCreator.Views.Documents.Steps">
+                    xmlns:steps="clr-namespace:Stutton.DocumentCreator.Views.Documents.Steps"
+                    xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps"
+                    xmlns:templateSteps1="clr-namespace:Stutton.DocumentCreator.Views.Templates.TemplateSteps">
 
     <DataTemplate DataType="{x:Type stepVms:WorkItemStepViewModel}">
         <StackPanel>
             <steps:WorkItemStep />
-            <mdeControls:StepButtonBar Continue="CONTINUE"
-                                       Cancel="CANCEL" />
+            <mdeControls:StepButtonBar Cancel="CANCEL" Continue="CONTINUE" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type stepVms:FieldsStepViewModel}">
+        <StackPanel>
+            <steps:FieldsStep />
+            <mdeControls:StepButtonBar Back="BACK"
+                                       Cancel="CANCEL"
+                                       Continue="CONTINUE" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type stepVms:SummaryStepViewModel}">
+        <StackPanel>
+            <steps:SummaryStep />
+            <mdeControls:StepButtonBar Back="BACK"
+                                       Cancel="CANCEL"
+                                       Continue="FINISH" />
         </StackPanel>
     </DataTemplate>
 

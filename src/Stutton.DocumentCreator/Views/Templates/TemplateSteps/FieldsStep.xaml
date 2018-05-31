@@ -56,8 +56,7 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding TypeDisplayName}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding TypeDisplayName}" />
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Center"
                                        Text="{Binding Description}" />

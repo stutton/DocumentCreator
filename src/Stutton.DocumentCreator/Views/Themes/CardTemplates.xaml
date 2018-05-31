@@ -1,33 +1,33 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:cards="clr-namespace:Stutton.DocumentCreator.Views.Controls.Cards"
+                    xmlns:documentVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Documents"
                     xmlns:materialConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
-                    xmlns:workItems="clr-namespace:Stutton.DocumentCreator.ViewModels.WorkItems"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:views="clr-namespace:Stutton.DocumentCreator.Views"
-                    xmlns:workItems1="clr-namespace:Stutton.DocumentCreator.Models.WorkItems"
-                    xmlns:documentVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Documents"
-                    xmlns:cards="clr-namespace:Stutton.DocumentCreator.Views.Controls.Cards">
+                    xmlns:workItems="clr-namespace:Stutton.DocumentCreator.ViewModels.WorkItems"
+                    xmlns:workItems1="clr-namespace:Stutton.DocumentCreator.Models.WorkItems">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <materialConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <materialConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <DataTemplate DataType="{x:Type workItems1:WorkItemModel}">
         <cards:WorkItemCard Title="{Binding Title}"
                             Description="{Binding Description}"
-                            State="{Binding State}"
                             Id="{Binding Id}"
-                            SelectCommand="{Binding SelectCommand}"/>
+                            SelectCommand="{Binding SelectCommand}"
+                            State="{Binding State}" />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type documentVms:DocumentCardViewModel}">
-        <cards:DocumentCard DocumentName="{Binding Model.Details.Name}"
-                            Description="{Binding Model.Details.Description}"
-                            Type="{Binding Model.Details.DocumentType}"
+        <cards:DocumentCard Description="{Binding Model.Details.Description}"
+                            DocumentName="{Binding Model.Details.Name}"
                             EditCommand="{Binding EditCommand}"
-                            SelectCommand="{Binding SelectCommand}"/>
+                            SelectCommand="{Binding SelectCommand}"
+                            Type="{Binding Model.Details.DocumentType}" />
     </DataTemplate>
 
 </ResourceDictionary>

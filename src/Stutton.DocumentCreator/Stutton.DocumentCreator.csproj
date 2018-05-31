@@ -98,6 +98,8 @@
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentCardViewModel.cs" />
+    <Compile Include="ViewModels\Documents\Steps\FieldsStepViewModel.cs" />
+    <Compile Include="ViewModels\Documents\Steps\SummaryStepViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\WorkItemStepViewModel.cs" />
     <Compile Include="ViewModels\Templates\TemplateSteps\AutomationsStepViewModel.cs" />
     <Compile Include="ViewModels\Templates\TemplateSteps\DetailsStepViewModel.cs" />
@@ -130,6 +132,12 @@
     <Compile Include="Views\Controls\EditorExpander.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Views\Documents\Steps\FieldsStep.xaml.cs">
+      <DependentUpon>FieldsStep.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Documents\Steps\SummaryStep.xaml.cs">
+      <DependentUpon>SummaryStep.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Documents\Steps\WorkItemStep.xaml.cs">
       <DependentUpon>WorkItemStep.xaml</DependentUpon>
     </Compile>
@@ -200,6 +208,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\Cards\WorkItemCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Documents\Steps\FieldsStep.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Documents\Steps\SummaryStep.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

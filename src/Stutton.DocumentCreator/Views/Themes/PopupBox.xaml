@@ -85,21 +85,6 @@
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type Button}">
                                                     <Grid>
-                                                        <Border x:Name="MouseOverBorder"
-                                                                Background="{TemplateBinding Foreground,
-                                                                                             Converter={StaticResource BrushRoundConverter}}"
-                                                                Opacity="0" />
-                                                        <wpf:Ripple MinHeight="48"
-                                                                    Padding="{TemplateBinding Padding}"
-                                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                                    Content="{TemplateBinding Content}"
-                                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                                                    Feedback="{TemplateBinding Foreground,
-                                                                                               Converter={StaticResource BrushRoundConverter}}"
-                                                                    Focusable="False"
-                                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                                         <VisualStateManager.VisualStateGroups>
                                                             <VisualStateGroup Name="CommonStates">
                                                                 <VisualStateGroup.Transitions>
@@ -127,6 +112,21 @@
                                                                 </VisualState>
                                                             </VisualStateGroup>
                                                         </VisualStateManager.VisualStateGroups>
+                                                        <Border x:Name="MouseOverBorder"
+                                                                Background="{TemplateBinding Foreground,
+                                                                                             Converter={StaticResource BrushRoundConverter}}"
+                                                                Opacity="0" />
+                                                        <wpf:Ripple MinHeight="48"
+                                                                    Padding="{TemplateBinding Padding}"
+                                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                    Content="{TemplateBinding Content}"
+                                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                                                    Feedback="{TemplateBinding Foreground,
+                                                                                               Converter={StaticResource BrushRoundConverter}}"
+                                                                    Focusable="False"
+                                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                                     </Grid>
                                                 </ControlTemplate>
                                             </Setter.Value>

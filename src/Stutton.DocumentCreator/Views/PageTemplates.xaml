@@ -5,23 +5,23 @@
                     xmlns:pages="clr-namespace:Stutton.DocumentCreator.Views.Pages">
 
     <DataTemplate DataType="{x:Type pageViewModels:WorkItemsPageViewModel}">
-        <pages:WorkItemsPage/>
+        <pages:WorkItemsPage />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type pageViewModels:DocumentsPageViewModel}">
-        <pages:DocumentsPage/>
+        <pages:DocumentsPage />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type pageViewModels:SettingsPageViewModel}">
-        <pages:SettingsPage/>
+        <pages:SettingsPage />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type pageViewModels:EditTemplatePageViewModel}">
-        <pages:EditTemplatePage/>
+        <pages:EditTemplatePage />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type pageViewModels:DocumentCreatorPageViewModel}">
-        <pages:DocumentCreatorPage/>
+        <pages:DocumentCreatorPage />
     </DataTemplate>
 
 </ResourceDictionary>
