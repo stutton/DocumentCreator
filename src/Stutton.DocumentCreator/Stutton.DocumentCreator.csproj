@@ -88,6 +88,8 @@
     <Compile Include="Models\WorkItems\WorkItemQueryModel.cs" />
     <Compile Include="Services\Automations\AutomationFactoryService.cs" />
     <Compile Include="Services\Automations\IAutomationFactoryService.cs" />
+    <Compile Include="Services\Document\DocumentService.cs" />
+    <Compile Include="Services\Document\IDocumentService.cs" />
     <Compile Include="Services\Templates\TemplatesService.cs" />
     <Compile Include="Services\Templates\ITemplatesService.cs" />
     <Compile Include="Services\Fields\FieldFactoryService.cs" />
@@ -411,6 +413,9 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="OpenXmlPowerTools">
+      <Version>4.5.3.2</Version>
     </PackageReference>
     <PackageReference Include="System.Net.Http">
       <Version>4.0.0</Version>
