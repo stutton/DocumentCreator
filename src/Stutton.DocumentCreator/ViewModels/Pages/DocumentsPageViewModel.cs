@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.Documents;
-using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Services.Telemetry;
+using Stutton.DocumentCreator.Services.Templates;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Documents;
@@ -24,13 +24,13 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public override bool IsOnDemandPage => false;
         public override int PageOrder => 1;
 
-        private readonly IDocumentsService _documentsService;
+        private readonly ITemplatesService _templatesService;
         private readonly INavigationService _navigationService;
         private readonly ITelemetryService _telemetryService;
 
-        public DocumentsPageViewModel(IDocumentsService documentsService, INavigationService navigationService, ITelemetryService telemetryService)
+        public DocumentsPageViewModel(ITemplatesService templatesService, INavigationService navigationService, ITelemetryService telemetryService)
         {
-            _documentsService = documentsService;
+            _templatesService = templatesService;
             _navigationService = navigationService;
             _telemetryService = telemetryService;
         }
@@ -59,7 +59,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         {
             _telemetryService.TrackPageView(Key);
 
-            var documentResponse = await _documentsService.GetDocuments();
+            var documentResponse = await _templatesService.GetDocuments();
 
             if (!documentResponse.Success)
             {

@@ -51,12 +51,24 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             set => Set(ref _steps, value);
         }
 
-        #region Cancel Command
+        #region ICommand CancelCommand
 
         private ICommand _cancelCommand;
         public ICommand CancelCommand => _cancelCommand ?? (_cancelCommand = new RelayCommand(Cancel));
 
         private void Cancel()
+        {
+            
+        }
+
+        #endregion
+
+        #region Finish Command
+
+        private ICommand _finishCommand;
+        public ICommand FinishCommand => _finishCommand ?? (_finishCommand = new RelayCommand(async () => await Finish()));
+
+        private async Task Finish()
         {
             
         }

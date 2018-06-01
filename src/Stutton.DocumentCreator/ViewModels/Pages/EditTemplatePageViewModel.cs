@@ -9,9 +9,9 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.VisualStudio.Services.Profile;
 using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Services.Automations;
-using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Services.Telemetry;
+using Stutton.DocumentCreator.Services.Templates;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
@@ -30,7 +30,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly INavigationService _navigationService;
         private readonly IFieldFactoryService _fieldFactoryService;
         private readonly IAutomationFactoryService _automationFactoryService;
-        private readonly IDocumentsService _documentsService;
+        private readonly ITemplatesService _templatesService;
         private readonly ITelemetryService _telemetryService;
         private readonly ITfsService _tfsService;
         private DocumentModel _model;
@@ -45,14 +45,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public EditTemplatePageViewModel(INavigationService navigationService, 
             IFieldFactoryService fieldFactoryService, 
             IAutomationFactoryService automationFactoryService, 
-            IDocumentsService documentsService,
+            ITemplatesService templatesService,
             ITelemetryService telemetryService,
             ITfsService tfsService)
         {
             _navigationService = navigationService;
             _fieldFactoryService = fieldFactoryService;
             _automationFactoryService = automationFactoryService;
-            _documentsService = documentsService;
+            _templatesService = templatesService;
             _telemetryService = telemetryService;
             _tfsService = tfsService;
             IsInEditMode = true;
@@ -83,7 +83,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         private async Task Finish()
         {
-            var response = await _documentsService.SaveDocumentTemplate(Model);
+            var response = await _templatesService.SaveDocumentTemplate(Model);
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);

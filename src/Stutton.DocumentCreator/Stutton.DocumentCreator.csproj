@@ -88,8 +88,8 @@
     <Compile Include="Models\WorkItems\WorkItemQueryModel.cs" />
     <Compile Include="Services\Automations\AutomationFactoryService.cs" />
     <Compile Include="Services\Automations\IAutomationFactoryService.cs" />
-    <Compile Include="Services\Documents\DocumentsService.cs" />
-    <Compile Include="Services\Documents\IDocumentsService.cs" />
+    <Compile Include="Services\Templates\TemplatesService.cs" />
+    <Compile Include="Services\Templates\ITemplatesService.cs" />
     <Compile Include="Services\Fields\FieldFactoryService.cs" />
     <Compile Include="Services\Fields\IFieldFactoryService.cs" />
     <Compile Include="Services\Telemetry\ITelemetryService.cs" />

@@ -11,10 +11,10 @@ using Stutton.DocumentCreator.Fields;
 using Stutton.DocumentCreator.Models.Settings;
 using Stutton.DocumentCreator.Properties;
 using Stutton.DocumentCreator.Services.Automations;
-using Stutton.DocumentCreator.Services.Documents;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Services.Settings;
 using Stutton.DocumentCreator.Services.Telemetry;
+using Stutton.DocumentCreator.Services.Templates;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels;
@@ -53,7 +53,7 @@ namespace Stutton.DocumentCreator
             _container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISettingsService, SettingsService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITfsService, TfsService>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IDocumentsService, DocumentsService>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ITemplatesService, TemplatesService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITelemetryService, TelemetryService>(new ContainerControlledLifetimeManager());
             _container.RegisterInstance<IFieldFactoryService>(new FieldFactoryService(t => _container.Resolve(t) as IField));
             _container.RegisterInstance<IAutomationFactoryService>(

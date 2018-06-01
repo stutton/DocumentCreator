@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Services.Documents
+namespace Stutton.DocumentCreator.Services.Templates
 {
-    public class DocumentsService : IDocumentsService
+    public class TemplatesService : ITemplatesService
     {
         private readonly string _documentTemplatesDirectoryName =
             $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Templates";
