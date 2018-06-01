@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Models.Documents.Automations
+namespace Stutton.DocumentCreator.Automations
 {
     public interface IAutomation
     {

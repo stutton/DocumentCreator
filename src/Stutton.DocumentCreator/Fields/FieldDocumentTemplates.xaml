@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields"
+                    xmlns:text="clr-namespace:Stutton.DocumentCreator.Fields.Text"
+                    xmlns:userName="clr-namespace:Stutton.DocumentCreator.Fields.UserName">
+
+    <DataTemplate DataType="{x:Type text:TextFieldModel}">
+        <text:TextFieldDocumentView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type userName:UserNameFieldModel}">
+        <userName:UserNameDocumentView />
+    </DataTemplate>
+
+</ResourceDictionary>

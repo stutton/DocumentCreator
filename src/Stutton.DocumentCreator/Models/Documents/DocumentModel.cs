@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
-using Stutton.DocumentCreator.Models.Documents.Automations;
+using Stutton.DocumentCreator.Automations;
+using Stutton.DocumentCreator.Fields;
 using Stutton.DocumentCreator.Models.Documents.Details;
-using Stutton.DocumentCreator.Models.Documents.Fields;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Models.Documents

@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Stutton.DocumentCreator.Fields.Text.TextFieldTemplateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields.Text"
+             xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance local:TextFieldModel}">
+    <controls:EditorExpander>
+        <Expander.Header>
+            <Grid Height="32">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center"
+                           Text="{Binding TypeDisplayName}" />
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="{Binding Description}" />
+
+            </Grid>
+        </Expander.Header>
+        <Grid Margin="0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBox Margin="0,0,16,0"
+                     materialDesign:HintAssist.Hint="Replace This"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding TextToReplace}" />
+            <TextBox Grid.Column="1"
+                     materialDesign:HintAssist.Hint="With This"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding ReplaceWithText}" />
+        </Grid>
+    </controls:EditorExpander>
+</UserControl>

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
-using Stutton.DocumentCreator.Models.Documents.Fields;
+using Stutton.DocumentCreator.Fields;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;

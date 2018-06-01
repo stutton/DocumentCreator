@@ -55,15 +55,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\Documents\Automations\AttachToWorkItemAutomation.cs" />
-    <Compile Include="Models\Documents\Automations\IAutomation.cs" />
+    <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationModel.cs" />
+    <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationView.xaml.cs">
+      <DependentUpon>AttachToWorkItemAutomationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Automations\IAutomation.cs" />
+    <Compile Include="Fields\Text\TextFieldDocumentView.xaml.cs">
+      <DependentUpon>TextFieldDocumentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Fields\Text\TextFieldTemplateView.xaml.cs">
+      <DependentUpon>TextFieldTemplateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Fields\UserName\UserNameDocumentView.xaml.cs">
+      <DependentUpon>UserNameDocumentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Fields\UserName\UserNameTemplateView.xaml.cs">
+      <DependentUpon>UserNameTemplateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
     <Compile Include="Models\Documents\DocumentType.cs" />
-    <Compile Include="Models\Documents\Fields\FieldsModel.cs" />
-    <Compile Include="Models\Documents\Fields\IField.cs" />
+    <Compile Include="Fields\IField.cs" />
     <Compile Include="Models\Documents\DocumentModel.cs" />
-    <Compile Include="Models\Documents\Fields\TextFieldModel.cs" />
-    <Compile Include="Models\Documents\Fields\UserNameFieldModel.cs" />
+    <Compile Include="Fields\Text\TextFieldModel.cs" />
+    <Compile Include="Fields\UserName\UserNameFieldModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Models\Settings\SettingsTransformModel.cs" />
@@ -191,6 +205,38 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UIExtensions.cs" />
+    <Page Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Automations\AutomationTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\FieldDocumentTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\FieldTemplateTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\Text\TextFieldDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\Text\TextFieldTemplateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\UserName\UserNameDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\UserName\UserNameTemplateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

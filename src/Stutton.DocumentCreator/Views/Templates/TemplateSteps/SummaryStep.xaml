@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:workItemModels="clr-namespace:Stutton.DocumentCreator.Models.WorkItems"
              xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
-             xmlns:fields="clr-namespace:Stutton.DocumentCreator.Models.Documents.Fields"
-             xmlns:automations="clr-namespace:Stutton.DocumentCreator.Models.Documents.Automations"
              xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps"
+             xmlns:fields1="clr-namespace:Stutton.DocumentCreator.Fields"
+             xmlns:automations="clr-namespace:Stutton.DocumentCreator.Automations"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
@@ -60,7 +60,7 @@
                 <ItemsControl ItemsSource="{Binding Model.Fields}"
                               Margin="0,8,0,0">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type fields:IField}">
+                        <DataTemplate DataType="{x:Type fields1:IField}">
                             <TextBlock Text="{Binding Description}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

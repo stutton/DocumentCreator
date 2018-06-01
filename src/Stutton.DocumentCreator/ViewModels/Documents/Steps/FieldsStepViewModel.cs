@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Stutton.DocumentCreator.Models.Documents.Fields;
+using Stutton.DocumentCreator.Fields;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.ViewModels.Documents.Steps

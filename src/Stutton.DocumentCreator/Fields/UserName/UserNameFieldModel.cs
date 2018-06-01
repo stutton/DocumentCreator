@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Models.Documents.Fields
+namespace Stutton.DocumentCreator.Fields.UserName
 {
     public class UserNameFieldModel : Observable, IField
     {

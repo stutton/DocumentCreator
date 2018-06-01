@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Models.Documents.Fields
+namespace Stutton.DocumentCreator.Fields.Text
 {
     public class TextFieldModel : Observable, IField
     {

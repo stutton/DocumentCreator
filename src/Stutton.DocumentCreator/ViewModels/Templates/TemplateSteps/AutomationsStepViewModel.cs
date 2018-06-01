@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
-using Stutton.DocumentCreator.Models.Documents.Automations;
+using Stutton.DocumentCreator.Automations;
 using Stutton.DocumentCreator.Services.Automations;
 using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Shared;
