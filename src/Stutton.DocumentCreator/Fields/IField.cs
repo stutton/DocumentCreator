@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Packaging;
+using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields
@@ -9,6 +11,6 @@ namespace Stutton.DocumentCreator.Fields
         string TypeDisplayName { get; }
         string FieldKey { get; }
         string TextToReplace { get; set; }
-        Task<IResponse<string>> GetReplaceWithText();
+        Task<IResponse> ModifyDocument(WordprocessingDocument document, IServiceResolver serviceResolver);
     }
 }

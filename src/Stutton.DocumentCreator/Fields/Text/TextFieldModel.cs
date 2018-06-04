@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Packaging;
+using OpenXmlPowerTools;
+using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.Text
@@ -28,9 +32,17 @@ namespace Stutton.DocumentCreator.Fields.Text
             set => Set(ref _textToReplace, value);
         }
 
-        public Task<IResponse<string>> GetReplaceWithText()
+        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IServiceResolver serviceResolver)
         {
-            return Task.FromResult((IResponse<string>)Response<string>.FromSuccess(ReplaceWithText));
+            try
+            {
+                await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, ReplaceWithText, false));
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException("Error replacing text", ex);
+            }
         }
     }
 }

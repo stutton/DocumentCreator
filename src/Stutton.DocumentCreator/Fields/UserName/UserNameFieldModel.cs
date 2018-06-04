@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Packaging;
+using OpenXmlPowerTools;
+using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 
@@ -6,7 +10,6 @@ namespace Stutton.DocumentCreator.Fields.UserName
 {
     public class UserNameFieldModel : Observable, IField
     {
-        private readonly ITfsService _tfsService;
         public const string Key = "UserNameField";
 
         public string Description => $"Replace '{TextToReplace}' with the current user's name";
@@ -20,21 +23,31 @@ namespace Stutton.DocumentCreator.Fields.UserName
             set => Set(ref _textToReplace, value);
         }
 
-        public UserNameFieldModel(ITfsService tfsService)
+        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IServiceResolver serviceResolver)
         {
-            _tfsService = tfsService;
-        }
-
-        public async Task<IResponse<string>> GetReplaceWithText()
-        {
-            var response = await _tfsService.GetUserProfileAsync();
-            if (!response.Success)
+            try
             {
-                return Response<string>.FromFailure(response.Message);
-            }
+                var serviceResponse = serviceResolver.Resolve<ITfsService>();
+                if (!serviceResponse.Success)
+                {
+                    return Response.FromFailure(serviceResponse.Message);
+                }
 
-            var profile = response.Value;
-            return Response<string>.FromSuccess(profile.Name);
+                var tfsService = serviceResponse.Value;
+                var response = await tfsService.GetUserProfileAsync();
+                if (!response.Success)
+                {
+                    return Response.FromFailure(response.Message);
+                }
+
+                var profile = response.Value;
+                await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, profile.Name, false));
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException("Failed to repace text with username", ex);
+            }
         }
     }
 }

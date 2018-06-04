@@ -1,4 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Models.WorkItems;
+using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Automations
@@ -9,6 +12,6 @@ namespace Stutton.DocumentCreator.Automations
 
         string Description { get; }
 
-        Task<IResponse> Execute();
+        Task<IResponse> Execute(DocumentModel model, IWorkItem workItem, string documentPath, IServiceResolver resolver);
     }
 }

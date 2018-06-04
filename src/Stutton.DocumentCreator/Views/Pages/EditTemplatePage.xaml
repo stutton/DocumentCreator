@@ -1,32 +1,32 @@
 ﻿<UserControl x:Class="Stutton.DocumentCreator.Views.Pages.EditTemplatePage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Views.Pages"
-             xmlns:pageVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Pages"
-             xmlns:mdeControls="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mdeControls="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+             xmlns:pageVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance pageVms:EditTemplatePageViewModel}"
+             d:DesignHeight="450"
              d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance pageVms:EditTemplatePageViewModel}">
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Themes/DocumentTemplateStepTemplates.xaml"/>
+                <ResourceDictionary Source="../Themes/DocumentTemplateStepTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <materialDesign:Card>
         <mdeControls:Stepper x:Name="TemplateStepper"
-                             IsLinear="False" 
-                             Layout="Horizontal"
-                             Steps="{Binding Steps}"
                              Width="640"
                              CancelNavigationCommand="{Binding CancelCommand}"
-                             ContinueNavigation="Stepper_OnContinueNavigation"/>
+                             ContinueNavigation="Stepper_OnContinueNavigation"
+                             IsLinear="False"
+                             Layout="Horizontal"
+                             Steps="{Binding Steps}" />
     </materialDesign:Card>
 </UserControl>

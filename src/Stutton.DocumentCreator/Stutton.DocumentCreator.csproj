@@ -90,6 +90,8 @@
     <Compile Include="Services\Automations\IAutomationFactoryService.cs" />
     <Compile Include="Services\Document\DocumentService.cs" />
     <Compile Include="Services\Document\IDocumentService.cs" />
+    <Compile Include="Services\IServiceResolver.cs" />
+    <Compile Include="Services\ServiceResolver.cs" />
     <Compile Include="Services\Templates\TemplatesService.cs" />
     <Compile Include="Services\Templates\ITemplatesService.cs" />
     <Compile Include="Services\Fields\FieldFactoryService.cs" />

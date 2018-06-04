@@ -8,6 +8,7 @@ using MaterialDesignExtensions.Model;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Models.WorkItems;
+using Stutton.DocumentCreator.Services.Document;
 using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
@@ -22,6 +23,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly INavigationService _navigationService;
         private readonly ITfsService _tfsService;
         private readonly ITelemetryService _telemetryService;
+        private readonly IDocumentService _documentService;
         public const string Key = "DocumentCreatorPage";
         public override string PageKey => Key;
         public override string Title => "Create Document";
@@ -70,16 +72,46 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         private async Task Finish()
         {
-            
+            try
+            {
+                IsBusy = true;
+                var result = await _documentService.CreateDocument(Document);
+                if (!result.Success)
+                {
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
+                    return;
+                }
+
+                var documentPath = result.Value;
+
+                var automationResponse = await
+                    _documentService.ExecuteAutomations(Document, WorkItemStepVm.SelectedWorkItem, documentPath);
+
+                if (!automationResponse.Success)
+                {
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
+                    return;
+                }
+
+                await DialogHost.Show(new SuccessMessageDialogViewModel("Document created and automations run"),
+                    MainWindow.RootDialog);
+
+                await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         #endregion
 
-        public DocumentCreatorPageViewModel(INavigationService navigationService, ITfsService tfsService, ITelemetryService telemetryService)
+        public DocumentCreatorPageViewModel(INavigationService navigationService, ITfsService tfsService, ITelemetryService telemetryService, IDocumentService documentService)
         {
             _navigationService = navigationService;
             _tfsService = tfsService;
             _telemetryService = telemetryService;
+            _documentService = documentService;
 
             IsInEditMode = true;
         }
