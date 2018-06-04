@@ -12,15 +12,17 @@ namespace Stutton.DocumentCreator.Services.Fields
     public class FieldFactoryService : IFieldFactoryService
     {
         private readonly Func<Type, IField> _fieldResolver;
+        private readonly IServiceResolver _serviceResolver;
 
         private Dictionary<string, Type> _fieldTypes;
 
-        public FieldFactoryService(Func<Type, IField> fieldResolver)
+        public FieldFactoryService(Func<Type, IField> fieldResolver, IServiceResolver serviceResolver)
         {
             _fieldResolver = fieldResolver;
+            _serviceResolver = serviceResolver;
         }
 
-        public IResponse<IField> CreateField(Type fieldType)
+        public async Task<IResponse<IField>> CreateField(Type fieldType)
         {
             try
             {
@@ -33,6 +35,11 @@ namespace Stutton.DocumentCreator.Services.Fields
                 if (field == null)
                 {
                     return Response<IField>.FromFailure($"Failed to create field of type '{fieldType.Name}'");
+                }
+
+                if (field is IRequiresInitialization initializeMe)
+                {
+                    await initializeMe.Initialize(_serviceResolver);
                 }
 
                 return Response<IField>.FromSuccess(field);

@@ -60,7 +60,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             {
                 return;
             }
-            var response = _fieldFactoryService.CreateField(SelectedType);
+            var response = await _fieldFactoryService.CreateField(SelectedType);
             if (!response.Success)
             {
                 await DialogHost.Show(response.Message, MainWindow.RootDialog);

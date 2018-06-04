@@ -57,10 +57,10 @@ namespace Stutton.DocumentCreator
             _container.RegisterType<ITfsService, TfsService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITemplatesService, TemplatesService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITelemetryService, TelemetryService>(new ContainerControlledLifetimeManager());
-            _container.RegisterInstance<IFieldFactoryService>(new FieldFactoryService(t => _container.Resolve(t) as IField));
+            _container.RegisterType<IServiceResolver, ServiceResolver>(new ContainerControlledLifetimeManager());
+            _container.RegisterInstance<IFieldFactoryService>(new FieldFactoryService(t => _container.Resolve(t) as IField, _container.Resolve<IServiceResolver>()));
             _container.RegisterInstance<IAutomationFactoryService>(
                 new AutomationFactoryService(t => _container.Resolve(t) as IAutomation));
-            _container.RegisterType<IServiceResolver, ServiceResolver>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IDocumentService, DocumentService>(new ContainerControlledLifetimeManager());
             _container.RegisterInstance(messageQueue, new ExternallyControlledLifetimeManager());
         }

@@ -60,6 +60,7 @@
       <DependentUpon>AttachToWorkItemAutomationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Automations\IAutomation.cs" />
+    <Compile Include="Fields\IRequiresInitialization.cs" />
     <Compile Include="Fields\Text\TextFieldDocumentView.xaml.cs">
       <DependentUpon>TextFieldDocumentView.xaml</DependentUpon>
     </Compile>
@@ -72,6 +73,7 @@
     <Compile Include="Fields\UserName\UserNameTemplateView.xaml.cs">
       <DependentUpon>UserNameTemplateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\WorkItemField\WorkItemFieldModel.cs" />
     <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
     <Compile Include="Models\Documents\DocumentType.cs" />
     <Compile Include="Fields\IField.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Activation.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -84,17 +85,19 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
                 var documentPath = result.Value;
 
-                var automationResponse = await
-                    _documentService.ExecuteAutomations(Document, WorkItemStepVm.SelectedWorkItem, documentPath);
+                //var automationResponse = await
+                //    _documentService.ExecuteAutomations(Document, WorkItemStepVm.SelectedWorkItem, documentPath);
 
-                if (!automationResponse.Success)
-                {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
-                    return;
-                }
+                //if (!automationResponse.Success)
+                //{
+                //    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
+                //    return;
+                //}
 
                 await DialogHost.Show(new SuccessMessageDialogViewModel("Document created and automations run"),
                     MainWindow.RootDialog);
+
+                System.Diagnostics.Process.Start(documentPath);
 
                 await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
             }
