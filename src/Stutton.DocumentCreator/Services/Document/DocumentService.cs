@@ -22,7 +22,7 @@ namespace Stutton.DocumentCreator.Services.Document
             _serviceResolver = serviceResolver;
         }
 
-        public async Task<IResponse<string>> CreateDocument(DocumentModel model)
+        public async Task<IResponse<string>> CreateDocument(DocumentModel model, IWorkItem workItem)
         {
             if (!File.Exists(model.Details.TemplateFilePath))
             {
@@ -36,7 +36,7 @@ namespace Stutton.DocumentCreator.Services.Document
             {
                 foreach (var field in model.Fields)
                 {
-                    var response = await field.ModifyDocument(doc, _serviceResolver);
+                    var response = await field.ModifyDocument(doc, workItem, _serviceResolver);
                     if (!response.Success)
                     {
                         // TODO: Should we fail if a field does?

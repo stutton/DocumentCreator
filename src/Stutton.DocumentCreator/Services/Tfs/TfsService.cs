@@ -209,6 +209,34 @@ namespace Stutton.DocumentCreator.Services.Tfs
             }
         }
 
+        public async Task<IResponse<string>> GetWorkItemFieldValue(int id, string field)
+        {
+            try
+            {
+                var connectionResponse = await GetUpdatedVssConnection();
+                if (!connectionResponse.Success)
+                {
+                    return Response<string>.FromFailure(connectionResponse.Message);
+                }
+
+                var connection = connectionResponse.Value;
+                var workItemClient =
+                    await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
+                var workItem = await workItemClient.GetWorkItemAsync(id, new[] {field});
+                if (workItem?.Id == null)
+                {
+                    return Response<string>.FromFailure($"No work item with ID '{id}' returned");
+                }
+
+                var fieldValue = workItem.Fields[field].ToString();
+                return Response<string>.FromSuccess(fieldValue);
+            }
+            catch (Exception ex)
+            {
+                return Response<string>.FromException($"Failure while attempting to retrieve field '{field}' from work item '{id}'", ex);
+            }
+        }
+
         private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)
         {
             switch (op)

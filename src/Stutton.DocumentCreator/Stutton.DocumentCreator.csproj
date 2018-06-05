@@ -74,6 +74,9 @@
       <DependentUpon>UserNameTemplateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fields\WorkItemField\WorkItemFieldModel.cs" />
+    <Compile Include="Fields\WorkItemField\WorkItemFieldTemplateView.xaml.cs">
+      <DependentUpon>WorkItemFieldTemplateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
     <Compile Include="Models\Documents\DocumentType.cs" />
     <Compile Include="Fields\IField.cs" />
@@ -240,6 +243,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Fields\UserName\UserNameTemplateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\WorkItemField\WorkItemFieldTemplateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
+using OpenXmlPowerTools;
+using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
@@ -61,9 +63,33 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField
             return Response.FromSuccess();
         }
 
-        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IServiceResolver serviceResolver)
+        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var serviceResolverResponse = serviceResolver.Resolve<ITfsService>();
+                if (!serviceResolverResponse.Success)
+                {
+                    return serviceResolverResponse;
+                }
+                var tfsService = serviceResolverResponse.Value;
+
+                var tfsServiceResponse = await tfsService.GetWorkItemFieldValue(workItem.Id, SelectedField);
+                if (!tfsServiceResponse.Success)
+                {
+                    return tfsServiceResponse;
+                }
+                var fieldValue = tfsServiceResponse.Value;
+
+                await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, fieldValue, false));
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException(
+                    $"Failed to replace '{TextToReplace}' with value of '{SelectedField}' field from work item '{workItem.Id}'",
+                    ex);
+            }
         }
     }
 }

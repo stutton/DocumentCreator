@@ -76,7 +76,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             try
             {
                 IsBusy = true;
-                var result = await _documentService.CreateDocument(Document);
+                var result = await _documentService.CreateDocument(Document, WorkItemStepVm.SelectedWorkItem);
                 if (!result.Success)
                 {
                     await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);

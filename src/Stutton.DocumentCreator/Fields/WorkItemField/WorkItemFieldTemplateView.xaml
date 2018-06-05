@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Stutton.DocumentCreator.Fields.WorkItemField.WorkItemFieldTemplateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField"
+             xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance local:WorkItemFieldModel}">
+    <controls:EditorExpander>
+        <Expander.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center"
+                           Text="{Binding TypeDisplayName}"/>
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="{Binding Description}"/>
+            </Grid>
+        </Expander.Header>
+        <Grid Margin="0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBox Margin="0,0,16,0"
+                     materialDesign:HintAssist.Hint="Replace This"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding TextToReplace}" />
+            <ComboBox Grid.Column="1"
+                      Margin="0,0,16,0"
+                      materialDesign:HintAssist.Hint="With This Field"
+                      Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
+                      ItemsSource="{Binding WorkItemFields}"
+                      IsEditable="True"
+                      Text="{Binding SelectedField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+        </Grid>
+    </controls:EditorExpander>
+</UserControl>

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
+using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Shared;
 
@@ -32,7 +33,7 @@ namespace Stutton.DocumentCreator.Fields.Text
             set => Set(ref _textToReplace, value);
         }
 
-        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IServiceResolver serviceResolver)
+        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
         {
             try
             {
