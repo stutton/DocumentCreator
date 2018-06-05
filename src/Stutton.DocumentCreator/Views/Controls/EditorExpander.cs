@@ -31,6 +31,24 @@ namespace Stutton.DocumentCreator.Views.Controls
 
         #endregion
 
+        #region List<UIElement> ToolBarItems
+
+        public static readonly DependencyProperty ToolBarItemsProperty =
+            DependencyProperty.Register(nameof(ToolBarItems), typeof(List<UIElement>), typeof(EditorExpander), new PropertyMetadata(default(List<UIElement>)));
+
+        public List<UIElement> ToolBarItems
+        {
+            get => (List<UIElement>) GetValue(ToolBarItemsProperty);
+            set => SetValue(ToolBarItemsProperty, value);
+        }
+
+        #endregion
+
+        public EditorExpander()
+        {
+            ToolBarItems = new List<UIElement>();
+        }
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();

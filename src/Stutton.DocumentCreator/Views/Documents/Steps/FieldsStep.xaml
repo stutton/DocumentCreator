@@ -15,65 +15,9 @@
     <UserControl.Resources>
         <ResourceDictionary>
 
-            <DataTemplate DataType="{x:Type text:TextFieldModel}">
-                <Grid Height="32">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:PackIcon Width="24"
-                                             Height="24"
-                                             Margin="0,0,4,0"
-                                             VerticalAlignment="Center"
-                                             Kind="FormatText" />
-                    <TextBlock Grid.Column="1"
-                               VerticalAlignment="Center"
-                               Text="{Binding TypeDisplayName}" />
-                    <TextBlock Grid.Column="2"
-                               VerticalAlignment="Center"
-                               Text="{Binding Description}" />
-
-                    <Rectangle Grid.Column="0"
-                               Grid.ColumnSpan="3"
-                               Height="1"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Bottom"
-                               Fill="Black"
-                               Opacity="0.1" />
-
-                </Grid>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type fieldModels:UserNameFieldModel}">
-                <Grid Height="32">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:PackIcon Width="24"
-                                             Height="24"
-                                             Margin="0,0,4,0"
-                                             VerticalAlignment="Center"
-                                             Kind="Account" />
-                    <TextBlock Grid.Column="1"
-                               VerticalAlignment="Center"
-                               Text="{Binding TypeDisplayName}" />
-                    <TextBlock Grid.Column="2"
-                               VerticalAlignment="Center"
-                               Text="{Binding Description}" />
-
-                    <Rectangle Grid.Column="0"
-                               Grid.ColumnSpan="3"
-                               Height="1"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Bottom"
-                               Fill="Black"
-                               Opacity="0.1" />
-
-                </Grid>
-            </DataTemplate>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Fields/FieldDocumentTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
     </UserControl.Resources>

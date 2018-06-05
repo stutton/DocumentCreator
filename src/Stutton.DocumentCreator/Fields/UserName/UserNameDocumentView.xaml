@@ -4,11 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields.UserName"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:UserNameFieldModel}">
-    <Grid>
-            
+    <Grid Height="32">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <materialDesign:PackIcon Width="24"
+                                 Height="24"
+                                 Margin="0,0,4,0"
+                                 VerticalAlignment="Center"
+                                 Kind="Account" />
+        <TextBlock Grid.Column="1"
+                   VerticalAlignment="Center"
+                   Text="{Binding TypeDisplayName}" />
+        <TextBlock Grid.Column="2"
+                   VerticalAlignment="Center"
+                   Text="{Binding Description}" />
+
+        <Rectangle Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Height="1"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Bottom"
+                   Fill="Black"
+                   Opacity="0.1" />
+
     </Grid>
 </UserControl>

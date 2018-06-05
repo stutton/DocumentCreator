@@ -178,6 +178,15 @@
                                                                  Kind="Pencil" />
                                     </Button>
 
+                                    <ItemsControl DockPanel.Dock="Right"
+                                                  ItemsSource="{TemplateBinding ToolBarItems}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+
                                     <Button BorderThickness="0"
                                             Content="{TemplateBinding Header}"
                                             ContentStringFormat="{TemplateBinding HeaderStringFormat}"

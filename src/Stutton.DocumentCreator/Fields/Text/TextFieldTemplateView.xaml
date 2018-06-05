@@ -25,6 +25,9 @@
 
             </Grid>
         </Expander.Header>
+        <Expander.ToolBarItems>
+
+        </Expander.ToolBarItems>
         <Grid Margin="0,16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
