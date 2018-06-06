@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models.WorkItems;
@@ -25,6 +26,18 @@ namespace Stutton.DocumentCreator.Fields.UserName
         }
 
         public event EventHandler<IField> RequestDeleteMe;
+
+        #region Delete Command
+
+        private ICommand _deleteCommand;
+        public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
+
+        private void Delete()
+        {
+            RequestDeleteMe?.Invoke(this, this);
+        }
+
+        #endregion
 
         public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
         {

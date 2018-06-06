@@ -15,12 +15,19 @@
         <Expander.Header>
             <Grid Height="32">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="250"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock VerticalAlignment="Center"
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         Margin="0,0,4,0"
+                                         VerticalAlignment="Center"
+                                         Kind="Account" />
+                <TextBlock Grid.Column="1" 
+                           VerticalAlignment="Center"
                            Text="{Binding TypeDisplayName}" />
-                <TextBlock Grid.Column="1"
+                <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Text="{Binding Description}"
                            Opacity="0.5"
@@ -30,8 +37,7 @@
         </Expander.Header>
         <controls:EditorExpander.ToolBarItems>
             <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{Binding DataContext.DeleteFieldCommand, RelativeSource={RelativeSource AncestorType={x:Type templateSteps:FieldsStep}}}"
-                    CommandParameter="{Binding}">
+                    Command="{Binding DeleteCommand}">
                 <materialDesign:PackIcon Kind="Delete"
                                          Width="24"
                                          Height="24" />

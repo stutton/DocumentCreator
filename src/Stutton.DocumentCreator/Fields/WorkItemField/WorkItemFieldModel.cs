@@ -46,6 +46,18 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField
             set => Set(ref _selectedField, value);
         }
 
+        #region Delete Command
+
+        private ICommand _deleteCommand;
+        public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
+
+        private void Delete()
+        {
+            RequestDeleteMe?.Invoke(this, this);
+        }
+
+        #endregion
+
         public async Task<IResponse> Initialize(IServiceResolver serviceResolver)
         {
             var serviceResolverResponse = serviceResolver.Resolve<ITfsService>();

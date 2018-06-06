@@ -15,12 +15,19 @@
         <Expander.Header>
             <Grid Height="32">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="250"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock VerticalAlignment="Center"
-                           Text="{Binding TypeDisplayName}" />
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         Margin="0,0,4,0"
+                                         VerticalAlignment="Center"
+                                         Kind="FormatText" />
                 <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="{Binding TypeDisplayName}" />
+                <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Text="{Binding Description}"
                            TextTrimming="CharacterEllipsis"
