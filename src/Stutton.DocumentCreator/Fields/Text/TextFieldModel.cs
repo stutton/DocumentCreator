@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DocumentFormat.OpenXml.Packaging;
@@ -9,6 +10,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.Text
 {
+    [DataContract(Name = "TextField")]
     public class TextFieldModel : Observable, IField
     {
         public const string Key = "TextField";
@@ -17,6 +19,7 @@ namespace Stutton.DocumentCreator.Fields.Text
         private string _replaceWithText;
         private string _textToReplace;
 
+        [DataMember]
         public string ReplaceWithText
         {
             get => _replaceWithText;
@@ -34,6 +37,7 @@ namespace Stutton.DocumentCreator.Fields.Text
         public string TypeDisplayName => "Text";
         public string FieldKey => Key;
 
+        [DataMember]
         public string TextToReplace
         {
             get => _textToReplace;

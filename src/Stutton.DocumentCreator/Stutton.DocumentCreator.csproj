@@ -62,6 +62,7 @@
     <Compile Include="Automations\IAutomation.cs" />
     <Compile Include="Fields\IRequiresInitialization.cs" />
     <Compile Include="Fields\List\ListFieldModel.cs.cs" />
+    <Compile Include="Fields\List\ListStepModel.cs" />
     <Compile Include="Fields\Text\TextFieldDocumentView.xaml.cs">
       <DependentUpon>TextFieldDocumentView.xaml</DependentUpon>
     </Compile>
