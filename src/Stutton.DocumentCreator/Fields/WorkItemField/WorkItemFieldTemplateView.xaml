@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField"
              xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.Views.Templates.TemplateSteps"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
@@ -14,16 +15,28 @@
         <Expander.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="250" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock VerticalAlignment="Center"
                            Text="{Binding TypeDisplayName}"/>
                 <TextBlock Grid.Column="1"
                            VerticalAlignment="Center"
-                           Text="{Binding Description}"/>
+                           Text="{Binding Description}"
+                           TextTrimming="CharacterEllipsis"
+                           Opacity="0.5"
+                           ToolTip="{Binding Description}"/>
             </Grid>
         </Expander.Header>
+        <controls:EditorExpander.ToolBarItems>
+            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{Binding DataContext.DeleteFieldCommand, RelativeSource={RelativeSource AncestorType={x:Type templateSteps:FieldsStep}}}"
+                    CommandParameter="{Binding}">
+                <materialDesign:PackIcon Kind="Delete"
+                                         Width="24"
+                                         Height="24" />
+            </Button>
+        </controls:EditorExpander.ToolBarItems>
         <Grid Margin="0,16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />

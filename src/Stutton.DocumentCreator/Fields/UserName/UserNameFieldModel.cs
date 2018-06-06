@@ -24,6 +24,8 @@ namespace Stutton.DocumentCreator.Fields.UserName
             set => Set(ref _textToReplace, value);
         }
 
+        public event EventHandler<IField> RequestDeleteMe;
+
         public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
         {
             try

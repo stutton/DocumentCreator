@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models.WorkItems;
@@ -35,6 +36,8 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField
             get => _textToReplace;
             set => Set(ref _textToReplace, value);
         }
+
+        public event EventHandler<IField> RequestDeleteMe;
 
         private string _selectedField;
         public string SelectedField

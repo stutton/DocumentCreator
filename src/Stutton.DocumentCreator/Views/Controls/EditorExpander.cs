@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,22 +32,26 @@ namespace Stutton.DocumentCreator.Views.Controls
 
         #endregion
 
-        #region List<UIElement> ToolBarItems
+        #region ObservableCollection<UIElement> ToolBarItems
 
-        public static readonly DependencyProperty ToolBarItemsProperty =
-            DependencyProperty.Register(nameof(ToolBarItems), typeof(List<UIElement>), typeof(EditorExpander), new PropertyMetadata(default(List<UIElement>)));
+        private static readonly DependencyPropertyKey ToolBarItemsPropertyKey =
+            DependencyProperty.RegisterReadOnly(nameof(ToolBarItems),
+                                                typeof(ObservableCollection<UIElement>),
+                                                typeof(EditorExpander),
+                                                new FrameworkPropertyMetadata(
+                                                    default(ObservableCollection<UIElement>),
+                                                    FrameworkPropertyMetadataOptions.None));
 
-        public List<UIElement> ToolBarItems
-        {
-            get => (List<UIElement>) GetValue(ToolBarItemsProperty);
-            set => SetValue(ToolBarItemsProperty, value);
-        }
+        public static readonly DependencyProperty ToolBarItemsProperty = ToolBarItemsPropertyKey.DependencyProperty;
+
+        public ObservableCollection<UIElement> ToolBarItems => (ObservableCollection<UIElement>) GetValue(ToolBarItemsProperty);
 
         #endregion
+        
 
         public EditorExpander()
         {
-            ToolBarItems = new List<UIElement>();
+            SetValue(ToolBarItemsPropertyKey, new ObservableCollection<UIElement>());
         }
 
         public override void OnApplyTemplate()

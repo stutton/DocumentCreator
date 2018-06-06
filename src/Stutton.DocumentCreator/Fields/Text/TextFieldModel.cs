@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models.WorkItems;
@@ -11,7 +12,7 @@ namespace Stutton.DocumentCreator.Fields.Text
     public class TextFieldModel : Observable, IField
     {
         public const string Key = "TextField";
-        private string _name;
+        public event EventHandler<IField> RequestDeleteMe; 
 
         private string _replaceWithText;
         private string _textToReplace;
@@ -19,7 +20,13 @@ namespace Stutton.DocumentCreator.Fields.Text
         public string ReplaceWithText
         {
             get => _replaceWithText;
-            set => Set(ref _replaceWithText, value);
+            set
+            {
+                if (Set(ref _replaceWithText, value))
+                {
+                    RaisePropertyChanged(nameof(Description));
+                }
+            }
         }
 
         public string Description => $"Replace '{TextToReplace}' with '{ReplaceWithText}'";
@@ -30,8 +37,26 @@ namespace Stutton.DocumentCreator.Fields.Text
         public string TextToReplace
         {
             get => _textToReplace;
-            set => Set(ref _textToReplace, value);
+            set
+            {
+                if (Set(ref _textToReplace, value))
+                {
+                    RaisePropertyChanged(nameof(Description));
+                }
+            }
         }
+
+        #region Delete Command
+
+        private ICommand _deleteCommand;
+        public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
+
+        private void Delete()
+        {
+            RequestDeleteMe?.Invoke(this, this);
+        }
+
+        #endregion
 
         public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
         {

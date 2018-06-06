@@ -20,7 +20,7 @@ namespace Stutton.DocumentCreator.Shared
             }
 
             field = value;
-            RaisePropetyChanged(property);
+            RaisePropertyChanged(property);
             return true;
         }
 
@@ -29,7 +29,7 @@ namespace Stutton.DocumentCreator.Shared
 
         }
 
-        private void RaisePropetyChanged(string property)
+        protected void RaisePropertyChanged(string property)
         {
             var eventArgs = new PropertyChangedEventArgs(property);
             OnPropertyChanged(eventArgs);

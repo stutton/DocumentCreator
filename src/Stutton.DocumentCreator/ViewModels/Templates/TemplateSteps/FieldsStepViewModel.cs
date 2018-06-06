@@ -19,6 +19,10 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
         {
             _fieldFactoryService = fieldFactoryService;
             Fields = fields;
+            foreach (var field in Fields)
+            {
+                field.RequestDeleteMe += HandleFieldRequestDeleteMe;
+            }
         }
 
         public ObservableCollection<IField> Fields { get; }
@@ -66,21 +70,9 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
                 await DialogHost.Show(response.Message, MainWindow.RootDialog);
                 return;
             }
+
+            response.Value.RequestDeleteMe += HandleFieldRequestDeleteMe;
             Fields.Add(response.Value);
-        }
-
-        #endregion
-
-        #region ICommand DeleteFieldCommand
-
-        private ICommand _deleteFieldCommand;
-
-        public ICommand DeleteFieldCommand =>
-            _deleteFieldCommand ?? (_deleteFieldCommand = new RelayCommand<IField>(DeleteField));
-
-        private void DeleteField(IField field)
-        {
-            Fields.Remove(field);
         }
 
         #endregion
@@ -94,6 +86,12 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
                 return;
             }
             AvailableFieldTypes = new ObservableDictionary<string, Type>(response.Value);
+        }
+
+        private void HandleFieldRequestDeleteMe(object sender, IField field)
+        {
+            field.RequestDeleteMe -= HandleFieldRequestDeleteMe;
+            Fields.Remove(field);
         }
     }
 }

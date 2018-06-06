@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
@@ -12,6 +13,7 @@ namespace Stutton.DocumentCreator.Fields
         string TypeDisplayName { get; }
         string FieldKey { get; }
         string TextToReplace { get; set; }
+        event EventHandler<IField> RequestDeleteMe;
         Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver);
     }
 }
