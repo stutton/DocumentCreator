@@ -60,13 +60,15 @@
       <DependentUpon>AttachToWorkItemAutomationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Automations\IAutomation.cs" />
+    <Compile Include="Fields\IFieldDocument.cs" />
     <Compile Include="Fields\IRequiresInitialization.cs" />
-    <Compile Include="Fields\List\ListFieldModel.cs.cs" />
+    <Compile Include="Fields\List\ListFieldTemplateModel.cs" />
     <Compile Include="Fields\List\ListStepModel.cs" />
-    <Compile Include="Fields\Text\TextFieldDocumentView.xaml.cs">
+    <Compile Include="Fields\Text\Document\TextFieldDocumentModel.cs" />
+    <Compile Include="Fields\Text\Document\TextFieldDocumentView.xaml.cs">
       <DependentUpon>TextFieldDocumentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fields\Text\TextFieldTemplateView.xaml.cs">
+    <Compile Include="Fields\Text\Template\TextFieldTemplateView.xaml.cs">
       <DependentUpon>TextFieldTemplateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fields\UserName\UserNameDocumentView.xaml.cs">
@@ -78,16 +80,16 @@
     <Compile Include="Fields\WorkItemField\WorkItemFieldDocumentView.xaml.cs">
       <DependentUpon>WorkItemFieldDocumentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fields\WorkItemField\WorkItemFieldModel.cs" />
+    <Compile Include="Fields\WorkItemField\WorkItemFieldTemplateModel.cs" />
     <Compile Include="Fields\WorkItemField\WorkItemFieldTemplateView.xaml.cs">
       <DependentUpon>WorkItemFieldTemplateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
     <Compile Include="Models\Documents\DocumentType.cs" />
-    <Compile Include="Fields\IField.cs" />
+    <Compile Include="Fields\IFieldTemplate.cs" />
     <Compile Include="Models\Documents\DocumentModel.cs" />
-    <Compile Include="Fields\Text\TextFieldModel.cs" />
-    <Compile Include="Fields\UserName\UserNameFieldModel.cs" />
+    <Compile Include="Fields\Text\Template\TextFieldTemplateModel.cs" />
+    <Compile Include="Fields\UserName\UserNameFieldTemplateModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Models\Settings\SettingsTransformModel.cs" />
@@ -235,11 +237,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Fields\Text\TextFieldDocumentView.xaml">
+    <Page Include="Fields\Text\Document\TextFieldDocumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Fields\Text\TextFieldTemplateView.xaml">
+    <Page Include="Fields\Text\Template\TextFieldTemplateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

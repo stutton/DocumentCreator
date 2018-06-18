@@ -180,10 +180,11 @@
 
                                     <ItemsControl DockPanel.Dock="Right"
                                                   ItemsSource="{TemplateBinding ToolBarItems}"
-                                                  Visibility="{TemplateBinding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                  Visibility="{TemplateBinding IsExpanded,
+                                                                               Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal"/>
+                                                <StackPanel Orientation="Horizontal" />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>

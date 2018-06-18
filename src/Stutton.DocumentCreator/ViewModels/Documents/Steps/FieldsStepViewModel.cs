@@ -11,17 +11,17 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
 {
     public class FieldsStepViewModel : Observable
     {
-        private ObservableCollection<IField> _fields;
+        private ObservableCollection<IFieldTemplate> _fields;
 
-        public ObservableCollection<IField> Fields
+        public ObservableCollection<IFieldTemplate> Fields
         {
             get => _fields;
             set => Set(ref _fields, value);
         }
 
-        public FieldsStepViewModel(IEnumerable<IField> fields)
+        public FieldsStepViewModel(IEnumerable<IFieldTemplate> fields)
         {
-            _fields = new ObservableCollection<IField>(fields);
+            _fields = new ObservableCollection<IFieldTemplate>(fields);
         }
     }
 }

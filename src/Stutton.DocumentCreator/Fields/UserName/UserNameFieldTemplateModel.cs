@@ -10,7 +10,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.UserName
 {
-    public class UserNameFieldModel : Observable, IField
+    public class UserNameFieldTemplateModel : Observable, IFieldTemplate
     {
         public const string Key = "UserNameField";
 
@@ -25,7 +25,7 @@ namespace Stutton.DocumentCreator.Fields.UserName
             set => Set(ref _textToReplace, value);
         }
 
-        public event EventHandler<IField> RequestDeleteMe;
+        public event EventHandler<IFieldTemplate> RequestDeleteMe;
 
         #region Delete Command
 

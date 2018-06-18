@@ -14,7 +14,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.WorkItemField
 {
-    public class WorkItemFieldModel : Observable, IField, IRequiresInitialization
+    public class WorkItemFieldTemplateModel : Observable, IFieldTemplate, IRequiresInitialization
     {
         public const string Key = "WorkItemField";
 
@@ -37,7 +37,7 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField
             set => Set(ref _textToReplace, value);
         }
 
-        public event EventHandler<IField> RequestDeleteMe;
+        public event EventHandler<IFieldTemplate> RequestDeleteMe;
 
         private string _selectedField;
         public string SelectedField

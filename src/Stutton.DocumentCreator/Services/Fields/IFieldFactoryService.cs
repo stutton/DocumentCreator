@@ -10,7 +10,7 @@ namespace Stutton.DocumentCreator.Services.Fields
 {
     public interface IFieldFactoryService
     {
-        Task<IResponse<IField>> CreateField(Type fieldKey);
+        Task<IResponse<IFieldTemplate>> CreateField(Type fieldKey);
         IResponse<Dictionary<string, Type>> GetAllFieldKeys();
     }
 }

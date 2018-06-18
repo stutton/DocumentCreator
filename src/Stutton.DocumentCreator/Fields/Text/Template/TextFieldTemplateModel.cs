@@ -8,34 +8,29 @@ using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Fields.Text
+namespace Stutton.DocumentCreator.Fields.Text.Template
 {
     [DataContract(Name = "TextField")]
-    public class TextFieldModel : Observable, IField
+    public class TextFieldTemplateModel : Observable, IFieldTemplate
     {
         public const string Key = "TextField";
-        public event EventHandler<IField> RequestDeleteMe; 
-
-        private string _replaceWithText;
+        public event EventHandler<IFieldTemplate> RequestDeleteMe; 
+        
         private string _textToReplace;
 
-        [DataMember]
-        public string ReplaceWithText
-        {
-            get => _replaceWithText;
-            set
-            {
-                if (Set(ref _replaceWithText, value))
-                {
-                    RaisePropertyChanged(nameof(Description));
-                }
-            }
-        }
-
-        public string Description => $"Replace '{TextToReplace}' with '{ReplaceWithText}'";
+        public string Description => $"Propmt to replace '{TextToReplace}'";
 
         public string TypeDisplayName => "Text";
         public string FieldKey => Key;
+
+        private string _name;
+
+        [DataMember]
+        public string Name
+        {
+            get => _name;
+            set => Set(ref _name, value);
+        }
 
         [DataMember]
         public string TextToReplace
@@ -62,17 +57,17 @@ namespace Stutton.DocumentCreator.Fields.Text
 
         #endregion
 
-        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
-        {
-            try
-            {
-                await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, ReplaceWithText, false));
-                return Response.FromSuccess();
-            }
-            catch (Exception ex)
-            {
-                return Response.FromException("Error replacing text", ex);
-            }
-        }
+        //public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
+        //{
+        //    try
+        //    {
+        //        await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, ReplaceWithText, false));
+        //        return Response.FromSuccess();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Response.FromException("Error replacing text", ex);
+        //    }
+        //}
     }
 }

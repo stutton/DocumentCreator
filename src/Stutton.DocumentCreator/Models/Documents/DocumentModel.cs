@@ -18,7 +18,7 @@ namespace Stutton.DocumentCreator.Models.Documents
         public DocumentDetailsModel Details { get; } = new DocumentDetailsModel();
 
         [DataMember]
-        public ObservableCollection<IField> Fields { get; } = new ObservableCollection<IField>();
+        public ObservableCollection<IFieldTemplate> Fields { get; } = new ObservableCollection<IFieldTemplate>();
 
         [DataMember]
         public ObservableCollection<IAutomation> Automations { get; } = new ObservableCollection<IAutomation>();

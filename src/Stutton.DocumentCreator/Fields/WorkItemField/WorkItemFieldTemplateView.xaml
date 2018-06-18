@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance local:WorkItemFieldModel}">
+             d:DataContext="{d:DesignInstance local:WorkItemFieldTemplateModel}">
     <controls:EditorExpander>
         <Expander.Header>
             <Grid>

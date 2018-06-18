@@ -7,13 +7,13 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields
 {
-    public interface IField
+    public interface IFieldTemplate
     {
+        event EventHandler<IFieldTemplate> RequestDeleteMe;
+
+        string Name { get; }
         string Description { get; }
         string TypeDisplayName { get; }
         string FieldKey { get; }
-        string TextToReplace { get; set; }
-        event EventHandler<IField> RequestDeleteMe;
-        Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver);
     }
 }

@@ -13,7 +13,7 @@ using Stutton.DocumentCreator.Shared;
 namespace Stutton.DocumentCreator.Fields.List
 {
     [DataContract(Name = "ListField")]
-    public class ListFieldModel : Observable, IField
+    public class ListFieldTemplateModel : Observable, IFieldTemplate
     {
         public const string Key = "ListField";
         public string Description => "A list of text and images created during document creation";
@@ -29,7 +29,7 @@ namespace Stutton.DocumentCreator.Fields.List
             set => Set(ref _textToReplace, value);
         }
 
-        public event EventHandler<IField> RequestDeleteMe;
+        public event EventHandler<IFieldTemplate> RequestDeleteMe;
 
         [IgnoreDataMember]
         public ObservableCollection<ListStepModel> List { get; } = new ObservableCollection<ListStepModel>();

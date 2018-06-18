@@ -60,7 +60,7 @@
                 <ItemsControl ItemsSource="{Binding Model.Fields}"
                               Margin="0,8,0,0">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type fields1:IField}">
+                        <DataTemplate DataType="{x:Type fields1:IFieldTemplate}">
                             <TextBlock Text="{Binding Description}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
