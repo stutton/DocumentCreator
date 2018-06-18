@@ -1,15 +1,15 @@
-﻿<UserControl x:Class="Stutton.DocumentCreator.Fields.Text.TextFieldTemplateView"
+﻿<UserControl x:Class="Stutton.DocumentCreator.Fields.List.Template.ListFieldTemplateView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields.List.Template"
              xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:template="clr-namespace:Stutton.DocumentCreator.Fields.Text.Template"
-             d:DataContext="{d:DesignInstance template:TextFieldTemplateModel}"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
-             mc:Ignorable="d">
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance local:ListFieldTemplateModel}"
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
     <controls:EditorExpander>
         <Expander.Header>
             <Grid Height="32">
@@ -22,7 +22,7 @@
                                          Height="24"
                                          Margin="0,0,4,0"
                                          VerticalAlignment="Center"
-                                         Kind="FormatText" />
+                                         Kind="FormatListNumbers" />
                 <TextBlock Grid.Column="1"
                            VerticalAlignment="Center"
                            Text="{Binding TypeDisplayName}" />
@@ -36,7 +36,8 @@
             </Grid>
         </Expander.Header>
         <controls:EditorExpander.ToolBarItems>
-            <Button Command="{Binding DeleteCommand}" Style="{DynamicResource MaterialDesignFlatButton}">
+            <Button Command="{Binding DeleteCommand}"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
                 <materialDesign:PackIcon Width="24"
                                          Height="24"
                                          Kind="Delete" />
@@ -51,10 +52,6 @@
                      materialDesign:HintAssist.Hint="Name"
                      Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding Name}" />
-            <TextBox Grid.Column="1"
-                     materialDesign:HintAssist.Hint="Text To Replace"
-                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding TextToReplace}" />
         </Grid>
     </controls:EditorExpander>
 </UserControl>

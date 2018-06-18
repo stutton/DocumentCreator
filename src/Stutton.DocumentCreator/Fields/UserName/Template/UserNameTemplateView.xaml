@@ -7,7 +7,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.Views.Templates.TemplateSteps"
-             d:DataContext="{d:DesignInstance local:UserNameFieldTemplateModel}"
+             xmlns:template="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Template"
+             d:DataContext="{d:DesignInstance template:UserNameFieldTemplateModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
@@ -42,9 +43,21 @@
                                          Kind="Delete" />
             </Button>
         </controls:EditorExpander.ToolBarItems>
-        <TextBox Margin="0,16,16,16"
-                 materialDesign:HintAssist.Hint="Text To Replace"
-                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding TextToReplace}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBox Margin="0,16,16,16"
+                     Grid.Column="0"
+                     materialDesign:HintAssist.Hint="Name"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Name}"/>
+            <TextBox Margin="0,16,16,16"
+                     Grid.Column="1"
+                     materialDesign:HintAssist.Hint="Text To Replace"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding TextToReplace}" />
+        </Grid>
     </controls:EditorExpander>
 </UserControl>

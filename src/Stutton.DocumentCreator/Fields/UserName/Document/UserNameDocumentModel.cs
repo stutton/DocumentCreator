@@ -7,19 +7,23 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models.WorkItems;
+using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Fields.Text.Document
+namespace Stutton.DocumentCreator.Fields.UserName.Document
 {
-    [DataContract(Name = "TextField")]
-    public class TextFieldDocumentModel : Observable, IFieldDocument
+    [DataContract(Name = "UserNameField")]
+    public class UserNameDocumentModel : Observable, IFieldDocument
     {
-        public const string Key = "TextField";
         
-        public string Description => $"Prompt to replace '{TextToReplace}'";
-        public string TypeDisplayName => "Text";
+        public const string Key = "UserNameField";
+
+        private readonly ITfsService _tfsService;
+
+        public string Description => $"Replace '{TextToReplace}' with the current user's name";
+        public string TypeDisplayName => "Name";
         public string FieldKey => Key;
-        
+
         private string _name;
         [DataMember]
         public string Name
@@ -36,24 +40,28 @@ namespace Stutton.DocumentCreator.Fields.Text.Document
             set => Set(ref _textToReplace, value);
         }
 
-        private string _replaceWithText;
-        [DataMember]
-        public string ReplaceWithText
+        public UserNameDocumentModel(ITfsService tfsService)
         {
-            get => _replaceWithText;
-            set => Set(ref _replaceWithText, value);
+            _tfsService = tfsService;
         }
 
         public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
         {
             try
             {
-                await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, ReplaceWithText, false));
+                var response = await _tfsService.GetUserProfileAsync();
+                if (!response.Success)
+                {
+                    return Response.FromFailure(response.Message);
+                }
+
+                var profile = response.Value;
+                await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, profile.Name, false));
                 return Response.FromSuccess();
             }
             catch (Exception ex)
             {
-                return Response.FromException("Error replacing text", ex);
+                return Response.FromException("Failed to add username to document", ex);
             }
         }
     }

@@ -5,7 +5,8 @@
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields.UserName"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DataContext="{d:DesignInstance local:UserNameFieldTemplateModel}"
+             xmlns:template="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Template"
+             d:DataContext="{d:DesignInstance template:UserNameFieldTemplateModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
@@ -22,7 +23,7 @@
                                  Kind="Account" />
         <TextBlock Grid.Column="1"
                    VerticalAlignment="Center"
-                   Text="{Binding TypeDisplayName}" />
+                   Text="{Binding Name}" />
         <TextBlock Grid.Column="2"
                    VerticalAlignment="Center"
                    Text="{Binding Description}" />

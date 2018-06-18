@@ -60,10 +60,19 @@
       <DependentUpon>AttachToWorkItemAutomationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Automations\IAutomation.cs" />
+    <Compile Include="Fields\FieldTemplateBase.cs" />
     <Compile Include="Fields\IFieldDocument.cs" />
     <Compile Include="Fields\IRequiresInitialization.cs" />
-    <Compile Include="Fields\List\ListFieldTemplateModel.cs" />
-    <Compile Include="Fields\List\ListStepModel.cs" />
+    <Compile Include="Fields\List\Document\ListFieldDocumentModel.cs" />
+    <Compile Include="Fields\List\Document\ListFieldDocumentView.xaml.cs">
+      <DependentUpon>ListFieldDocumentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Fields\List\Document\MoveListFieldStepEventArgs.cs" />
+    <Compile Include="Fields\List\Template\ListFieldTemplateModel.cs" />
+    <Compile Include="Fields\List\Document\ListFieldStepModel.cs" />
+    <Compile Include="Fields\List\Template\ListFieldTemplateView.xaml.cs">
+      <DependentUpon>ListFieldTemplateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fields\Text\Document\TextFieldDocumentModel.cs" />
     <Compile Include="Fields\Text\Document\TextFieldDocumentView.xaml.cs">
       <DependentUpon>TextFieldDocumentView.xaml</DependentUpon>
@@ -71,10 +80,11 @@
     <Compile Include="Fields\Text\Template\TextFieldTemplateView.xaml.cs">
       <DependentUpon>TextFieldTemplateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fields\UserName\UserNameDocumentView.xaml.cs">
+    <Compile Include="Fields\UserName\Document\UserNameDocumentModel.cs" />
+    <Compile Include="Fields\UserName\Document\UserNameDocumentView.xaml.cs">
       <DependentUpon>UserNameDocumentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fields\UserName\UserNameTemplateView.xaml.cs">
+    <Compile Include="Fields\UserName\Template\UserNameTemplateView.xaml.cs">
       <DependentUpon>UserNameTemplateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fields\WorkItemField\WorkItemFieldDocumentView.xaml.cs">
@@ -89,7 +99,7 @@
     <Compile Include="Fields\IFieldTemplate.cs" />
     <Compile Include="Models\Documents\DocumentModel.cs" />
     <Compile Include="Fields\Text\Template\TextFieldTemplateModel.cs" />
-    <Compile Include="Fields\UserName\UserNameFieldTemplateModel.cs" />
+    <Compile Include="Fields\UserName\Template\UserNameFieldTemplateModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Models\Settings\SettingsTransformModel.cs" />
@@ -237,6 +247,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Fields\List\Document\ListFieldDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\List\Template\ListFieldTemplateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Fields\Text\Document\TextFieldDocumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -245,11 +263,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Fields\UserName\UserNameDocumentView.xaml">
+    <Page Include="Fields\UserName\Document\UserNameDocumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Fields\UserName\UserNameTemplateView.xaml">
+    <Page Include="Fields\UserName\Template\UserNameTemplateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

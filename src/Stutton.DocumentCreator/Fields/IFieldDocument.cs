@@ -11,8 +11,6 @@ namespace Stutton.DocumentCreator.Fields
 {
     public interface IFieldDocument
     {
-        event EventHandler<IFieldTemplate> RequestDeleteMe;
-
         string Name { get; }
         string Description { get; }
         string TypeDisplayName { get; }

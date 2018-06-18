@@ -5,36 +5,46 @@
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields.Text"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:template="clr-namespace:Stutton.DocumentCreator.Fields.Text.Template"
-             d:DataContext="{d:DesignInstance template:TextFieldTemplateModel}"
+             xmlns:document="clr-namespace:Stutton.DocumentCreator.Fields.Text.Document"
+             xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
+             d:DataContext="{d:DesignInstance document:TextFieldDocumentModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <Grid Height="32">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <materialDesign:PackIcon Width="24"
-                                 Height="24"
-                                 Margin="0,0,4,0"
-                                 VerticalAlignment="Center"
-                                 Kind="FormatText" />
-        <TextBlock Grid.Column="1"
-                   VerticalAlignment="Center"
-                   Text="{Binding TypeDisplayName}" />
-        <TextBlock Grid.Column="2"
-                   VerticalAlignment="Center"
-                   Text="{Binding Description}" />
+    <controls:EditorExpander>
+        <Expander.Header>
+            <Grid Height="32">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         Margin="0,0,4,0"
+                                         VerticalAlignment="Center"
+                                         Kind="FormatText" />
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="{Binding TypeDisplayName}" />
+                <TextBlock Grid.Column="2"
+                           VerticalAlignment="Center"
+                           Text="{Binding Description}" />
 
-        <Rectangle Grid.Column="0"
-                   Grid.ColumnSpan="3"
-                   Height="1"
-                   HorizontalAlignment="Stretch"
-                   VerticalAlignment="Bottom"
-                   Fill="Black"
-                   Opacity="0.1" />
+                <Rectangle Grid.Column="0"
+                           Grid.ColumnSpan="3"
+                           Height="1"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Bottom"
+                           Fill="Black"
+                           Opacity="0.1" />
 
-    </Grid>
+            </Grid>
+        </Expander.Header>
+        <Grid Margin="0,16">
+            <TextBox materialDesign:HintAssist.Hint="Replace With"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding ReplaceWithText}"/>
+        </Grid>
+    </controls:EditorExpander>
 </UserControl>

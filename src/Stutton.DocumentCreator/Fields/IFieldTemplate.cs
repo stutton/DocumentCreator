@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using DocumentFormat.OpenXml.Packaging;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
@@ -15,5 +16,6 @@ namespace Stutton.DocumentCreator.Fields
         string Description { get; }
         string TypeDisplayName { get; }
         string FieldKey { get; }
+        ICommand DeleteCommand { get; }
     }
 }

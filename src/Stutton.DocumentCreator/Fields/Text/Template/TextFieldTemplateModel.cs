@@ -11,27 +11,26 @@ using Stutton.DocumentCreator.Shared;
 namespace Stutton.DocumentCreator.Fields.Text.Template
 {
     [DataContract(Name = "TextField")]
-    public class TextFieldTemplateModel : Observable, IFieldTemplate
+    public class TextFieldTemplateModel : FieldTemplateBase
     {
         public const string Key = "TextField";
-        public event EventHandler<IFieldTemplate> RequestDeleteMe; 
         
-        private string _textToReplace;
-
-        public string Description => $"Propmt to replace '{TextToReplace}'";
-
-        public string TypeDisplayName => "Text";
-        public string FieldKey => Key;
+        [IgnoreDataMember]
+        public override string Description => $"Prompt to replace '{TextToReplace}'";
+        [IgnoreDataMember]
+        public override string TypeDisplayName => "Text";
+        [IgnoreDataMember]
+        public override string FieldKey => Key;
 
         private string _name;
-
         [DataMember]
-        public string Name
+        public override string Name
         {
             get => _name;
             set => Set(ref _name, value);
         }
 
+        private string _textToReplace;
         [DataMember]
         public string TextToReplace
         {
@@ -44,30 +43,5 @@ namespace Stutton.DocumentCreator.Fields.Text.Template
                 }
             }
         }
-
-        #region Delete Command
-
-        private ICommand _deleteCommand;
-        public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
-
-        private void Delete()
-        {
-            RequestDeleteMe?.Invoke(this, this);
-        }
-
-        #endregion
-
-        //public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
-        //{
-        //    try
-        //    {
-        //        await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, ReplaceWithText, false));
-        //        return Response.FromSuccess();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Response.FromException("Error replacing text", ex);
-        //    }
-        //}
     }
 }

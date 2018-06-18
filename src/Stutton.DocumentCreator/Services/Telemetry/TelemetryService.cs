@@ -18,7 +18,7 @@ namespace Stutton.DocumentCreator.Services.Telemetry
         private TelemetryClient _telemetryClient;
         private bool _initialized;
 
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; } = true;
 
         public TelemetryService(ISettingsService settingsService)
         {
