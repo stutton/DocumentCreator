@@ -17,12 +17,28 @@ namespace Stutton.DocumentCreator.Fields.List.Document
             
         }
 
+        private int _index;
+        [DataMember]
+        public int Index
+        {
+            get => _index;
+            set => Set(ref _index, value);
+        }
+
         private string _text;
         [DataMember]
         public string Text
         {
             get => _text;
             set => Set(ref _text, value);
+        }
+
+        private bool _hasImage;
+
+        public bool HasImage
+        {
+            get => _hasImage;
+            private set => Set(ref _hasImage, value);
         }
 
         private BitmapSource _image;
@@ -80,7 +96,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         private void AddImage()
         {
-            
+            HasImage = true;
         }
 
         #endregion

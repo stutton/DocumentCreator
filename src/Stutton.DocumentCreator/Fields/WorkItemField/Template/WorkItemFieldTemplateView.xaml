@@ -7,10 +7,11 @@
              xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:templateSteps="clr-namespace:Stutton.DocumentCreator.Views.Templates.TemplateSteps"
+             xmlns:template="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Template"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance local:WorkItemFieldTemplateModel}">
+             d:DataContext="{d:DesignInstance template:WorkItemFieldTemplateModel}">
     <controls:EditorExpander>
         <Expander.Header>
             <Grid>

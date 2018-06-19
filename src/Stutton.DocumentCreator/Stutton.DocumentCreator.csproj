@@ -87,11 +87,12 @@
     <Compile Include="Fields\UserName\Template\UserNameTemplateView.xaml.cs">
       <DependentUpon>UserNameTemplateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fields\WorkItemField\WorkItemFieldDocumentView.xaml.cs">
+    <Compile Include="Fields\WorkItemField\Document\WorkItemFieldDocumentModel.cs" />
+    <Compile Include="Fields\WorkItemField\Document\WorkItemFieldDocumentView.xaml.cs">
       <DependentUpon>WorkItemFieldDocumentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fields\WorkItemField\WorkItemFieldTemplateModel.cs" />
-    <Compile Include="Fields\WorkItemField\WorkItemFieldTemplateView.xaml.cs">
+    <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateModel.cs" />
+    <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateView.xaml.cs">
       <DependentUpon>WorkItemFieldTemplateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
@@ -271,11 +272,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Fields\WorkItemField\WorkItemFieldDocumentView.xaml">
+    <Page Include="Fields\WorkItemField\Document\WorkItemFieldDocumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Fields\WorkItemField\WorkItemFieldTemplateView.xaml">
+    <Page Include="Fields\WorkItemField\Template\WorkItemFieldTemplateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

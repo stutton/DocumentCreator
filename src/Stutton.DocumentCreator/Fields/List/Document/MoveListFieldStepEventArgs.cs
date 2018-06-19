@@ -8,7 +8,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 {
     public class MoveListFieldStepEventArgs : EventArgs
     {
-        public int Direction { get; }
+        public MoveDirection Direction { get; }
 
         public MoveListFieldStepEventArgs(MoveDirection direction)
         {

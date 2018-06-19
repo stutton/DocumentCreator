@@ -60,18 +60,41 @@ namespace Stutton.DocumentCreator.Fields.List.Document
             var step = new ListFieldStepModel();
             step.RequestDeleteMe += StepOnRequestDeleteMe;
             step.RequestMove += StepOnRequestMove;
+            step.Index = Steps.Count + 1;
             return step;
         }
 
         private void StepOnRequestMove(object sender, MoveListFieldStepEventArgs e)
         {
             var step = (ListFieldStepModel) sender;
+            var index = Steps.IndexOf(step);
+            if (e.Direction == MoveListFieldStepEventArgs.MoveDirection.Up && index != 0)
+            {
+                Steps.Remove(step);
+                Steps.Insert(index - 1, step);
+            }
+
+            if (e.Direction == MoveListFieldStepEventArgs.MoveDirection.Down && index != Steps.Count - 1)
+            {
+                Steps.Remove(step);
+                Steps.Insert(index + 1, step);
+            }
+            UpdateIndexes();
         }
 
         private void StepOnRequestDeleteMe(object sender, EventArgs e)
         {
             var step = (ListFieldStepModel) sender;
+            Steps.Remove(step);
+            UpdateIndexes();
+        }
 
+        private void UpdateIndexes()
+        {
+            for (var i = 0; i < Steps.Count; i++)
+            {
+                Steps[i].Index = i + 1;
+            }
         }
     }
 }

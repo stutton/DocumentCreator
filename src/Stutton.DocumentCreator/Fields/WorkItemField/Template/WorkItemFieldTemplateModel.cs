@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DocumentFormat.OpenXml.Packaging;
-using OpenXmlPowerTools;
-using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Fields.WorkItemField
+namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
     public class WorkItemFieldTemplateModel : Observable, IFieldTemplate, IRequiresInitialization
     {
@@ -46,6 +40,14 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField
             set => Set(ref _selectedField, value);
         }
 
+        private string _name;
+
+        public string Name
+        {
+            get => _name;
+            set => Set(ref _name, value);
+        }
+
         #region Delete Command
 
         private ICommand _deleteCommand;
@@ -76,35 +78,6 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField
 
             WorkItemFields = new ObservableCollection<string>(tfsServiceResponse.Value);
             return Response.FromSuccess();
-        }
-
-        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem, IServiceResolver serviceResolver)
-        {
-            try
-            {
-                var serviceResolverResponse = serviceResolver.Resolve<ITfsService>();
-                if (!serviceResolverResponse.Success)
-                {
-                    return serviceResolverResponse;
-                }
-                var tfsService = serviceResolverResponse.Value;
-
-                var tfsServiceResponse = await tfsService.GetWorkItemFieldValue(workItem.Id, SelectedField);
-                if (!tfsServiceResponse.Success)
-                {
-                    return tfsServiceResponse;
-                }
-                var fieldValue = tfsServiceResponse.Value;
-
-                await Task.Run(() => TextReplacer.SearchAndReplace(document, TextToReplace, fieldValue, false));
-                return Response.FromSuccess();
-            }
-            catch (Exception ex)
-            {
-                return Response.FromException(
-                    $"Failed to replace '{TextToReplace}' with value of '{SelectedField}' field from work item '{workItem.Id}'",
-                    ex);
-            }
         }
     }
 }

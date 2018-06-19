@@ -5,7 +5,8 @@
                     xmlns:text="clr-namespace:Stutton.DocumentCreator.Fields.Text"
                     xmlns:userName="clr-namespace:Stutton.DocumentCreator.Fields.UserName"
                     xmlns:workItemField="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField"
-                    xmlns:userName1="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Template">
+                    xmlns:userName1="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Template"
+                    xmlns:workItemField1="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Template">
 
     <DataTemplate DataType="{x:Type template:TextFieldTemplateModel}">
         <text:TextFieldDocumentView />
@@ -15,7 +16,7 @@
         <userName:UserNameDocumentView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type workItemField:WorkItemFieldTemplateModel}">
+    <DataTemplate DataType="{x:Type workItemField1:WorkItemFieldTemplateModel}">
         <workItemField:WorkItemFieldDocumentView />
     </DataTemplate>
 
