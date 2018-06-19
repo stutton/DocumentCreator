@@ -5,25 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:template="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Template"
+             xmlns:document="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Document"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance template:WorkItemFieldTemplateModel}">
+             d:DataContext="{d:DesignInstance document:WorkItemFieldDocumentModel}">
     <Grid Height="32">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+
         <materialDesign:PackIcon Width="24"
                                  Height="24"
                                  Margin="0,0,4,0"
                                  VerticalAlignment="Center"
                                  Kind="ClipboardCheck" />
+
         <TextBlock Grid.Column="1"
                    VerticalAlignment="Center"
-                   Text="{Binding TypeDisplayName}" />
+                   Text="{Binding Name}" />
+
         <TextBlock Grid.Column="2"
                    VerticalAlignment="Center"
                    Text="{Binding Description}" />

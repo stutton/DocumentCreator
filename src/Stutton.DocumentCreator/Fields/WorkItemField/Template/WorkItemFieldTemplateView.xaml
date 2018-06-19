@@ -47,12 +47,18 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBox Margin="0,0,16,0"
+                     materialDesign:HintAssist.Hint="Name"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Name}"/>
+            <TextBox Margin="0,0,16,0"
+                     Grid.Column="1"
                      materialDesign:HintAssist.Hint="Replace This"
                      Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding TextToReplace}" />
-            <ComboBox Grid.Column="1"
+            <ComboBox Grid.Column="2"
                       Margin="0,0,16,0"
                       materialDesign:HintAssist.Hint="With This Field"
                       Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
