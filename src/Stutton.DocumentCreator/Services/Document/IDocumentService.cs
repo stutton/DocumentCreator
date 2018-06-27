@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stutton.DocumentCreator.Models.Document;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Shared;
 

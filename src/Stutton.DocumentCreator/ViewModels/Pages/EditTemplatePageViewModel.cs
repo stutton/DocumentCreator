@@ -8,6 +8,7 @@ using MaterialDesignExtensions.Model;
 using MaterialDesignThemes.Wpf;
 using Microsoft.VisualStudio.Services.Profile;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Services.Automations;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Services.Telemetry;
@@ -28,22 +29,22 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public override bool IsOnDemandPage => true;
 
         private readonly INavigationService _navigationService;
-        private readonly IFieldFactoryService _fieldFactoryService;
+        private readonly IFieldTemplateFactoryService _fieldFactoryService;
         private readonly IAutomationFactoryService _automationFactoryService;
         private readonly ITemplatesService _templatesService;
         private readonly ITelemetryService _telemetryService;
         private readonly ITfsService _tfsService;
-        private DocumentModel _model;
+        private DocumentTemplateModel _model;
         private List<IStep> _steps;
 
-        public DocumentModel Model
+        public DocumentTemplateModel Model
         {
             get => _model;
             set => Set(ref _model, value);
         }
 
         public EditTemplatePageViewModel(INavigationService navigationService, 
-            IFieldFactoryService fieldFactoryService, 
+            IFieldTemplateFactoryService fieldFactoryService, 
             IAutomationFactoryService automationFactoryService, 
             ITemplatesService templatesService,
             ITelemetryService telemetryService,
@@ -99,9 +100,9 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             IsBusy = true;
             _telemetryService.TrackPageView(Key);
 
-            if (parameter == null || !(parameter is DocumentModel model))
+            if (parameter == null || !(parameter is DocumentTemplateModel model))
             {
-                model = new DocumentModel();
+                model = new DocumentTemplateModel();
             }
 
             Model = model;
@@ -109,7 +110,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             var fieldsVm = new FieldsStepViewModel(Model.Fields, _fieldFactoryService);
             await fieldsVm.InitializeAsync();
 
-            var queryVm = new WorkItemQueryStepViewModel(Model.Details.WorkItemQuery, _tfsService);
+            var queryVm = new WorkItemQueryStepViewModel(Model.TemplateDetails.WorkItemQuery, _tfsService);
             await queryVm.Initialize();
 
             var automationsVm = new AutomationsStepViewModel(Model.Automations, _automationFactoryService, _telemetryService);
@@ -117,7 +118,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
             Steps = new List<IStep>
             {
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Details"}, Content = new DetailsStepViewModel(Model.Details)},
+                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Details"}, Content = new DetailsStepViewModel(Model.TemplateDetails)},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Query"}, Content = queryVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = fieldsVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Automations"}, Content = automationsVm},

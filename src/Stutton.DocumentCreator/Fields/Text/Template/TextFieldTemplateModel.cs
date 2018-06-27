@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
+using Stutton.DocumentCreator.Fields.Text.Document;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Shared;
@@ -42,6 +43,16 @@ namespace Stutton.DocumentCreator.Fields.Text.Template
                     RaisePropertyChanged(nameof(Description));
                 }
             }
+        }
+
+        public override IFieldDocument GetDocumentField()
+        {
+            var documentField = new TextFieldDocumentModel()
+            {
+                Name = Name,
+                TextToReplace = TextToReplace
+            };
+            return documentField;
         }
     }
 }

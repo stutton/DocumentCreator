@@ -10,6 +10,6 @@ namespace Stutton.DocumentCreator.Fields
 {
     public interface IRequiresInitialization
     {
-        Task<IResponse> Initialize(IServiceResolver serviceResolver);
+        Task<IResponse> Initialize();
     }
 }

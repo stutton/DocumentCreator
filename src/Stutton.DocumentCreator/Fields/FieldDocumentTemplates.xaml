@@ -6,18 +6,26 @@
                     xmlns:userName="clr-namespace:Stutton.DocumentCreator.Fields.UserName"
                     xmlns:workItemField="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField"
                     xmlns:userName1="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Template"
-                    xmlns:workItemField1="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Template">
+                    xmlns:workItemField1="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Template"
+                    xmlns:document="clr-namespace:Stutton.DocumentCreator.Fields.List.Document"
+                    xmlns:textDocument="clr-namespace:Stutton.DocumentCreator.Fields.Text.Document"
+                    xmlns:userNameDocument="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Document"
+                    xmlns:workItemFieldDocument="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Document">
 
-    <DataTemplate DataType="{x:Type template:TextFieldTemplateModel}">
+    <DataTemplate DataType="{x:Type textDocument:TextFieldDocumentModel}">
         <text:TextFieldDocumentView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type userName1:UserNameFieldTemplateModel}">
+    <DataTemplate DataType="{x:Type userNameDocument:UserNameDocumentModel}">
         <userName:UserNameDocumentView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type workItemField1:WorkItemFieldTemplateModel}">
+    <DataTemplate DataType="{x:Type workItemFieldDocument:WorkItemFieldDocumentModel}">
         <workItemField:WorkItemFieldDocumentView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type document:ListFieldDocumentModel}">
+        <document:ListFieldDocumentView />
     </DataTemplate>
 
 </ResourceDictionary>

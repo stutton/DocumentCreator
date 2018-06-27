@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
+using Stutton.DocumentCreator.Models.Document;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Shared;
 
@@ -36,7 +38,7 @@ namespace Stutton.DocumentCreator.Services.Document
             {
                 foreach (var field in model.Fields)
                 {
-                    var response = await field.ModifyDocument(doc, workItem, _serviceResolver);
+                    var response = await field.ModifyDocument(doc, workItem);
                     if (!response.Success)
                     {
                         // TODO: Should we fail if a field does?
@@ -50,16 +52,17 @@ namespace Stutton.DocumentCreator.Services.Document
 
         public async Task<IResponse> ExecuteAutomations(DocumentModel model, IWorkItem workItem, string documentPath)
         {
-            foreach (var automation in model.Automations)
-            {
-                var response = await automation.Execute(model, workItem, documentPath, _serviceResolver);
-                if (!response.Success)
-                {
-                    return Response.FromFailure(response.Message);
-                }
-            }
+            //foreach (var automation in model.Automations)
+            //{
+            //    var response = await automation.Execute(model, workItem, documentPath, _serviceResolver);
+            //    if (!response.Success)
+            //    {
+            //        return Response.FromFailure(response.Message);
+            //    }
+            //}
 
-            return Response.FromSuccess();
+            //return Response.FromSuccess();
+            throw new NotImplementedException();
         }
     }
 }

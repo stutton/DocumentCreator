@@ -8,7 +8,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Services.Fields
 {
-    public interface IFieldFactoryService
+    public interface IFieldTemplateFactoryService
     {
         Task<IResponse<IFieldTemplate>> CreateField(Type fieldKey);
         IResponse<Dictionary<string, Type>> GetAllFieldKeys();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Tfs;
@@ -13,7 +14,7 @@ namespace Stutton.DocumentCreator.Automations.AttachToWorkItem
         public string Name => "Attach to work item";
         public string Description => "Upload and attache the document to work item";
 
-        public async Task<IResponse> Execute(DocumentModel model, IWorkItem workItem, string documentPath, IServiceResolver serviceResolver)
+        public async Task<IResponse> Execute(DocumentTemplateModel model, IWorkItem workItem, string documentPath, IServiceResolver serviceResolver)
         {
             var serviceResponse = serviceResolver.Resolve<ITfsService>();
             if (!serviceResponse.Success)

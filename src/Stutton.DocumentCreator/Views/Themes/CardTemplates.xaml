@@ -23,11 +23,11 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type documentVms:DocumentCardViewModel}">
-        <cards:DocumentCard Description="{Binding Model.Details.Description}"
-                            DocumentName="{Binding Model.Details.Name}"
+        <cards:DocumentCard Description="{Binding Model.TemplateDetails.Description}"
+                            DocumentName="{Binding Model.TemplateDetails.Name}"
                             EditCommand="{Binding EditCommand}"
                             SelectCommand="{Binding SelectCommand}"
-                            Type="{Binding Model.Details.DocumentType}" />
+                            Type="{Binding Model.TemplateDetails.DocumentType}" />
     </DataTemplate>
 
 </ResourceDictionary>

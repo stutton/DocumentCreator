@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Navigation;
 using Stutton.DocumentCreator.ViewModels.Pages;
@@ -15,13 +16,13 @@ namespace Stutton.DocumentCreator.ViewModels.Documents
     {
         private readonly INavigationService _navigator;
 
-        public DocumentCardViewModel(DocumentModel model, INavigationService navigator)
+        public DocumentCardViewModel(DocumentTemplateModel model, INavigationService navigator)
         {
             _navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
             Model = model;
         }
 
-        public DocumentModel Model { get; }
+        public DocumentTemplateModel Model { get; }
 
         #region ICommand SelectCommand
 

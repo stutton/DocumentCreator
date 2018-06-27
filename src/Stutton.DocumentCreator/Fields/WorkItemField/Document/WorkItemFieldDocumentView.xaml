@@ -13,13 +13,13 @@
     <Grid Height="32">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="250" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon Width="24"
                                  Height="24"
-                                 Margin="0,0,4,0"
+                                 Margin="24,0,4,0"
                                  VerticalAlignment="Center"
                                  Kind="ClipboardCheck" />
 
@@ -29,7 +29,8 @@
 
         <TextBlock Grid.Column="2"
                    VerticalAlignment="Center"
-                   Text="{Binding Description}" />
+                   Text="{Binding Description}"
+                   Opacity="0.5" />
 
         <Rectangle Grid.Column="0"
                    Grid.ColumnSpan="3"

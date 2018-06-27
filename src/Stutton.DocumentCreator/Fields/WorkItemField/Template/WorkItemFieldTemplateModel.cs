@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Stutton.DocumentCreator.Fields.WorkItemField.Document;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
-    public class WorkItemFieldTemplateModel : Observable, IFieldTemplate, IRequiresInitialization
+    [DataContract(Name = "WorkItemField")]
+    public class WorkItemFieldTemplateModel : FieldTemplateBase, IRequiresInitialization
     {
+        [IgnoreDataMember]
+        private readonly ITfsService _tfsService;
         public const string Key = "WorkItemField";
 
-        public string Description => $"Replace '{TextToReplace}' with the value of '{SelectedField}' from the selected work item";
-        public string TypeDisplayName => "Work Item Field";
-        public string FieldKey => Key;
+        [IgnoreDataMember]
+        public override string Description => $"Replace '{TextToReplace}' with the value of '{SelectedField}' from the selected work item";
+        [IgnoreDataMember]
+        public override string TypeDisplayName => "Work Item Field";
+        [IgnoreDataMember]
+        public override string FieldKey => Key;
 
         private ObservableCollection<string> _workItemFields;
 
+        [IgnoreDataMember]
         public ObservableCollection<string> WorkItemFields
         {
             get => _workItemFields;
@@ -25,15 +34,15 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
         }
 
         private string _textToReplace;
+        [DataMember]
         public string TextToReplace
         {
             get => _textToReplace;
             set => Set(ref _textToReplace, value);
         }
 
-        public event EventHandler<IFieldTemplate> RequestDeleteMe;
-
         private string _selectedField;
+        [DataMember]
         public string SelectedField
         {
             get => _selectedField;
@@ -41,36 +50,21 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
         }
 
         private string _name;
-
-        public string Name
+        [DataMember]
+        public override string Name
         {
             get => _name;
             set => Set(ref _name, value);
         }
 
-        #region Delete Command
-
-        private ICommand _deleteCommand;
-        public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
-
-        private void Delete()
+        public WorkItemFieldTemplateModel(ITfsService tfsService)
         {
-            RequestDeleteMe?.Invoke(this, this);
+            _tfsService = tfsService;
         }
 
-        #endregion
-
-        public async Task<IResponse> Initialize(IServiceResolver serviceResolver)
+        public async Task<IResponse> Initialize()
         {
-            var serviceResolverResponse = serviceResolver.Resolve<ITfsService>();
-            if (!serviceResolverResponse.Success)
-            {
-                return serviceResolverResponse;
-            }
-
-            var tfsService = serviceResolverResponse.Value;
-
-            var tfsServiceResponse = await tfsService.GetWorkItemFields();
+            var tfsServiceResponse = await _tfsService.GetWorkItemFields();
             if (!tfsServiceResponse.Success)
             {
                 return tfsServiceResponse;
@@ -78,6 +72,17 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 
             WorkItemFields = new ObservableCollection<string>(tfsServiceResponse.Value);
             return Response.FromSuccess();
+        }
+
+        public override IFieldDocument GetDocumentField()
+        {
+            var documentField = new WorkItemFieldDocumentModel(_tfsService)
+            {
+                Name = Name,
+                SelectedField = SelectedField,
+                TextToReplace = TextToReplace
+            };
+            return documentField;
         }
     }
 }

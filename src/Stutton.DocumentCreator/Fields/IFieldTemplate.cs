@@ -17,5 +17,6 @@ namespace Stutton.DocumentCreator.Fields
         string TypeDisplayName { get; }
         string FieldKey { get; }
         ICommand DeleteCommand { get; }
+        IFieldDocument GetDocumentField();
     }
 }

@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignExtensions.Model;
 using MaterialDesignThemes.Wpf;
+using Stutton.DocumentCreator.Models.Document;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Document;
 using Stutton.DocumentCreator.Services.Telemetry;
@@ -124,14 +126,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             IsBusy = true;
             _telemetryService.TrackPageView(Key);
 
-            if (parameter == null || !(parameter is DocumentModel model))
+            if (parameter == null || !(parameter is DocumentTemplateModel template))
             {
                 await DialogHost.Show(new ErrorMessageDialogViewModel("No document selected"), MainWindow.RootDialog);
                 await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
                 return;
             }
 
-            Document = model;
+            Document = template.GetNewDocument();
 
             WorkItemStepVm = new WorkItemStepViewModel(_tfsService, Document.Details.WorkItemQuery, _telemetryService);
             await WorkItemStepVm.InitializeAsync();

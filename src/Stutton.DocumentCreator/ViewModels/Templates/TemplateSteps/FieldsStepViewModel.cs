@@ -13,9 +13,9 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 {
     public class FieldsStepViewModel : Observable
     {
-        private readonly IFieldFactoryService _fieldFactoryService;
+        private readonly IFieldTemplateFactoryService _fieldFactoryService;
 
-        public FieldsStepViewModel(ObservableCollection<IFieldTemplate> fields, IFieldFactoryService fieldFactoryService)
+        public FieldsStepViewModel(ObservableCollection<IFieldTemplate> fields, IFieldTemplateFactoryService fieldFactoryService)
         {
             _fieldFactoryService = fieldFactoryService;
             Fields = fields;

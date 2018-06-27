@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -20,13 +21,16 @@ namespace Stutton.DocumentCreator.Fields
         #region Delete Command
 
         private ICommand _deleteCommand;
+        [IgnoreDataMember]
         public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
-
+        
         private void Delete()
         {
             RequestDeleteMe?.Invoke(this, this);
         }
 
         #endregion
+
+        public abstract IFieldDocument GetDocumentField();
     }
 }

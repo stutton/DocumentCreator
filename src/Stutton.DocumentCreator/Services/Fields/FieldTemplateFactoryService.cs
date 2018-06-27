@@ -9,17 +9,15 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Services.Fields
 {
-    public class FieldFactoryService : IFieldFactoryService
+    public class FieldTemplateFactoryService : IFieldTemplateFactoryService
     {
         private readonly Func<Type, IFieldTemplate> _fieldResolver;
-        private readonly IServiceResolver _serviceResolver;
 
         private Dictionary<string, Type> _fieldTypes;
 
-        public FieldFactoryService(Func<Type, IFieldTemplate> fieldResolver, IServiceResolver serviceResolver)
+        public FieldTemplateFactoryService(Func<Type, IFieldTemplate> fieldResolver)
         {
             _fieldResolver = fieldResolver;
-            _serviceResolver = serviceResolver;
         }
 
         public async Task<IResponse<IFieldTemplate>> CreateField(Type fieldType)
@@ -39,7 +37,7 @@ namespace Stutton.DocumentCreator.Services.Fields
 
                 if (field is IRequiresInitialization initializeMe)
                 {
-                    await initializeMe.Initialize(_serviceResolver);
+                    await initializeMe.Initialize();
                 }
 
                 return Response<IFieldTemplate>.FromSuccess(field);

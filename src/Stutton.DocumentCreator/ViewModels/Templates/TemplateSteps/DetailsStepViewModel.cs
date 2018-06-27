@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
-using Stutton.DocumentCreator.Models.Documents.Details;
+using Stutton.DocumentCreator.Models.Template.Details;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 
@@ -9,7 +9,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 {
     public class DetailsStepViewModel
     {
-        public DocumentDetailsModel Model { get; }
+        public DocumentTemplateDetailsModel Model { get; }
 
         #region ICommand BrowseCommand
 
@@ -27,7 +27,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         #endregion
 
-        public DetailsStepViewModel(DocumentDetailsModel model)
+        public DetailsStepViewModel(DocumentTemplateDetailsModel model)
         {
             Model = model;
         }

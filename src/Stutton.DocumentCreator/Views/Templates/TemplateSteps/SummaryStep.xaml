@@ -18,9 +18,9 @@
                                          PropertyName="Value"/>
     </UserControl.Resources>
     <StackPanel>
-        <TextBlock Text="{Binding Model.Details.Name}"
+        <TextBlock Text="{Binding Model.TemplateDetails.Name}"
                    Style="{DynamicResource MaterialDesignTitleTextBlock}"/>
-        <TextBlock Text="{Binding Model.Details.TemplateFilePath}"
+        <TextBlock Text="{Binding Model.TemplateDetails.TemplateFilePath}"
                    Style="{DynamicResource MaterialDesignBody2TextBlock}"
                    Opacity="0.5"
                    Margin="0,4,0,0"/>
@@ -33,7 +33,7 @@
                            Style="{DynamicResource MaterialDesignCaptionTextBlock}"
                            Opacity="0.5"/>
 
-                <ItemsControl ItemsSource="{Binding Model.Details.WorkItemQuery.Expressions}"
+                <ItemsControl ItemsSource="{Binding Model.TemplateDetails.WorkItemQuery.Expressions}"
                               Margin="0,8,0,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type workItemModels:WorkItemQueryExpressionModel}">

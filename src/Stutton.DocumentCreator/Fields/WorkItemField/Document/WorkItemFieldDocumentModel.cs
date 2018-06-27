@@ -14,12 +14,16 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Document
     public class WorkItemFieldDocumentModel : IFieldDocument
     {
         private readonly ITfsService _tfsService;
-        public string Name { get; }
-        public string Description { get; }
-        public string TypeDisplayName { get; }
-        public string FieldKey { get; }
-        public string TextToReplace { get; }
-        public string SelectedField { get; }
+        public const string Key = "WorkItemField";
+
+        public string Name { get; set; }
+
+        public string Description =>
+            $"Replace '{TextToReplace}' with the value of '{SelectedField}' from the selected work item";
+        public string TypeDisplayName => "Work Item Field";
+        public string FieldKey => Key;
+        public string TextToReplace { get; set; }
+        public string SelectedField { get; set; }
 
 
         public WorkItemFieldDocumentModel(ITfsService tfsService)

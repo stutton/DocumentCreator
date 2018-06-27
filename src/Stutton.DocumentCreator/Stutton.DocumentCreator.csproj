@@ -95,10 +95,12 @@
     <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateView.xaml.cs">
       <DependentUpon>WorkItemFieldTemplateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Documents\Details\DocumentDetailsModel.cs" />
-    <Compile Include="Models\Documents\DocumentType.cs" />
+    <Compile Include="Models\Document\Details\DocumentDetailsModel.cs" />
+    <Compile Include="Models\Document\DocumentModel.cs" />
+    <Compile Include="Models\Template\Details\DocumentTemplateDetailsModel.cs" />
+    <Compile Include="Models\Template\DocumentType.cs" />
     <Compile Include="Fields\IFieldTemplate.cs" />
-    <Compile Include="Models\Documents\DocumentModel.cs" />
+    <Compile Include="Models\Template\DocumentTemplateModel.cs" />
     <Compile Include="Fields\Text\Template\TextFieldTemplateModel.cs" />
     <Compile Include="Fields\UserName\Template\UserNameFieldTemplateModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
@@ -117,8 +119,8 @@
     <Compile Include="Services\ServiceResolver.cs" />
     <Compile Include="Services\Templates\TemplatesService.cs" />
     <Compile Include="Services\Templates\ITemplatesService.cs" />
-    <Compile Include="Services\Fields\FieldFactoryService.cs" />
-    <Compile Include="Services\Fields\IFieldFactoryService.cs" />
+    <Compile Include="Services\Fields\FieldTemplateFactoryService.cs" />
+    <Compile Include="Services\Fields\IFieldTemplateFactoryService.cs" />
     <Compile Include="Services\Telemetry\ITelemetryService.cs" />
     <Compile Include="Services\Telemetry\TelemetryService.cs" />
     <Compile Include="Shared\Extensions.cs" />

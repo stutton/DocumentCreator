@@ -1,11 +1,13 @@
 ﻿using System.Runtime.Serialization;
+using Stutton.DocumentCreator.Models.Document.Details;
+using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Models.Documents.Details
+namespace Stutton.DocumentCreator.Models.Template.Details
 {
-    [DataContract(Name = "DocumentDetails")]
-    public class DocumentDetailsModel : Observable
+    [DataContract(Name = "DocumentTemplateDetails")]
+    public class DocumentTemplateDetailsModel : Observable
     {
         private string _description;
         private DocumentType _documentType;
@@ -46,6 +48,19 @@ namespace Stutton.DocumentCreator.Models.Documents.Details
         {
             get => _documentType;
             set => Set(ref _documentType, value);
+        }
+
+        public DocumentDetailsModel GetDocumentDetailsModel()
+        {
+            var documentDetails = new DocumentDetailsModel
+            {
+                Name = Name,
+                Description = Description,
+                TemplateFilePath = TemplateFilePath,
+                WorkItemQuery = WorkItemQuery,
+                DocumentType = DocumentType
+            };
+            return documentDetails;
         }
     }
 }

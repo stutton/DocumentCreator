@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Services.Templates
@@ -15,13 +16,13 @@ namespace Stutton.DocumentCreator.Services.Templates
             $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Templates";
         private readonly string _documentTemplateFileExtension = "template";
 
-        public async Task<IResponse<IEnumerable<DocumentModel>>> GetDocuments()
+        public async Task<IResponse<IEnumerable<DocumentTemplateModel>>> GetDocuments()
         {
             try
             {
                 if (!Directory.Exists(_documentTemplatesDirectoryName))
                 {
-                    return Response<IEnumerable<DocumentModel>>.FromSuccess(new List<DocumentModel>());
+                    return Response<IEnumerable<DocumentTemplateModel>>.FromSuccess(new List<DocumentTemplateModel>());
                 }
 
                 var templateFiles = await Task.Run(() =>
@@ -29,29 +30,29 @@ namespace Stutton.DocumentCreator.Services.Templates
 
                 if (!templateFiles.Any())
                 {
-                    return Response<IEnumerable<DocumentModel>>.FromSuccess(new List<DocumentModel>());
+                    return Response<IEnumerable<DocumentTemplateModel>>.FromSuccess(new List<DocumentTemplateModel>());
                 }
 
-                var templates = new List<DocumentModel>();
+                var templates = new List<DocumentTemplateModel>();
                 foreach (var templateFile in templateFiles)
                 {
                     var templateJson = await Task.Run(() => File.ReadAllText(templateFile));
-                    var template = await Task.Run(() => JsonConvert.DeserializeObject<DocumentModel>(templateJson, new JsonSerializerSettings
+                    var template = await Task.Run(() => JsonConvert.DeserializeObject<DocumentTemplateModel>(templateJson, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Objects
                     }));
                     templates.Add(template);
                 }
 
-                return Response<IEnumerable<DocumentModel>>.FromSuccess(templates);
+                return Response<IEnumerable<DocumentTemplateModel>>.FromSuccess(templates);
             }
             catch (Exception ex)
             {
-                return Response<IEnumerable<DocumentModel>>.FromException("Failed to get saved documents", ex);
+                return Response<IEnumerable<DocumentTemplateModel>>.FromException("Failed to get saved documents", ex);
             }
         }
 
-        public async Task<IResponse> SaveDocumentTemplate(DocumentModel document)
+        public async Task<IResponse> SaveDocumentTemplate(DocumentTemplateModel document)
         {
             try
             {
@@ -70,7 +71,7 @@ namespace Stutton.DocumentCreator.Services.Templates
             }
             catch (Exception ex)
             {
-                return Response.FromException($"Failed to save document {document.Details.Name}", ex);
+                return Response.FromException($"Failed to save document {document.TemplateDetails.Name}", ex);
             }
         }
     }
