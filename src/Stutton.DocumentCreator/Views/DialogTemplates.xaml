@@ -16,4 +16,8 @@
         <dialogs:MaterialOpenFileDialog />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialogVms:AddImageDialogViewModel}">
+        <dialogs:AddImageDialog />
+    </DataTemplate>
+
 </ResourceDictionary>

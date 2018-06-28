@@ -43,12 +43,15 @@
                 </StackPanel>
             </Border>
 
-            <mdxControls:Stepper x:Name="DocumentStepper"
-                                 CancelNavigationCommand="{Binding CancelCommand}"
-                                 ContinueNavigation="DocumentStepper_OnContinueNavigation"
-                                 IsLinear="True"
-                                 Layout="Vertical"
-                                 Steps="{Binding Steps}" />
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+                <mdxControls:Stepper x:Name="DocumentStepper"
+                                     CancelNavigationCommand="{Binding CancelCommand}"
+                                     ContinueNavigation="DocumentStepper_OnContinueNavigation"
+                                     IsLinear="True"
+                                     Layout="Vertical"
+                                     Steps="{Binding Steps}" />
+            </ScrollViewer>
         </DockPanel>
 
         <ProgressBar Width="24"

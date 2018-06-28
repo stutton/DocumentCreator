@@ -13,11 +13,11 @@
         <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Create Document" />
         <TextBlock Margin="0,24,0,0"
                    Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                   Text="{Binding Document.TemplateDetails.Name}" />
+                   Text="{Binding Document.Details.Name}" />
         <TextBlock Margin="0,4,0,0"
                    Opacity="0.5"
                    Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                   Text="{Binding Document.TemplateDetails.TemplateFilePath}" />
+                   Text="{Binding Document.Details.TemplateFilePath}" />
         <TextBlock Margin="0,24,0,0"
                    Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
                    Text="When you click finish, the following automations will be applied:" />
