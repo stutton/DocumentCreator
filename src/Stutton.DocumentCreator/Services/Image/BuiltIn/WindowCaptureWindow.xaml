@@ -1,0 +1,38 @@
+﻿<Window x:Class="Stutton.DocumentCreator.Services.Image.BuiltIn.WindowCaptureWindow"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Stutton.DocumentCreator.Services.Image.BuiltIn"
+        mc:Ignorable="d"
+        Title="WindowCaptureWindow" 
+        Height="450" 
+        Width="800"
+        AllowsTransparency="True"
+        Background="#01000000"
+        WindowStyle="None"
+        KeyDown="WindowCaptureWindow_OnKeyDown"
+        MouseUp="WindowCaptureWindow_OnMouseUp">
+    <Grid Background="Transparent">
+        <Canvas x:Name="HighlightCanvas"
+                Background="Transparent">
+            <Path Fill="White"
+                  Opacity="0.5"
+                  Stroke="Black">
+                <Path.Data>
+                    <CombinedGeometry GeometryCombineMode="Exclude">
+                        <CombinedGeometry.Geometry1>
+                            <RectangleGeometry x:Name="BackgroundRect"
+                                               Rect="0,0,800,600" />
+                        </CombinedGeometry.Geometry1>
+                        <CombinedGeometry.Geometry2>
+                            <RectangleGeometry x:Name="CutoutRect"
+                                               Rect="0,0,1,1" />
+                        </CombinedGeometry.Geometry2>
+                    </CombinedGeometry>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Grid>
+</Window>

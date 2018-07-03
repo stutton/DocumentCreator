@@ -14,6 +14,8 @@ using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Automations;
 using Stutton.DocumentCreator.Services.Document;
 using Stutton.DocumentCreator.Services.Fields;
+using Stutton.DocumentCreator.Services.Image;
+using Stutton.DocumentCreator.Services.Image.BuiltIn;
 using Stutton.DocumentCreator.Services.Settings;
 using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Services.Templates;
@@ -55,6 +57,7 @@ namespace Stutton.DocumentCreator
             _container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISettingsService, SettingsService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITfsService, TfsService>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IImageService, ImageService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITemplatesService, TemplatesService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITelemetryService, TelemetryService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IServiceResolver, ServiceResolver>(new ContainerControlledLifetimeManager());

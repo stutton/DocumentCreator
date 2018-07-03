@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DocumentFormat.OpenXml.Packaging;
 using Stutton.DocumentCreator.Models.WorkItems;
+using Stutton.DocumentCreator.Services.Image;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.List.Document
@@ -15,7 +16,13 @@ namespace Stutton.DocumentCreator.Fields.List.Document
     [DataContract(Name = "ListField")]
     public class ListFieldDocumentModel : Observable, IFieldDocument
     {
+        private readonly IImageService _imageService;
         public const string Key = "ListField";
+
+        public ListFieldDocumentModel(IImageService imageService)
+        {
+            _imageService = imageService;
+        }
 
         [IgnoreDataMember]
         public string Description => "List of text and images";
@@ -57,7 +64,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         private ListFieldStepModel GetNewStep()
         {
-            var step = new ListFieldStepModel();
+            var step = new ListFieldStepModel(_imageService);
             step.RequestDeleteMe += StepOnRequestDeleteMe;
             step.RequestMove += StepOnRequestMove;
             step.Index = Steps.Count + 1;
