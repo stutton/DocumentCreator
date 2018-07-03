@@ -11,20 +11,16 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.Text.Template
 {
-    [DataContract(Name = "TextField")]
     public class TextFieldTemplateModel : FieldTemplateBase
     {
         public const string Key = "TextField";
-        
-        [IgnoreDataMember]
+
+        public override Type DtoType => typeof(TextFieldTemplateDto);
         public override string Description => $"Prompt to replace '{TextToReplace}'";
-        [IgnoreDataMember]
         public override string TypeDisplayName => "Text";
-        [IgnoreDataMember]
         public override string FieldKey => Key;
 
         private string _name;
-        [DataMember]
         public override string Name
         {
             get => _name;
@@ -32,7 +28,6 @@ namespace Stutton.DocumentCreator.Fields.Text.Template
         }
 
         private string _textToReplace;
-        [DataMember]
         public string TextToReplace
         {
             get => _textToReplace;

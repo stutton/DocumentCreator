@@ -26,8 +26,8 @@
                     CommandParameter="{x:Static dialogVMs:AddImageDialogResult.Window}"
                     Style="{DynamicResource MaterialDesignFlatButton}">
                 <DockPanel>
-                    <TextBox DockPanel.Dock="Bottom"
-                             Text="WINDOW"/>
+                    <TextBlock DockPanel.Dock="Bottom"
+                               Text="WINDOW" />
                     <materialDesign:PackIcon Kind="WindowMaximize"
                                              Width="36"
                                              Height="36"
@@ -41,8 +41,8 @@
                     CommandParameter="{x:Static dialogVMs:AddImageDialogResult.Clipboard}"
                     Style="{DynamicResource MaterialDesignFlatButton}">
                 <DockPanel>
-                    <TextBox DockPanel.Dock="Bottom"
-                             Text="CLIPBOARD" />
+                    <TextBlock DockPanel.Dock="Bottom"
+                               Text="CLIPBOARD" />
                     <materialDesign:PackIcon Kind="ClipboardOutline"
                                              Width="36"
                                              Height="36"

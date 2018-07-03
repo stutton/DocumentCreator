@@ -13,6 +13,7 @@ namespace Stutton.DocumentCreator.Fields
     {
         public event EventHandler<IFieldTemplate> RequestDeleteMe;
 
+        public abstract Type DtoType { get; }
         public abstract string Description { get; }
         public abstract string TypeDisplayName { get; }
         public abstract string FieldKey { get; }

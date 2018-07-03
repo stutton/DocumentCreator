@@ -21,7 +21,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         public ListFieldDocumentModel(IImageService imageService)
         {
-            _imageService = imageService;
+            _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         [IgnoreDataMember]

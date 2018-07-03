@@ -19,7 +19,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         public ListFieldStepModel(IImageService imageService)
         {
-            _imageService = imageService;
+            _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         private int _index;

@@ -10,19 +10,15 @@ namespace Stutton.DocumentCreator.Fields.UserName.Template
     [DataContract(Name = "UserNameField")]
     public class UserNameFieldTemplateModel : FieldTemplateBase
     {
-        [IgnoreDataMember]
         private readonly ITfsService _tfsService;
         public const string Key = "UserNameField";
 
-        [IgnoreDataMember]
+        public override Type DtoType => typeof(UserNameFieldTemplateDto);
         public override string Description => $"Replace '{TextToReplace}' with the current user's name";
-        [IgnoreDataMember]
         public override string TypeDisplayName => "Name";
-        [IgnoreDataMember]
         public override string FieldKey => Key;
 
         private string _name;
-        [DataMember]
         public override string Name
         {
             get => _name;
@@ -30,7 +26,6 @@ namespace Stutton.DocumentCreator.Fields.UserName.Template
         }
 
         private string _textToReplace;
-        [DataMember]
         public string TextToReplace
         {
             get => _textToReplace;

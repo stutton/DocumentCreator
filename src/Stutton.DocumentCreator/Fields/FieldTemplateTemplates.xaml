@@ -1,23 +1,25 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Stutton.DocumentCreator.Fields"
-                    xmlns:template="clr-namespace:Stutton.DocumentCreator.Fields.Text.Template"
-                    xmlns:text="clr-namespace:Stutton.DocumentCreator.Fields.Text"
-                    xmlns:userName="clr-namespace:Stutton.DocumentCreator.Fields.UserName"
+                    xmlns:textField="clr-namespace:Stutton.DocumentCreator.Fields.Text.Template"
                     xmlns:workItemField="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField"
-                    xmlns:userName1="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Template"
-                    xmlns:workItemField1="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Template">
+                    xmlns:userNameField="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Template"
+                    xmlns:workItemField1="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Template"
+                    xmlns:listField="clr-namespace:Stutton.DocumentCreator.Fields.List.Template">
 
-    <DataTemplate DataType="{x:Type template:TextFieldTemplateModel}">
-        <text:TextFieldTemplateView />
+    <DataTemplate DataType="{x:Type textField:TextFieldTemplateModel}">
+        <textField:TextFieldTemplateView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type userName1:UserNameFieldTemplateModel}">
-        <userName:UserNameTemplateView />
+    <DataTemplate DataType="{x:Type userNameField:UserNameFieldTemplateModel}">
+        <userNameField:UserNameTemplateView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type workItemField1:WorkItemFieldTemplateModel}">
         <workItemField:WorkItemFieldTemplateView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type listField:ListFieldTemplateModel}">
+        <listField:ListFieldTemplateView/>
     </DataTemplate>
 
 </ResourceDictionary>

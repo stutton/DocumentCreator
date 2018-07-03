@@ -10,23 +10,17 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
-    [DataContract(Name = "WorkItemField")]
     public class WorkItemFieldTemplateModel : FieldTemplateBase, IRequiresInitialization
     {
-        [IgnoreDataMember]
         private readonly ITfsService _tfsService;
         public const string Key = "WorkItemField";
 
-        [IgnoreDataMember]
+        public override Type DtoType => typeof(WorkItemFieldTemplateDto);
         public override string Description => $"Replace '{TextToReplace}' with the value of '{SelectedField}' from the selected work item";
-        [IgnoreDataMember]
         public override string TypeDisplayName => "Work Item Field";
-        [IgnoreDataMember]
         public override string FieldKey => Key;
 
         private ObservableCollection<string> _workItemFields;
-
-        [IgnoreDataMember]
         public ObservableCollection<string> WorkItemFields
         {
             get => _workItemFields;
@@ -34,7 +28,6 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
         }
 
         private string _textToReplace;
-        [DataMember]
         public string TextToReplace
         {
             get => _textToReplace;
@@ -42,7 +35,6 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
         }
 
         private string _selectedField;
-        [DataMember]
         public string SelectedField
         {
             get => _selectedField;
@@ -50,7 +42,6 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
         }
 
         private string _name;
-        [DataMember]
         public override string Name
         {
             get => _name;

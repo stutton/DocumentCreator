@@ -63,13 +63,16 @@
     </Compile>
     <Compile Include="Automations\IAutomation.cs" />
     <Compile Include="Fields\FieldTemplateBase.cs" />
+    <Compile Include="Fields\FieldTemplateMapper.cs" />
     <Compile Include="Fields\IFieldDocument.cs" />
+    <Compile Include="Fields\IFieldTemplateDto.cs" />
     <Compile Include="Fields\IRequiresInitialization.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentModel.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentView.xaml.cs">
       <DependentUpon>ListFieldDocumentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fields\List\Document\MoveListFieldStepEventArgs.cs" />
+    <Compile Include="Fields\List\Template\ListFieldTemplateDto.cs" />
     <Compile Include="Fields\List\Template\ListFieldTemplateModel.cs" />
     <Compile Include="Fields\List\Document\ListFieldStepModel.cs" />
     <Compile Include="Fields\List\Template\ListFieldTemplateView.xaml.cs">
@@ -79,6 +82,7 @@
     <Compile Include="Fields\Text\Document\TextFieldDocumentView.xaml.cs">
       <DependentUpon>TextFieldDocumentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\Text\Template\TextFieldTemplateDto.cs" />
     <Compile Include="Fields\Text\Template\TextFieldTemplateView.xaml.cs">
       <DependentUpon>TextFieldTemplateView.xaml</DependentUpon>
     </Compile>
@@ -86,6 +90,7 @@
     <Compile Include="Fields\UserName\Document\UserNameDocumentView.xaml.cs">
       <DependentUpon>UserNameDocumentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\UserName\Template\UserNameFieldTemplateDto.cs" />
     <Compile Include="Fields\UserName\Template\UserNameTemplateView.xaml.cs">
       <DependentUpon>UserNameTemplateView.xaml</DependentUpon>
     </Compile>
@@ -93,6 +98,7 @@
     <Compile Include="Fields\WorkItemField\Document\WorkItemFieldDocumentView.xaml.cs">
       <DependentUpon>WorkItemFieldDocumentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateDto.cs" />
     <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateModel.cs" />
     <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateView.xaml.cs">
       <DependentUpon>WorkItemFieldTemplateView.xaml</DependentUpon>
@@ -100,6 +106,7 @@
     <Compile Include="Models\Document\Details\DocumentDetailsModel.cs" />
     <Compile Include="Models\Document\DocumentModel.cs" />
     <Compile Include="Models\Template\Details\DocumentTemplateDetailsModel.cs" />
+    <Compile Include="Models\Template\DocumentTemplateDto.cs" />
     <Compile Include="Models\Template\DocumentType.cs" />
     <Compile Include="Fields\IFieldTemplate.cs" />
     <Compile Include="Models\Template\DocumentTemplateModel.cs" />
