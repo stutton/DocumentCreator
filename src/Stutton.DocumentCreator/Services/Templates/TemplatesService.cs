@@ -38,6 +38,9 @@ namespace Stutton.DocumentCreator.Services.Templates
                 cfg.CreateMap<TextFieldTemplateModel, TextFieldTemplateDto>();
                 cfg.CreateMap<UserNameFieldTemplateModel, UserNameFieldTemplateDto>();
                 cfg.CreateMap<WorkItemFieldTemplateModel, WorkItemFieldTemplateDto>();
+                
+                cfg.CreateMap<WorkItemFieldTemplateDto, WorkItemFieldTemplateModel>();
+
                 cfg.CreateMap<DocumentTemplateModel, DocumentTemplateDto>();
             });
             _mapper = new Mapper(mapperConfig, Resolver);
@@ -89,7 +92,9 @@ namespace Stutton.DocumentCreator.Services.Templates
                     Directory.CreateDirectory(_documentTemplatesDirectoryName);
                 }
 
-                var documentJson = await Task.Run(() => JsonConvert.SerializeObject(document, Formatting.Indented, new JsonSerializerSettings
+                var templateDto = _mapper.Map<DocumentTemplateDto>(document);
+
+                var documentJson = await Task.Run(() => JsonConvert.SerializeObject(templateDto, Formatting.Indented, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Objects,
                     TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
