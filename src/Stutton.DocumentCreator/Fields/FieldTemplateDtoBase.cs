@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Stutton.DocumentCreator.Fields
 {
-    public interface IFieldTemplateDto
+    public abstract class FieldTemplateDtoBase
     {
-        Type ModelType { get; }
+        public abstract Type ModelType { get; }
     }
 }

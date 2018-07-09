@@ -16,13 +16,13 @@ namespace Stutton.DocumentCreator.Models.Template
         public string Id { get; set; } = $@"{Guid.NewGuid()}";
 
         [DataMember]
-        public DocumentTemplateDetailsModel TemplateDetails { get; } = new DocumentTemplateDetailsModel();
+        public DocumentTemplateDetailsModel TemplateDetails { get; set; } = new DocumentTemplateDetailsModel();
 
         [DataMember]
-        public ObservableCollection<IFieldTemplate> Fields { get; } = new ObservableCollection<IFieldTemplate>();
+        public ObservableCollection<FieldTemplateBase> Fields { get; set; } = new ObservableCollection<FieldTemplateBase>();
 
         [DataMember]
-        public ObservableCollection<IAutomation> Automations { get; } = new ObservableCollection<IAutomation>();
+        public ObservableCollection<IAutomation> Automations { get; set; } = new ObservableCollection<IAutomation>();
 
         public DocumentModel GetNewDocument()
         {

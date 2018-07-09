@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace Stutton.DocumentCreator.Fields.List.Template
 {
     [DataContract(Name = "ListField")]
-    public class ListFieldTemplateDto : IFieldTemplateDto
+    public class ListFieldTemplateDto : FieldTemplateDtoBase
     {
         [IgnoreDataMember]
-        public Type ModelType => typeof(ListFieldTemplateModel);
+        public override Type ModelType => typeof(ListFieldTemplateModel);
         [DataMember]
         public string Name { get; set; }
     }

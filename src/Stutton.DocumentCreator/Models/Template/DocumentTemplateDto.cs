@@ -13,7 +13,7 @@ namespace Stutton.DocumentCreator.Models.Template
     {
         public string Id { get; set; }
         public DocumentTemplateDetailsModel TemplateDetails { get; set; }
-        public ICollection<IFieldTemplateDto> Fields { get; set; }
+        public ICollection<FieldTemplateDtoBase> Fields { get; set; }
         public ICollection<IAutomation> Automations { get; set; }
     }
 }

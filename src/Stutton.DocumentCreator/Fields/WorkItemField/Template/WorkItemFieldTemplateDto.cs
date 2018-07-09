@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
     [DataContract(Name = "WorkItemField")]
-    public class WorkItemFieldTemplateDto : IFieldTemplateDto
+    public class WorkItemFieldTemplateDto : FieldTemplateDtoBase
     {
         [IgnoreDataMember]
-        public Type ModelType => typeof(WorkItemFieldTemplateModel);
+        public override Type ModelType => typeof(WorkItemFieldTemplateModel);
         [DataMember]
         public string Name { get; set; }
         [DataMember]

@@ -65,7 +65,7 @@
     <Compile Include="Fields\FieldTemplateBase.cs" />
     <Compile Include="Fields\FieldTemplateMapper.cs" />
     <Compile Include="Fields\IFieldDocument.cs" />
-    <Compile Include="Fields\IFieldTemplateDto.cs" />
+    <Compile Include="Fields\FieldTemplateDtoBase.cs" />
     <Compile Include="Fields\IRequiresInitialization.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentModel.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentView.xaml.cs">
@@ -108,7 +108,6 @@
     <Compile Include="Models\Template\Details\DocumentTemplateDetailsModel.cs" />
     <Compile Include="Models\Template\DocumentTemplateDto.cs" />
     <Compile Include="Models\Template\DocumentType.cs" />
-    <Compile Include="Fields\IFieldTemplate.cs" />
     <Compile Include="Models\Template\DocumentTemplateModel.cs" />
     <Compile Include="Fields\Text\Template\TextFieldTemplateModel.cs" />
     <Compile Include="Fields\UserName\Template\UserNameFieldTemplateModel.cs" />

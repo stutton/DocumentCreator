@@ -11,28 +11,28 @@ namespace Stutton.DocumentCreator.Services.Fields
 {
     public class FieldTemplateFactoryService : IFieldTemplateFactoryService
     {
-        private readonly Func<Type, IFieldTemplate> _fieldResolver;
+        private readonly Func<Type, FieldTemplateBase> _fieldResolver;
 
         private Dictionary<string, Type> _fieldTypes;
 
-        public FieldTemplateFactoryService(Func<Type, IFieldTemplate> fieldResolver)
+        public FieldTemplateFactoryService(Func<Type, FieldTemplateBase> fieldResolver)
         {
             _fieldResolver = fieldResolver;
         }
 
-        public async Task<IResponse<IFieldTemplate>> CreateField(Type fieldType)
+        public async Task<IResponse<FieldTemplateBase>> CreateField(Type fieldType)
         {
             try
             {
-                if (!typeof(IFieldTemplate).IsAssignableFrom(fieldType))
+                if (!typeof(FieldTemplateBase).IsAssignableFrom(fieldType))
                 {
-                    return Response<IFieldTemplate>.FromFailure($"Type '{fieldType.Name}' is not an IFieldTemplate");
+                    return Response<FieldTemplateBase>.FromFailure($"Type '{fieldType.Name}' is not an IFieldTemplate");
                 }
 
                 var field = _fieldResolver(fieldType);
                 if (field == null)
                 {
-                    return Response<IFieldTemplate>.FromFailure($"Failed to create field of type '{fieldType.Name}'");
+                    return Response<FieldTemplateBase>.FromFailure($"Failed to create field of type '{fieldType.Name}'");
                 }
 
                 if (field is IRequiresInitialization initializeMe)
@@ -40,11 +40,11 @@ namespace Stutton.DocumentCreator.Services.Fields
                     await initializeMe.Initialize();
                 }
 
-                return Response<IFieldTemplate>.FromSuccess(field);
+                return Response<FieldTemplateBase>.FromSuccess(field);
             }
             catch (Exception ex)
             {
-                return Response<IFieldTemplate>.FromException("Failed to create field for unknown reason", ex);
+                return Response<FieldTemplateBase>.FromException("Failed to create field for unknown reason", ex);
             }
         }
 
@@ -58,10 +58,10 @@ namespace Stutton.DocumentCreator.Services.Fields
                 }
 
                 _fieldTypes = new Dictionary<string, Type>();
-                var fieldTypes = typeof(IFieldTemplate).Assembly.GetInheritingTypes<IFieldTemplate>();
+                var fieldTypes = typeof(FieldTemplateBase).Assembly.GetInheritingTypes<FieldTemplateBase>();
                 foreach (var fieldType in fieldTypes)
                 {
-                    if (_fieldResolver(fieldType) is IFieldTemplate field)
+                    if (_fieldResolver(fieldType) is FieldTemplateBase field)
                     {
                         _fieldTypes.Add(field.TypeDisplayName, fieldType);
                     }

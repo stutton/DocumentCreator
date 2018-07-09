@@ -34,15 +34,22 @@ namespace Stutton.DocumentCreator.Services.Templates
 
             var mapperConfig = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<ListFieldTemplateModel, ListFieldTemplateDto>();
-                cfg.CreateMap<TextFieldTemplateModel, TextFieldTemplateDto>();
-                cfg.CreateMap<UserNameFieldTemplateModel, UserNameFieldTemplateDto>();
-                cfg.CreateMap<WorkItemFieldTemplateModel, WorkItemFieldTemplateDto>();
-                
-                cfg.CreateMap<WorkItemFieldTemplateDto, WorkItemFieldTemplateModel>();
+                cfg.ConstructServicesUsing(Resolver);
 
-                cfg.CreateMap<DocumentTemplateModel, DocumentTemplateDto>();
+                cfg.CreateMap<FieldTemplateBase, FieldTemplateDtoBase>()
+                   .Include<ListFieldTemplateModel, ListFieldTemplateDto>()
+                   .Include<TextFieldTemplateModel, TextFieldTemplateDto>()
+                   .Include<UserNameFieldTemplateModel, UserNameFieldTemplateDto>()
+                   .Include<WorkItemFieldTemplateModel, WorkItemFieldTemplateDto>()
+                   .ReverseMap();
+                cfg.CreateMap<ListFieldTemplateModel, ListFieldTemplateDto>().ReverseMap().ConstructUsingServiceLocator();
+                cfg.CreateMap<TextFieldTemplateModel, TextFieldTemplateDto>().ReverseMap().ConstructUsingServiceLocator();
+                cfg.CreateMap<UserNameFieldTemplateModel, UserNameFieldTemplateDto>().ReverseMap().ConstructUsingServiceLocator();
+                cfg.CreateMap<WorkItemFieldTemplateModel, WorkItemFieldTemplateDto>().ReverseMap().ConstructUsingServiceLocator();
+
+                cfg.CreateMap<DocumentTemplateModel, DocumentTemplateDto>().ReverseMap();
             });
+            mapperConfig.AssertConfigurationIsValid();
             _mapper = new Mapper(mapperConfig, Resolver);
         }
 
