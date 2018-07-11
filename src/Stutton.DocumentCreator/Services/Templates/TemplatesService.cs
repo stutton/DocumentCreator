@@ -35,7 +35,8 @@ namespace Stutton.DocumentCreator.Services.Templates
             var mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.ConstructServicesUsing(Resolver);
-                cfg.AddProfile<FieldMapperProfile>();
+                cfg.AddProfiles(typeof(TemplatesService).Assembly);
+                cfg.CreateMap<DocumentTemplateModel, DocumentTemplateDto>().ReverseMap();
             });
             mapperConfig.AssertConfigurationIsValid();
             _mapper = new Mapper(mapperConfig, Resolver);
@@ -99,7 +100,25 @@ namespace Stutton.DocumentCreator.Services.Templates
             }
             catch (Exception ex)
             {
-                return Response.FromException($"Failed to save document {document.TemplateDetails.Name}", ex);
+                return Response.FromException($"Failed to save template {document.TemplateDetails.Name}", ex);
+            }
+        }
+
+        public async Task<IResponse> DeleteDocumentTemplate(DocumentTemplateModel document)
+        {
+            try
+            {
+                var filePath = $"{_documentTemplatesDirectoryName}\\{document.Id}.{_documentTemplateFileExtension}";
+                if (File.Exists(filePath))
+                {
+                    await Task.Run(() => File.Delete(filePath));
+                }
+
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException($"Failed to delete template {document.TemplateDetails.Name}", ex);
             }
         }
 

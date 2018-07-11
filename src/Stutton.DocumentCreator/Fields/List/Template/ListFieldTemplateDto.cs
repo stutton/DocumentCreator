@@ -10,9 +10,7 @@ namespace Stutton.DocumentCreator.Fields.List.Template
     [DataContract(Name = "ListField")]
     public class ListFieldTemplateDto : FieldTemplateDtoBase
     {
-        [IgnoreDataMember]
-        public override Type ModelType => typeof(ListFieldTemplateModel);
         [DataMember]
-        public string Name { get; set; }
+        public override string Name { get; set; }
     }
 }

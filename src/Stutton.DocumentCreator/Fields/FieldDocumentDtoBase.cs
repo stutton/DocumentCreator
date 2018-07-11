@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stutton.DocumentCreator.Fields
 {
-    public abstract class FieldTemplateDtoBase
+    public abstract class FieldDocumentDtoBase
     {
         public abstract string Name { get; set; }
     }

@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stutton.DocumentCreator.Fields.Text.Template
+namespace Stutton.DocumentCreator.Fields.Text.Document
 {
-    [DataContract(Name = "TextField")]
-    public class TextFieldTemplateDto : FieldTemplateDtoBase
+    public class TextFieldDocumentDto : FieldDocumentDtoBase
     {
-        [DataMember]
         public override string Name { get; set; }
-        [DataMember]
         public string TextToReplace { get; set; }
+        public string ReplaceWithText { get; set; }
     }
 }

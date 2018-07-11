@@ -19,7 +19,7 @@ namespace Stutton.DocumentCreator.Models.Template
         public DocumentTemplateDetailsModel TemplateDetails { get; set; } = new DocumentTemplateDetailsModel();
 
         [DataMember]
-        public ObservableCollection<FieldTemplateBase> Fields { get; set; } = new ObservableCollection<FieldTemplateBase>();
+        public ObservableCollection<FieldTemplateModelBase> Fields { get; set; } = new ObservableCollection<FieldTemplateModelBase>();
 
         [DataMember]
         public ObservableCollection<IAutomation> Automations { get; set; } = new ObservableCollection<IAutomation>();
@@ -32,9 +32,9 @@ namespace Stutton.DocumentCreator.Models.Template
             return new DocumentModel(details, documentFields, documentAutomations);
         }
 
-        private ObservableCollection<IFieldDocument> GetDocumentFields()
+        private ObservableCollection<FieldDocumentModelBase> GetDocumentFields()
         {
-            var documentFields = new ObservableCollection<IFieldDocument>();
+            var documentFields = new ObservableCollection<FieldDocumentModelBase>();
             foreach (var fieldTemplate in Fields)
             {
                 documentFields.Add(fieldTemplate.GetDocumentField());

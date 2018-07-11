@@ -13,24 +13,16 @@ using Stutton.DocumentCreator.Shared;
 namespace Stutton.DocumentCreator.Fields.UserName.Document
 {
     [DataContract(Name = "UserNameField")]
-    public class UserNameDocumentModel : Observable, IFieldDocument
+    public class UserNameDocumentModel : FieldDocumentModelBase
     {
         
         public const string Key = "UserNameField";
 
         private readonly ITfsService _tfsService;
 
-        public string Description => $"Replace '{TextToReplace}' with the current user's name";
+        public override string Description => $"Replace '{TextToReplace}' with the current user's name";
         public string TypeDisplayName => "Name";
-        public string FieldKey => Key;
-
-        private string _name;
-        [DataMember]
-        public string Name
-        {
-            get => _name;
-            set => Set(ref _name, value);
-        }
+        public override string FieldKey => Key;
 
         private string _textToReplace;
         [DataMember]
@@ -45,7 +37,7 @@ namespace Stutton.DocumentCreator.Fields.UserName.Document
             _tfsService = tfsService;
         }
 
-        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
+        public override async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
         {
             try
             {

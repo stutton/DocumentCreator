@@ -69,8 +69,7 @@
                             <Button Margin="0,0,0,0"
                                     HorizontalAlignment="Right"
                                     Command="{Binding ShareCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}"
-                                    DockPanel.Dock="Right"
-                                    Style="{StaticResource MaterialDesignFlatButton}">
+                                    Style="{DynamicResource MaterialDesignFlatButton}">
                                 <materialDesign:PackIcon Foreground="Black"
                                                          Kind="ShareVariant"
                                                          Opacity="0.7" />
@@ -79,12 +78,21 @@
                             <Button Margin="8,0,0,0"
                                     HorizontalAlignment="Right"
                                     Command="{Binding EditCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}"
-                                    DockPanel.Dock="Right"
-                                    Style="{StaticResource MaterialDesignFlatButton}">
+                                    Style="{DynamicResource MaterialDesignFlatButton}">
                                 <materialDesign:PackIcon Foreground="Black"
                                                          Kind="Pencil"
                                                          Opacity="0.7" />
                             </Button>
+
+                            <Button Margin="8,0,0,0"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}"
+                                    Style="{DynamicResource MaterialDesignFlatButton}">
+                                <materialDesign:PackIcon Foreground="Black"
+                                                         Kind="Delete"
+                                                         Opacity="0.7"/>
+                            </Button>
+
                         </StackPanel>
 
                     </StackPanel>

@@ -105,6 +105,17 @@ namespace Stutton.DocumentCreator.Views.Controls.Cards
 
         #endregion
 
-        
+        #region ICommand DeleteCommand
+
+        public static readonly DependencyProperty DeleteCommandProperty =
+            DependencyProperty.Register(nameof(DeleteCommand), typeof(ICommand), typeof(DocumentCard), new PropertyMetadata(default(ICommand)));
+
+        public ICommand DeleteCommand
+        {
+            get => (ICommand) GetValue(DeleteCommandProperty);
+            set => SetValue(DeleteCommandProperty, value);
+        }
+
+        #endregion
     }
 }

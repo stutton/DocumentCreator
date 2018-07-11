@@ -15,7 +15,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
     {
         private readonly IFieldTemplateFactoryService _fieldFactoryService;
 
-        public FieldsStepViewModel(ObservableCollection<FieldTemplateBase> fields, IFieldTemplateFactoryService fieldFactoryService)
+        public FieldsStepViewModel(ObservableCollection<FieldTemplateModelBase> fields, IFieldTemplateFactoryService fieldFactoryService)
         {
             _fieldFactoryService = fieldFactoryService;
             Fields = fields;
@@ -25,7 +25,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             }
         }
 
-        public ObservableCollection<FieldTemplateBase> Fields { get; }
+        public ObservableCollection<FieldTemplateModelBase> Fields { get; }
 
         private ObservableDictionary<string, Type> _availableFieldTypes;
         public ObservableDictionary<string, Type> AvailableFieldTypes
@@ -88,7 +88,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             AvailableFieldTypes = new ObservableDictionary<string, Type>(response.Value);
         }
 
-        private void HandleFieldRequestDeleteMe(object sender, FieldTemplateBase field)
+        private void HandleFieldRequestDeleteMe(object sender, FieldTemplateModelBase field)
         {
             field.RequestDeleteMe -= HandleFieldRequestDeleteMe;
             Fields.Remove(field);

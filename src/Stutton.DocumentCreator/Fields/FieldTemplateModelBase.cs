@@ -9,9 +9,9 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields
 {
-    public abstract class FieldTemplateBase : Observable
+    public abstract class FieldTemplateModelBase : Observable
     {
-        public event EventHandler<FieldTemplateBase> RequestDeleteMe;
+        public event EventHandler<FieldTemplateModelBase> RequestDeleteMe;
 
         public abstract Type DtoType { get; }
         public abstract string Description { get; }
@@ -32,6 +32,6 @@ namespace Stutton.DocumentCreator.Fields
 
         #endregion
 
-        public abstract IFieldDocument GetDocumentField();
+        public abstract FieldDocumentModelBase GetDocumentField();
     }
 }

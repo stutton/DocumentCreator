@@ -40,7 +40,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public ObservableCollection<DocumentCardViewModel> Documents
         {
             get => _propertyName;
-            set => Set(ref _propertyName, value);
+            private set => Set(ref _propertyName, value);
         }
 
         #region ICommand CreateDocumentTemplateCommand
@@ -57,19 +57,58 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         public override async Task NavigatedTo(object parameter)
         {
-            _telemetryService.TrackPageView(Key);
-
-            var documentResponse = await _templatesService.GetDocuments();
-
-            if (!documentResponse.Success)
+            try
             {
-                _telemetryService.TrackFailedResponse(documentResponse);
-                await DialogHost.Show(new ErrorMessageDialogViewModel(documentResponse.Message));
-                return;
-            }
+                IsBusy = true;
 
-            Documents = new ObservableCollection<DocumentCardViewModel>(
-                documentResponse.Value.Select(d => new DocumentCardViewModel(d, _navigationService)));
+                _telemetryService.TrackPageView(Key);
+
+                var documentResponse = await _templatesService.GetDocuments();
+
+                if (!documentResponse.Success)
+                {
+                    _telemetryService.TrackFailedResponse(documentResponse);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(documentResponse.Message));
+                    return;
+                }
+
+                Documents = new ObservableCollection<DocumentCardViewModel>(
+                    documentResponse.Value.Select(d =>
+                    {
+                        var card = new DocumentCardViewModel(d, _navigationService);
+                        card.RequestDeleteMe += CardOnRequestDeleteMe;
+                        return card;
+                    }));
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private async void CardOnRequestDeleteMe(object sender, EventArgs e)
+        {
+            try
+            {
+                IsBusy = true;
+
+                var toDelete = (DocumentCardViewModel) sender;
+
+                var response = await _templatesService.DeleteDocumentTemplate(toDelete.Model);
+                if (!response.Success)
+                {
+                    _telemetryService.TrackFailedResponse(response);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message));
+                    return;
+                }
+
+                toDelete.RequestDeleteMe -= CardOnRequestDeleteMe;
+                Documents.Remove(toDelete);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }

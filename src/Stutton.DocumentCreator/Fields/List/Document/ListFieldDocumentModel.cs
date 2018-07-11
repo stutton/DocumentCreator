@@ -13,8 +13,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.List.Document
 {
-    [DataContract(Name = "ListField")]
-    public class ListFieldDocumentModel : Observable, IFieldDocument
+    public class ListFieldDocumentModel : FieldDocumentModelBase
     {
         private readonly IImageService _imageService;
         public const string Key = "ListField";
@@ -23,23 +22,10 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         {
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
-
-        [IgnoreDataMember]
-        public string Description => "List of text and images";
-
-        [IgnoreDataMember]
+        
+        public override string Description => "List of text and images";
         public string TypeDisplayName => "Field";
-
-        [IgnoreDataMember]
-        public string FieldKey => Key;
-
-        private string _name;
-        [DataMember]
-        public string Name
-        {
-            get => _name;
-            set => Set(ref _name, value);
-        }
+        public override string FieldKey => Key;
 
         [DataMember]
         public ObservableCollection<ListFieldStepModel> Steps { get; } = new ObservableCollection<ListFieldStepModel>();
@@ -57,7 +43,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         #endregion
 
-        public Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
+        public override Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
         {
             throw new NotImplementedException();
         }

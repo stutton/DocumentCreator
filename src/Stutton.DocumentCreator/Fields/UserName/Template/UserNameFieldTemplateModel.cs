@@ -8,7 +8,7 @@ using Stutton.DocumentCreator.Shared;
 namespace Stutton.DocumentCreator.Fields.UserName.Template
 {
     [DataContract(Name = "UserNameField")]
-    public class UserNameFieldTemplateModel : FieldTemplateBase
+    public class UserNameFieldTemplateModel : FieldTemplateModelBase
     {
         private readonly ITfsService _tfsService;
         public const string Key = "UserNameField";
@@ -37,7 +37,7 @@ namespace Stutton.DocumentCreator.Fields.UserName.Template
             _tfsService = tfsService;
         }
 
-        public override IFieldDocument GetDocumentField()
+        public override FieldDocumentModelBase GetDocumentField()
         {
             var documentField = new UserNameDocumentModel(_tfsService)
             {

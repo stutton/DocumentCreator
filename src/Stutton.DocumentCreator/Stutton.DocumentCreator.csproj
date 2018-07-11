@@ -62,49 +62,66 @@
       <DependentUpon>AttachToWorkItemAutomationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Automations\IAutomation.cs" />
-    <Compile Include="Fields\FieldMapperProfile.cs" />
-    <Compile Include="Fields\FieldTemplateBase.cs" />
-    <Compile Include="Fields\FieldTemplateMapper.cs" />
-    <Compile Include="Fields\IFieldDocument.cs" />
+    <Compile Include="Fields\FieldDocumentMapperProfile.cs" />
+    <Compile Include="Fields\FieldDocumentModelBase.cs" />
+    <Compile Include="Fields\FieldDocumentDtoBase.cs" />
+    <Compile Include="Fields\FieldTemplateMapperProfile.cs" />
+    <Compile Include="Fields\FieldTemplateModelBase.cs" />
     <Compile Include="Fields\FieldTemplateDtoBase.cs" />
     <Compile Include="Fields\IRequiresInitialization.cs" />
+    <Compile Include="Fields\List\Document\BitmapSourceToBytesTypeConverter.cs" />
+    <Compile Include="Fields\List\Document\ListFieldDocumentDto.cs" />
+    <Compile Include="Fields\List\Document\ListFieldDocumentMapperProfile.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentModel.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentView.xaml.cs">
       <DependentUpon>ListFieldDocumentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\List\Document\ListFieldStepDto.cs" />
     <Compile Include="Fields\List\Document\MoveListFieldStepEventArgs.cs" />
+    <Compile Include="Fields\List\Document\BytesToBitmapSourceTypeConverter.cs" />
     <Compile Include="Fields\List\Template\ListFieldTemplateDto.cs" />
+    <Compile Include="Fields\List\Template\ListFieldTemplateMapperProfile.cs" />
     <Compile Include="Fields\List\Template\ListFieldTemplateModel.cs" />
     <Compile Include="Fields\List\Document\ListFieldStepModel.cs" />
     <Compile Include="Fields\List\Template\ListFieldTemplateView.xaml.cs">
       <DependentUpon>ListFieldTemplateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\Text\Document\TextFieldDocumentDto.cs" />
+    <Compile Include="Fields\Text\Document\TextFieldDocumentMapperProfile.cs" />
     <Compile Include="Fields\Text\Document\TextFieldDocumentModel.cs" />
     <Compile Include="Fields\Text\Document\TextFieldDocumentView.xaml.cs">
       <DependentUpon>TextFieldDocumentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fields\Text\Template\TextFieldTemplateDto.cs" />
+    <Compile Include="Fields\Text\Template\TextFieldTemplateMapperProfile.cs" />
     <Compile Include="Fields\Text\Template\TextFieldTemplateView.xaml.cs">
       <DependentUpon>TextFieldTemplateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\UserName\Document\UserNameDocumentDto.cs" />
+    <Compile Include="Fields\UserName\Document\UserNameDocumentMapperProfile.cs" />
     <Compile Include="Fields\UserName\Document\UserNameDocumentModel.cs" />
     <Compile Include="Fields\UserName\Document\UserNameDocumentView.xaml.cs">
       <DependentUpon>UserNameDocumentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fields\UserName\Template\UserNameFieldTemplateDto.cs" />
+    <Compile Include="Fields\UserName\Template\UserNameFieldTemplateMapperProfile.cs" />
     <Compile Include="Fields\UserName\Template\UserNameTemplateView.xaml.cs">
       <DependentUpon>UserNameTemplateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\WorkItemField\Document\WorkItemFieldDocumentDto.cs" />
+    <Compile Include="Fields\WorkItemField\Document\WorkItemFieldDocumentMapperProfile.cs" />
     <Compile Include="Fields\WorkItemField\Document\WorkItemFieldDocumentModel.cs" />
     <Compile Include="Fields\WorkItemField\Document\WorkItemFieldDocumentView.xaml.cs">
       <DependentUpon>WorkItemFieldDocumentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateDto.cs" />
+    <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateMapperProfile.cs" />
     <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateModel.cs" />
     <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateView.xaml.cs">
       <DependentUpon>WorkItemFieldTemplateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Document\Details\DocumentDetailsModel.cs" />
+    <Compile Include="Models\Document\DocumentDto.cs" />
     <Compile Include="Models\Document\DocumentModel.cs" />
     <Compile Include="Models\Template\Details\DocumentTemplateDetailsModel.cs" />
     <Compile Include="Models\Template\DocumentTemplateDto.cs" />

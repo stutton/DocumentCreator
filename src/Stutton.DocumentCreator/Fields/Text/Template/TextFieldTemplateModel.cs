@@ -11,7 +11,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.Text.Template
 {
-    public class TextFieldTemplateModel : FieldTemplateBase
+    public class TextFieldTemplateModel : FieldTemplateModelBase
     {
         public const string Key = "TextField";
 
@@ -40,7 +40,7 @@ namespace Stutton.DocumentCreator.Fields.Text.Template
             }
         }
 
-        public override IFieldDocument GetDocumentField()
+        public override FieldDocumentModelBase GetDocumentField()
         {
             var documentField = new TextFieldDocumentModel()
             {

@@ -10,5 +10,6 @@ namespace Stutton.DocumentCreator.Services.Templates
     {
         Task<IResponse<IEnumerable<DocumentTemplateModel>>> GetDocuments();
         Task<IResponse> SaveDocumentTemplate(DocumentTemplateModel document);
+        Task<IResponse> DeleteDocumentTemplate(DocumentTemplateModel document);
     }
 }

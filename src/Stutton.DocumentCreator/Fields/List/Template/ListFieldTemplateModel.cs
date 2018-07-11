@@ -7,7 +7,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.List.Template
 {
-    public class ListFieldTemplateModel : FieldTemplateBase
+    public class ListFieldTemplateModel : FieldTemplateModelBase
     {
         private readonly IImageService _imageService;
         public const string Key = "ListField";
@@ -29,7 +29,7 @@ namespace Stutton.DocumentCreator.Fields.List.Template
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
-        public override IFieldDocument GetDocumentField()
+        public override FieldDocumentModelBase GetDocumentField()
         {
             var documentField = new ListFieldDocumentModel(_imageService)
             {

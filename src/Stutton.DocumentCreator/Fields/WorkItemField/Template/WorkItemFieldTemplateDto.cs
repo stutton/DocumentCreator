@@ -10,10 +10,8 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
     [DataContract(Name = "WorkItemField")]
     public class WorkItemFieldTemplateDto : FieldTemplateDtoBase
     {
-        [IgnoreDataMember]
-        public override Type ModelType => typeof(WorkItemFieldTemplateModel);
         [DataMember]
-        public string Name { get; set; }
+        public override string Name { get; set; }
         [DataMember]
         public string TextToReplace { get; set; }
         [DataMember]

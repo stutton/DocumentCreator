@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
@@ -11,26 +8,34 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.WorkItemField.Document
 {
-    public class WorkItemFieldDocumentModel : IFieldDocument
+    public sealed class WorkItemFieldDocumentModel : FieldDocumentModelBase
     {
         private readonly ITfsService _tfsService;
         public const string Key = "WorkItemField";
-
-        public string Name { get; set; }
-
-        public string Description =>
+        public override string Description =>
             $"Replace '{TextToReplace}' with the value of '{SelectedField}' from the selected work item";
-        public string TypeDisplayName => "Work Item Field";
-        public string FieldKey => Key;
-        public string TextToReplace { get; set; }
-        public string SelectedField { get; set; }
+        public override string FieldKey => Key;
 
+        private string _textToReplace;
+        public string TextToReplace
+        {
+            get => _textToReplace;
+            set => Set(ref _textToReplace, value);
+        }
+
+        private string _selectedField;
+        public string SelectedField
+        {
+            get => _selectedField;
+            set => Set(ref _selectedField, value);
+        }
 
         public WorkItemFieldDocumentModel(ITfsService tfsService)
         {
             _tfsService = tfsService;
         }
-        public async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
+
+        public override async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
         {
             try
             {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stutton.DocumentCreator.Fields
+namespace Stutton.DocumentCreator.Models.Document
 {
-    public class FieldTemplateMapper
+    public class DocumentDto
     {
         
     }

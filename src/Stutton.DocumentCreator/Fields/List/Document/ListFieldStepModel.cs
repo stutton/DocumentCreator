@@ -10,7 +10,6 @@ using Stutton.DocumentCreator.ViewModels.Dialogs;
 
 namespace Stutton.DocumentCreator.Fields.List.Document
 {
-    [DataContract(Name = "ListFieldStep")]
     public class ListFieldStepModel : Observable
     {
         private readonly IImageService _imageService;
@@ -23,7 +22,6 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         }
 
         private int _index;
-        [DataMember]
         public int Index
         {
             get => _index;
@@ -31,7 +29,6 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         }
 
         private string _text;
-        [DataMember]
         public string Text
         {
             get => _text;
@@ -47,7 +44,6 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         }
 
         private BitmapSource _image;
-        //TODO: Add bitmap de/serialization
         public BitmapSource Image
         {
             get => _image;

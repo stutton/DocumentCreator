@@ -5,14 +5,12 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stutton.DocumentCreator.Fields.Text.Template
+namespace Stutton.DocumentCreator.Fields.UserName.Document
 {
-    [DataContract(Name = "TextField")]
-    public class TextFieldTemplateDto : FieldTemplateDtoBase
+    [DataContract(Name = "UserNameField")]
+    public class UserNameDocumentDto : FieldDocumentDtoBase
     {
-        [DataMember]
         public override string Name { get; set; }
-        [DataMember]
         public string TextToReplace { get; set; }
     }
 }

@@ -16,6 +16,8 @@ namespace Stutton.DocumentCreator.ViewModels.Documents
     {
         private readonly INavigationService _navigator;
 
+        public event EventHandler<EventArgs> RequestDeleteMe; 
+
         public DocumentCardViewModel(DocumentTemplateModel model, INavigationService navigator)
         {
             _navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
@@ -44,6 +46,18 @@ namespace Stutton.DocumentCreator.ViewModels.Documents
         private void Edit()
         {
             _navigator.NavigateTo(EditTemplatePageViewModel.Key, Model);
+        }
+
+        #endregion
+
+        #region Delete Command
+
+        private ICommand _deleteCommand;
+        public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
+
+        private void Delete()
+        {
+            RequestDeleteMe?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

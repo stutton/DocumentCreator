@@ -27,6 +27,7 @@
                             DocumentName="{Binding Model.TemplateDetails.Name}"
                             EditCommand="{Binding EditCommand}"
                             SelectCommand="{Binding SelectCommand}"
+                            DeleteCommand="{Binding DeleteCommand}"
                             Type="{Binding Model.TemplateDetails.DocumentType}" />
     </DataTemplate>
 

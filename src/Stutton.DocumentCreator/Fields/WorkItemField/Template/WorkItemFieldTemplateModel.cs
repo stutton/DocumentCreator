@@ -10,7 +10,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
-    public class WorkItemFieldTemplateModel : FieldTemplateBase, IRequiresInitialization
+    public class WorkItemFieldTemplateModel : FieldTemplateModelBase, IRequiresInitialization
     {
         private readonly ITfsService _tfsService;
         public const string Key = "WorkItemField";
@@ -65,7 +65,7 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
             return Response.FromSuccess();
         }
 
-        public override IFieldDocument GetDocumentField()
+        public override FieldDocumentModelBase GetDocumentField()
         {
             var documentField = new WorkItemFieldDocumentModel(_tfsService)
             {

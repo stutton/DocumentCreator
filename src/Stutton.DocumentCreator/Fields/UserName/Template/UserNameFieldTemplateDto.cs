@@ -10,10 +10,8 @@ namespace Stutton.DocumentCreator.Fields.UserName.Template
     [DataContract(Name = "UserNameField")]
     public class UserNameFieldTemplateDto : FieldTemplateDtoBase
     {
-        [IgnoreDataMember]
-        public override Type ModelType => typeof(UserNameFieldTemplateModel);
         [DataMember]
-        public string Name { get; set; }
+        public override string Name { get; set; }
         [DataMember]
         public string TextToReplace { get; set; }
     }
