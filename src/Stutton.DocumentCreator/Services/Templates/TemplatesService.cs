@@ -35,19 +35,7 @@ namespace Stutton.DocumentCreator.Services.Templates
             var mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.ConstructServicesUsing(Resolver);
-
-                cfg.CreateMap<FieldTemplateBase, FieldTemplateDtoBase>()
-                   .Include<ListFieldTemplateModel, ListFieldTemplateDto>()
-                   .Include<TextFieldTemplateModel, TextFieldTemplateDto>()
-                   .Include<UserNameFieldTemplateModel, UserNameFieldTemplateDto>()
-                   .Include<WorkItemFieldTemplateModel, WorkItemFieldTemplateDto>()
-                   .ReverseMap();
-                cfg.CreateMap<ListFieldTemplateModel, ListFieldTemplateDto>().ReverseMap().ConstructUsingServiceLocator();
-                cfg.CreateMap<TextFieldTemplateModel, TextFieldTemplateDto>().ReverseMap().ConstructUsingServiceLocator();
-                cfg.CreateMap<UserNameFieldTemplateModel, UserNameFieldTemplateDto>().ReverseMap().ConstructUsingServiceLocator();
-                cfg.CreateMap<WorkItemFieldTemplateModel, WorkItemFieldTemplateDto>().ReverseMap().ConstructUsingServiceLocator();
-
-                cfg.CreateMap<DocumentTemplateModel, DocumentTemplateDto>().ReverseMap();
+                cfg.AddProfile<FieldMapperProfile>();
             });
             mapperConfig.AssertConfigurationIsValid();
             _mapper = new Mapper(mapperConfig, Resolver);

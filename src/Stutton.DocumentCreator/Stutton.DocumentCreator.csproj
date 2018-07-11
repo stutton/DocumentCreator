@@ -62,6 +62,7 @@
       <DependentUpon>AttachToWorkItemAutomationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Automations\IAutomation.cs" />
+    <Compile Include="Fields\FieldMapperProfile.cs" />
     <Compile Include="Fields\FieldTemplateBase.cs" />
     <Compile Include="Fields\FieldTemplateMapper.cs" />
     <Compile Include="Fields\IFieldDocument.cs" />
