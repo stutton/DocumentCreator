@@ -39,7 +39,7 @@
                         <Grid Height="32">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="80" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock VerticalAlignment="Center" Text="{Binding FieldName}" />
@@ -103,21 +103,41 @@
                         <StackPanel Grid.Column="2"
                                     VerticalAlignment="Top"
                                     Visibility="{Binding Operator, Converter={StaticResource InOpToVisibilityConverter}}">
-                            <ItemsControl ItemsSource="{Binding Values}">
+                            <TextBlock Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                                       Opacity="0.5"
+                                       FontSize="10"
+                                       Text="Value Set"/>
+                            <ItemsControl ItemsSource="{Binding Values}"
+                                          Margin="0,-4,0,0">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBox Height="28"
-                                                 MinWidth="100"
-                                                 materialDesign:HintAssist.Hint="Value"
-                                                 Text="{Binding Value}" />
+                                        <DockPanel>
+                                            <Button DockPanel.Dock="Right" 
+                                                    Style="{DynamicResource MaterialDesignFlatButton}"
+                                                    Command="{Binding DeleteCommand}">
+                                                <materialDesign:PackIcon Kind="Delete"
+                                                                         Width="24"
+                                                                         Height="24" />
+                                            </Button>
+                                            <TextBox Height="28"
+                                                     MinWidth="100"
+                                                     materialDesign:HintAssist.Hint="Value"
+                                                     Text="{Binding Value}" />
+                                            
+                                        </DockPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <Button Margin="0,4,0,0"
-                                    Command="{Binding DataContext.AddInValueCommand, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemQueryStep}}}"
+                                    Command="{Binding AddInValueCommand}"
                                     CommandParameter="{Binding}"
-                                    Content="ADD VALUE"
-                                    Style="{DynamicResource MaterialDesignFlatButton}" />
+                                    HorizontalAlignment="Right"
+                                    Style="{DynamicResource MaterialDesignFlatButton}"
+                                    ToolTip="Add Value">
+                                <materialDesign:PackIcon Kind="Plus"
+                                                         Width="24"
+                                                         Height="24"/>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </controls:EditorExpander>

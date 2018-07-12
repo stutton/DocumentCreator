@@ -35,18 +35,6 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         #endregion
 
-        #region ICommand AddInValueCommand
-
-        private ICommand _addInValueCommand;
-        public ICommand AddInValueCommand => _addInValueCommand ?? (_addInValueCommand = new RelayCommand<WorkItemQueryExpressionModel>(AddInValue));
-
-        private void AddInValue(WorkItemQueryExpressionModel expression)
-        {
-            expression.Values.Add(new WorkItemQueryInValue());
-        }
-
-        #endregion
-
         public async Task Initialize()
         {
             var workItemFieldsResponse = await _tfsService.GetWorkItemFields();

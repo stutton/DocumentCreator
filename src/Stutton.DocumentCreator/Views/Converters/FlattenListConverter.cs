@@ -39,6 +39,7 @@ namespace Stutton.DocumentCreator.Views.Converters
 
                     return sb.ToString().TrimEnd(Separator, ' ');
                 }
+                return string.Empty;
             }
             return value;
         }
