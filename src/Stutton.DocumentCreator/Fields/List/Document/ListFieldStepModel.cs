@@ -53,7 +53,6 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         #region MoveUp Command
 
         private ICommand _moveUpCommand;
-        [IgnoreDataMember]
         public ICommand MoveUpCommand => _moveUpCommand ?? (_moveUpCommand = new RelayCommand(MoveUp));
 
         private void MoveUp()
@@ -66,7 +65,6 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         #region MoveDown Command
 
         private ICommand _moveDownCommand;
-        [IgnoreDataMember]
         public ICommand MoveDownCommand => _moveDownCommand ?? (_moveDownCommand = new RelayCommand(MoveDown));
 
         private void MoveDown()
@@ -79,7 +77,6 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         #region Delete Command
 
         private ICommand _deleteCommand;
-        [IgnoreDataMember]
         public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
 
         private void Delete()
@@ -92,7 +89,6 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         #region AddImage Command
 
         private ICommand _addImageCommand;
-        [IgnoreDataMember]
         public ICommand AddImageCommand => _addImageCommand ?? (_addImageCommand = new RelayCommand(async () => await AddImage()));
 
         private async Task AddImage()

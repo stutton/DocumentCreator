@@ -14,7 +14,7 @@
              d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:ValueCompareToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <materialConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:ValueCompareToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"
                                                           TrueValue="Collapsed"
                                                           FalseValue="Visible"/>
@@ -98,12 +98,18 @@
                                              AcceptsReturn="True" />
                                 </DockPanel>
 
-                                <Image Grid.Row="1"
-                                       Grid.Column="1"
-                                       Margin="8"
-                                       Source="{Binding Image}"
-                                       Stretch="Uniform"
-                                       Visibility="{Binding HasImage, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <Border Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="0,0,16,16"
+                                        BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                                        BorderThickness="2"
+                                        HorizontalAlignment="Left"
+                                        Visibility="{Binding HasImage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        MaxWidth="800">
+                                    <Image Source="{Binding Image}"
+                                           Stretch="Uniform">
+                                    </Image>
+                                </Border>
                             </Grid>
                         </materialDesign:Card>
                     </DataTemplate>
