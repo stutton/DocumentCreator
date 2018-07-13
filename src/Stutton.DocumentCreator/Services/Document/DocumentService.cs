@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DocumentFormat.OpenXml.Packaging;
+using Newtonsoft.Json;
 using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models.Document;
 using Stutton.DocumentCreator.Models.Documents;
@@ -17,11 +19,18 @@ namespace Stutton.DocumentCreator.Services.Document
     public class DocumentService : IDocumentService
     {
         private readonly IServiceResolver _serviceResolver;
+        private readonly IMapper _mapper;
         private static readonly string TempDirectory = Path.GetTempPath();
 
-        public DocumentService(IServiceResolver serviceResolver)
+        private readonly string _documentSaveDirectoryName =
+            $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Saves";
+
+        private readonly string _documentSaveFileExtension = "dcs";
+
+        public DocumentService(IServiceResolver serviceResolver, IMapper mapper)
         {
             _serviceResolver = serviceResolver;
+            _mapper = mapper;
         }
 
         public async Task<IResponse<string>> CreateDocument(DocumentModel model, IWorkItem workItem)
@@ -48,6 +57,39 @@ namespace Stutton.DocumentCreator.Services.Document
             }
 
             return Response<string>.FromSuccess(outFile);
+        }
+
+        public async Task<IResponse> SaveDocument(DocumentModel model, IWorkItem workItems)
+        {
+            try
+            {
+                if (!Directory.Exists(_documentSaveDirectoryName))
+                {
+                    Directory.CreateDirectory(_documentSaveDirectoryName);
+                }
+
+                var documentDto = _mapper.Map<DocumentDto>(model);
+
+                var documentJson = await Task.Run(
+                    () => JsonConvert.SerializeObject(
+                        documentDto,
+                        Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            TypeNameHandling = TypeNameHandling.Objects,
+                            TypeNameAssemblyFormatHandling =
+                                TypeNameAssemblyFormatHandling.Simple
+                        }));
+
+                await Task.Run(() => File.WriteAllText(
+                                   $"{_documentSaveDirectoryName}\\{workItems.Id}.{_documentSaveFileExtension}",
+                                   documentJson));
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException($"Failed to save document {model.Details.Name}", ex);
+            }
         }
 
         public async Task<IResponse> ExecuteAutomations(DocumentModel model, IWorkItem workItem, string documentPath)

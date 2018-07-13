@@ -111,6 +111,23 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         #endregion
 
+        #region Save Command
+
+        private ICommand _saveCommand;
+        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(async () => await Save()));
+
+        private async Task Save()
+        {
+            var response = await _documentService.SaveDocument(Document, WorkItemStepVm.SelectedWorkItem);
+            if (!response.Success)
+            {
+                _telemetryService.TrackFailedResponse(response);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message));
+            }
+        }
+
+        #endregion
+
         public DocumentCreatorPageViewModel(INavigationService navigationService, ITfsService tfsService, ITelemetryService telemetryService, IDocumentService documentService)
         {
             _navigationService = navigationService;
@@ -119,6 +136,8 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             _documentService = documentService;
 
             IsInEditMode = true;
+            ToolBar.Save.IsShown = true;
+            ToolBar.Save.Command = SaveCommand;
         }
 
         public override async Task NavigatedTo(object parameter)

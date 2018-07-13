@@ -17,8 +17,6 @@ namespace Stutton.DocumentCreator.Fields
         public FieldDocumentMapperProfile()
         {
             CreateMap<FieldDocumentModelBase, FieldDocumentDtoBase>().ReverseMap();
-
-            CreateMap<DocumentModel, DocumentDto>().ReverseMap();
         }
     }
 }

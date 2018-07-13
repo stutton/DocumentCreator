@@ -13,6 +13,10 @@ namespace Stutton.DocumentCreator.Fields.List.Document
     {
         public byte[] Convert(BitmapSource source, byte[] destination, ResolutionContext context)
         {
+            if (source == null)
+            {
+                return null;
+            }
             using (var stream = new MemoryStream())
             {
                 var encoder = new PngBitmapEncoder();

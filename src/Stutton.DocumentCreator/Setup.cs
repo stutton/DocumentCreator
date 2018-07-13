@@ -5,10 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Automations;
 using Stutton.DocumentCreator.Fields;
+using Stutton.DocumentCreator.Models.Document;
 using Stutton.DocumentCreator.Models.Settings;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Properties;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Automations;
@@ -61,11 +64,25 @@ namespace Stutton.DocumentCreator
             _container.RegisterType<ITemplatesService, TemplatesService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITelemetryService, TelemetryService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IServiceResolver, ServiceResolver>(new ContainerControlledLifetimeManager());
+            _container.RegisterInstance<IMapper>(InitializeMapper());
             _container.RegisterInstance<IFieldTemplateFactoryService>(new FieldTemplateFactoryService(t => _container.Resolve(t) as FieldTemplateModelBase));
             _container.RegisterInstance<IAutomationFactoryService>(
                 new AutomationFactoryService(t => _container.Resolve(t) as IAutomation));
             _container.RegisterType<IDocumentService, DocumentService>(new ContainerControlledLifetimeManager());
             _container.RegisterInstance(messageQueue, new ExternallyControlledLifetimeManager());
+        }
+
+        private static Mapper InitializeMapper()
+        {
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.ConstructServicesUsing(t => _container.Resolve(t));
+                cfg.AddProfiles(typeof(Setup).Assembly);
+                cfg.CreateMap<DocumentTemplateModel, DocumentTemplateDto>().ReverseMap();
+                cfg.CreateMap<DocumentModel, DocumentDto>();
+            });
+            mapperConfig.AssertConfigurationIsValid();
+            return new Mapper(mapperConfig, t => _container.Resolve(t));
         }
 
         private static async Task LoadInitialSettings()

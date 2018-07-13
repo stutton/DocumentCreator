@@ -19,27 +19,15 @@ namespace Stutton.DocumentCreator.Services.Templates
 {
     public class TemplatesService : ITemplatesService
     {
-        private readonly IServiceResolver _serviceResolver;
-        private readonly ITelemetryService _telemetryService;
         private readonly IMapper _mapper;
 
         private readonly string _documentTemplatesDirectoryName =
             $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Templates";
         private readonly string _documentTemplateFileExtension = "template";
 
-        public TemplatesService(IServiceResolver serviceResolver, ITelemetryService telemetryService)
+        public TemplatesService(IMapper mapper)
         {
-            _serviceResolver = serviceResolver ?? throw new ArgumentNullException(nameof(serviceResolver));
-            _telemetryService = telemetryService ?? throw new ArgumentNullException(nameof(telemetryService));
-
-            var mapperConfig = new MapperConfiguration(cfg =>
-            {
-                cfg.ConstructServicesUsing(Resolver);
-                cfg.AddProfiles(typeof(TemplatesService).Assembly);
-                cfg.CreateMap<DocumentTemplateModel, DocumentTemplateDto>().ReverseMap();
-            });
-            mapperConfig.AssertConfigurationIsValid();
-            _mapper = new Mapper(mapperConfig, Resolver);
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<IResponse<IEnumerable<DocumentTemplateModel>>> GetDocuments()
@@ -120,18 +108,6 @@ namespace Stutton.DocumentCreator.Services.Templates
             {
                 return Response.FromException($"Failed to delete template {document.TemplateDetails.Name}", ex);
             }
-        }
-
-        private object Resolver(Type type)
-        {
-            var response = _serviceResolver.Resolve(type);
-            if (!response.Success)
-            {
-                _telemetryService.TrackFailedResponse(response);
-                return null;
-            }
-
-            return response.Value;
         }
     }
 }

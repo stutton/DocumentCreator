@@ -14,6 +14,7 @@ namespace Stutton.DocumentCreator.Services.Document
     public interface IDocumentService
     {
         Task<IResponse<string>> CreateDocument(DocumentModel model, IWorkItem workItem);
+        Task<IResponse> SaveDocument(DocumentModel model, IWorkItem workItems);
         Task<IResponse> ExecuteAutomations(DocumentModel model, IWorkItem workItem, string documentPath);
     }
 }
