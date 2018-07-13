@@ -174,6 +174,7 @@
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MaterialOpenFileDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MessageDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\StringPromptDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentCardViewModel.cs" />
@@ -213,6 +214,9 @@
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Views\Dialogs\AddImageDialog.xaml.cs">
       <DependentUpon>AddImageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\StringPromptDialog.xaml.cs">
+      <DependentUpon>StringPromptDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Documents\Steps\FieldsStep.xaml.cs">
       <DependentUpon>FieldsStep.xaml</DependentUpon>
@@ -346,6 +350,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\AddImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\StringPromptDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

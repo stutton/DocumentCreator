@@ -118,6 +118,13 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         private async Task Save()
         {
+            var dialogVm = new StringPromptDialogViewModel{PromptMessage = "Pick a name for the save file"};
+            if (!(bool) await DialogHost.Show(dialogVm))
+            {
+                return;
+            }
+
+            var saveName = dialogVm.InputString;
             var response = await _documentService.SaveDocument(Document, WorkItemStepVm.SelectedWorkItem);
             if (!response.Success)
             {

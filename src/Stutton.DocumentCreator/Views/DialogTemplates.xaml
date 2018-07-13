@@ -20,4 +20,8 @@
         <dialogs:AddImageDialog />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialogVms:StringPromptDialogViewModel}">
+        <dialogs:StringPromptDialog/>
+    </DataTemplate>
+
 </ResourceDictionary>
