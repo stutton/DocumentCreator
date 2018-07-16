@@ -4,10 +4,6 @@
                     xmlns:pageViewModels="clr-namespace:Stutton.DocumentCreator.ViewModels.Pages"
                     xmlns:pages="clr-namespace:Stutton.DocumentCreator.Views.Pages">
 
-    <DataTemplate DataType="{x:Type pageViewModels:WorkItemsPageViewModel}">
-        <pages:WorkItemsPage />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type pageViewModels:DocumentsPageViewModel}">
         <pages:DocumentsPage />
     </DataTemplate>

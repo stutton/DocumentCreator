@@ -26,7 +26,7 @@
                   VerticalScrollBarVisibility="Auto">
         <Grid Margin="16">
 
-            <ItemsControl ItemsSource="{Binding Documents}">
+            <ItemsControl ItemsSource="{Binding Templates}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <controls:TilePanel Orientation="Vertical"

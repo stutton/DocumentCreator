@@ -6,7 +6,8 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:views="clr-namespace:Stutton.DocumentCreator.Views"
                     xmlns:workItems="clr-namespace:Stutton.DocumentCreator.ViewModels.WorkItems"
-                    xmlns:workItems1="clr-namespace:Stutton.DocumentCreator.Models.WorkItems">
+                    xmlns:workItems1="clr-namespace:Stutton.DocumentCreator.Models.WorkItems"
+                    xmlns:templates="clr-namespace:Stutton.DocumentCreator.ViewModels.Templates">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
@@ -22,7 +23,7 @@
                             State="{Binding State}" />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type documentVms:DocumentCardViewModel}">
+    <DataTemplate DataType="{x:Type templates:TemplateCardViewModel}">
         <cards:DocumentCard Description="{Binding Model.TemplateDetails.Description}"
                             DocumentName="{Binding Model.TemplateDetails.Name}"
                             EditCommand="{Binding EditCommand}"

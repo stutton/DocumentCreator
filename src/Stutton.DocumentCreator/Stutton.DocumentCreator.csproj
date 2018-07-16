@@ -178,6 +178,7 @@
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentCardViewModel.cs" />
+    <Compile Include="ViewModels\Templates\TemplateCardViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\FieldsStepViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\SummaryStepViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\WorkItemStepViewModel.cs" />
@@ -194,7 +195,6 @@
     <Compile Include="ViewModels\Navigation\NavigationService.cs" />
     <Compile Include="ViewModels\Pages\PageBase.cs" />
     <Compile Include="ViewModels\Pages\SettingsPageViewModel.cs" />
-    <Compile Include="ViewModels\Pages\WorkItemsPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Toolbar\ButtonOptions.cs" />
     <Compile Include="ViewModels\Toolbar\SearchBarOptions.cs" />
@@ -268,9 +268,6 @@
     </Compile>
     <Compile Include="Views\Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Pages\WorkItemsPage.xaml.cs">
-      <DependentUpon>WorkItemsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShadowAnimationAssist.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
@@ -418,10 +415,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Pages\SettingsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Pages\WorkItemsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -27,6 +27,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly ITfsService _tfsService;
         private readonly ITelemetryService _telemetryService;
         private readonly IDocumentService _documentService;
+        private readonly ISnackbarMessageQueue _messageQueue;
         public const string Key = "DocumentCreatorPage";
         public override string PageKey => Key;
         public override string Title => "Create Document";
@@ -78,7 +79,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             try
             {
                 IsBusy = true;
-                var result = await _documentService.CreateDocument(Document, WorkItemStepVm.SelectedWorkItem);
+                var result = await _documentService.CreateDocumentAsync(Document, WorkItemStepVm.SelectedWorkItem);
                 if (!result.Success)
                 {
                     await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
@@ -125,22 +126,25 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             }
 
             var saveName = dialogVm.InputString;
-            var response = await _documentService.SaveDocument(Document, WorkItemStepVm.SelectedWorkItem);
+            var response = await _documentService.SaveDocumentAsync(Document, WorkItemStepVm.SelectedWorkItem, saveName);
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);
                 await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message));
+                return;
             }
+            _messageQueue.Enqueue("Document saved");
         }
 
         #endregion
 
-        public DocumentCreatorPageViewModel(INavigationService navigationService, ITfsService tfsService, ITelemetryService telemetryService, IDocumentService documentService)
+        public DocumentCreatorPageViewModel(INavigationService navigationService, ITfsService tfsService, ITelemetryService telemetryService, IDocumentService documentService, ISnackbarMessageQueue messageQueue)
         {
             _navigationService = navigationService;
             _tfsService = tfsService;
             _telemetryService = telemetryService;
             _documentService = documentService;
+            _messageQueue = messageQueue;
 
             IsInEditMode = true;
             ToolBar.Save.IsShown = true;

@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.Documents;
+using Stutton.DocumentCreator.Services.Document;
 using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Services.Templates;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Documents;
 using Stutton.DocumentCreator.ViewModels.Navigation;
+using Stutton.DocumentCreator.ViewModels.Templates;
 
 namespace Stutton.DocumentCreator.ViewModels.Pages
 {
@@ -27,20 +29,33 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly ITemplatesService _templatesService;
         private readonly INavigationService _navigationService;
         private readonly ITelemetryService _telemetryService;
+        private readonly IDocumentService _documentService;
 
-        public DocumentsPageViewModel(ITemplatesService templatesService, INavigationService navigationService, ITelemetryService telemetryService)
+        public DocumentsPageViewModel(ITemplatesService templatesService, 
+                                      INavigationService navigationService, 
+                                      ITelemetryService telemetryService,
+                                      IDocumentService documentService)
         {
             _templatesService = templatesService;
             _navigationService = navigationService;
             _telemetryService = telemetryService;
+            _documentService = documentService;
         }
 
-        private ObservableCollection<DocumentCardViewModel> _propertyName;
+        private ObservableCollection<TemplateCardViewModel> _propertyName;
 
-        public ObservableCollection<DocumentCardViewModel> Documents
+        public ObservableCollection<TemplateCardViewModel> Templates
         {
             get => _propertyName;
             private set => Set(ref _propertyName, value);
+        }
+
+        private ObservableCollection<DocumentCardViewModel> _savedDocuments;
+
+        public ObservableCollection<DocumentCardViewModel> SavedDocuments
+        {
+            get => _savedDocuments;
+            private set => Set(ref _savedDocuments, value);
         }
 
         #region ICommand CreateDocumentTemplateCommand
@@ -63,19 +78,37 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
                 _telemetryService.TrackPageView(Key);
 
-                var documentResponse = await _templatesService.GetDocuments();
+                var documentResponse = await _documentService.LoadAllSavedDocumentsAsync();
 
                 if (!documentResponse.Success)
                 {
                     _telemetryService.TrackFailedResponse(documentResponse);
                     await DialogHost.Show(new ErrorMessageDialogViewModel(documentResponse.Message));
+                }
+                else
+                {
+                    SavedDocuments = new ObservableCollection<DocumentCardViewModel>(
+                        documentResponse.Value.Select(d =>
+                        {
+                            var card = new DocumentCardViewModel(d, _navigationService);
+                            card.RequestDeleteMe += SavedDocumentDardOnRequestDeleteMe;
+                            return card;
+                        }));
+                }
+
+                var templateResponse = await _templatesService.GetDocuments();
+
+                if (!templateResponse.Success)
+                {
+                    _telemetryService.TrackFailedResponse(templateResponse);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(templateResponse.Message));
                     return;
                 }
 
-                Documents = new ObservableCollection<DocumentCardViewModel>(
-                    documentResponse.Value.Select(d =>
+                Templates = new ObservableCollection<TemplateCardViewModel>(
+                    templateResponse.Value.Select(d =>
                     {
-                        var card = new DocumentCardViewModel(d, _navigationService);
+                        var card = new TemplateCardViewModel(d, _navigationService);
                         card.RequestDeleteMe += CardOnRequestDeleteMe;
                         return card;
                     }));
@@ -92,7 +125,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             {
                 IsBusy = true;
 
-                var toDelete = (DocumentCardViewModel) sender;
+                var toDelete = (TemplateCardViewModel) sender;
 
                 var response = await _templatesService.DeleteDocumentTemplate(toDelete.Model);
                 if (!response.Success)
@@ -103,7 +136,24 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 }
 
                 toDelete.RequestDeleteMe -= CardOnRequestDeleteMe;
-                Documents.Remove(toDelete);
+                Templates.Remove(toDelete);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private async void SavedDocumentDardOnRequestDeleteMe(object sender, EventArgs e)
+        {
+            try
+            {
+                IsBusy = true;
+
+                var toDelete = (DocumentCardViewModel) sender;
+
+                //var response = await _documentService.DeleteSavedDocumentAsync(toDelete.Model);
+                
             }
             finally
             {

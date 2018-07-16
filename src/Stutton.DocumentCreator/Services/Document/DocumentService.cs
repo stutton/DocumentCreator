@@ -13,6 +13,7 @@ using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Shared;
+using Directory = System.IO.Directory;
 
 namespace Stutton.DocumentCreator.Services.Document
 {
@@ -33,7 +34,7 @@ namespace Stutton.DocumentCreator.Services.Document
             _mapper = mapper;
         }
 
-        public async Task<IResponse<string>> CreateDocument(DocumentModel model, IWorkItem workItem)
+        public async Task<IResponse<string>> CreateDocumentAsync(DocumentModel model, IWorkItem workItem)
         {
             if (!File.Exists(model.Details.TemplateFilePath))
             {
@@ -59,7 +60,7 @@ namespace Stutton.DocumentCreator.Services.Document
             return Response<string>.FromSuccess(outFile);
         }
 
-        public async Task<IResponse> SaveDocument(DocumentModel model, IWorkItem workItems)
+        public async Task<IResponse> SaveDocumentAsync(DocumentModel model, IWorkItem workItem, string name)
         {
             try
             {
@@ -82,7 +83,7 @@ namespace Stutton.DocumentCreator.Services.Document
                         }));
 
                 await Task.Run(() => File.WriteAllText(
-                                   $"{_documentSaveDirectoryName}\\{workItems.Id}.{_documentSaveFileExtension}",
+                                   $"{_documentSaveDirectoryName}\\{name}.{_documentSaveFileExtension}",
                                    documentJson));
                 return Response.FromSuccess();
             }
@@ -92,7 +93,48 @@ namespace Stutton.DocumentCreator.Services.Document
             }
         }
 
-        public async Task<IResponse> ExecuteAutomations(DocumentModel model, IWorkItem workItem, string documentPath)
+        public async Task<IResponse<IEnumerable<DocumentModel>>> LoadAllSavedDocumentsAsync()
+        {
+            try
+            {
+                if (!Directory.Exists(_documentSaveDirectoryName))
+                {
+                    return Response<IEnumerable<DocumentModel>>.FromSuccess(new List<DocumentModel>());
+                }
+
+                var documentFiles =
+                    await Task.Run(
+                        () => Directory.GetFiles(_documentSaveDirectoryName, $"*.{_documentSaveFileExtension}"));
+
+                if (!documentFiles.Any())
+                {
+                    return Response<IEnumerable<DocumentModel>>.FromSuccess(new List<DocumentModel>());
+                }
+
+                var documents = new List<DocumentModel>();
+                foreach (var documentFile in documentFiles)
+                {
+                    var documentJson = await Task.Run(() => File.ReadAllText(documentFile));
+                    var documentDto = await Task.Run(
+                        () => JsonConvert.DeserializeObject<DocumentDto>(
+                            documentJson,
+                            new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.Objects
+                            }));
+                    var document = _mapper.Map<DocumentModel>(documentDto);
+                    documents.Add(document);
+                }
+
+                return Response<IEnumerable<DocumentModel>>.FromSuccess(documents);
+            }
+            catch (Exception ex)
+            {
+                return Response<IEnumerable<DocumentModel>>.FromException("Failed to load saved documents", ex);
+            }
+        }
+
+        public async Task<IResponse> ExecuteAutomationsAsync(DocumentModel model, IWorkItem workItem, string documentPath)
         {
             //foreach (var automation in model.Automations)
             //{

@@ -63,7 +63,7 @@ namespace Stutton.DocumentCreator.Services.Templates
             }
             catch (Exception ex)
             {
-                return Response<IEnumerable<DocumentTemplateModel>>.FromException("Failed to get saved documents", ex);
+                return Response<IEnumerable<DocumentTemplateModel>>.FromException("Failed to load document templates", ex);
             }
         }
 
