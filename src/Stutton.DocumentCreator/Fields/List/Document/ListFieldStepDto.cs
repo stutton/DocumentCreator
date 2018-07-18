@@ -10,6 +10,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
     {
         public int Index { get; set; }
         public string Text { get; set; }
+        public bool HasImage { get; set; }
         public byte[] Image { get; set; }
     }
 }

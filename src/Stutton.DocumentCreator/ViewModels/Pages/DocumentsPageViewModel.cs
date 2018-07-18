@@ -30,16 +30,19 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly INavigationService _navigationService;
         private readonly ITelemetryService _telemetryService;
         private readonly IDocumentService _documentService;
+        private readonly ISnackbarMessageQueue _messageQueue;
 
         public DocumentsPageViewModel(ITemplatesService templatesService, 
                                       INavigationService navigationService, 
                                       ITelemetryService telemetryService,
-                                      IDocumentService documentService)
+                                      IDocumentService documentService,
+                                      ISnackbarMessageQueue messageQueue)
         {
             _templatesService = templatesService;
             _navigationService = navigationService;
             _telemetryService = telemetryService;
             _documentService = documentService;
+            _messageQueue = messageQueue;
         }
 
         private ObservableCollection<TemplateCardViewModel> _propertyName;
@@ -91,7 +94,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                         documentResponse.Value.Select(d =>
                         {
                             var card = new DocumentCardViewModel(d, _navigationService);
-                            card.RequestDeleteMe += SavedDocumentDardOnRequestDeleteMe;
+                            card.RequestDeleteMe += SavedDocumentCardOnRequestDeleteMe;
                             return card;
                         }));
                 }
@@ -131,7 +134,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 if (!response.Success)
                 {
                     _telemetryService.TrackFailedResponse(response);
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message));
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
                     return;
                 }
 
@@ -144,7 +147,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             }
         }
 
-        private async void SavedDocumentDardOnRequestDeleteMe(object sender, EventArgs e)
+        private async void SavedDocumentCardOnRequestDeleteMe(object sender, EventArgs e)
         {
             try
             {
@@ -152,8 +155,17 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
                 var toDelete = (DocumentCardViewModel) sender;
 
-                //var response = await _documentService.DeleteSavedDocumentAsync(toDelete.Model);
-                
+                var response = await _documentService.DeleteSavedDocumentAsync(toDelete.Model);
+                if (!response.Success)
+                {
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                    return;
+                }
+
+                toDelete.RequestDeleteMe -= SavedDocumentCardOnRequestDeleteMe;
+                SavedDocuments.Remove(toDelete);
+
+                _messageQueue.Enqueue($"Deleted {toDelete.Model.FileName}");
             }
             finally
             {

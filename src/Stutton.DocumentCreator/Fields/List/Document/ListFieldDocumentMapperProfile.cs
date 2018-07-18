@@ -16,12 +16,17 @@ namespace Stutton.DocumentCreator.Fields.List.Document
             CreateMap<BitmapSource, byte[]>().ConvertUsing<BitmapSourceToBytesTypeConverter>();
 
             CreateMap<ListFieldStepModel, ListFieldStepDto>()
-                .ReverseMap()
+                .ConstructUsingServiceLocator();
+
+            CreateMap<ListFieldStepDto, ListFieldStepModel>()
                 .ConstructUsingServiceLocator();
 
             CreateMap<ListFieldDocumentModel, ListFieldDocumentDto>()
                 .IncludeBase<FieldDocumentModelBase, FieldDocumentDtoBase>()
-                .ReverseMap()
+                .ConstructUsingServiceLocator();
+
+            CreateMap<ListFieldDocumentDto, ListFieldDocumentModel>()
+                .IncludeBase<FieldDocumentDtoBase, FieldDocumentModelBase>()
                 .ConstructUsingServiceLocator();
         }
     }

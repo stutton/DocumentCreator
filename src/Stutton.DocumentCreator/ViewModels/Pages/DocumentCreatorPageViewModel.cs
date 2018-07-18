@@ -156,14 +156,27 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             IsBusy = true;
             _telemetryService.TrackPageView(Key);
 
-            if (parameter == null || !(parameter is DocumentTemplateModel template))
+            if (parameter == null)
             {
                 await DialogHost.Show(new ErrorMessageDialogViewModel("No document selected"), MainWindow.RootDialog);
                 await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
                 return;
             }
 
-            Document = template.GetNewDocument();
+            if (parameter is DocumentTemplateModel template)
+            {
+                Document = template.GetNewDocument();
+            }
+            else if (parameter is DocumentModel doc)
+            {
+                Document = doc;
+            }
+            else
+            {
+                await DialogHost.Show(new ErrorMessageDialogViewModel("Unexpected document type"), MainWindow.RootDialog);
+                await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
+                return;
+            }
 
             WorkItemStepVm = new WorkItemStepViewModel(_tfsService, Document.Details.WorkItemQuery, _telemetryService);
             await WorkItemStepVm.InitializeAsync();

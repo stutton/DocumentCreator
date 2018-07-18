@@ -16,6 +16,7 @@ namespace Stutton.DocumentCreator.Services.Document
         Task<IResponse<string>> CreateDocumentAsync(DocumentModel model, IWorkItem workItem);
         Task<IResponse> SaveDocumentAsync(DocumentModel model, IWorkItem workItem, string name);
         Task<IResponse<IEnumerable<DocumentModel>>> LoadAllSavedDocumentsAsync();
+        Task<IResponse> DeleteSavedDocumentAsync(DocumentModel model);
         Task<IResponse> ExecuteAutomationsAsync(DocumentModel model, IWorkItem workItem, string documentPath);
     }
 }

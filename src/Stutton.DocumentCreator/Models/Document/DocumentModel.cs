@@ -12,16 +12,20 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Models.Document
 {
-    [DataContract(Name = "Document")]
     public class DocumentModel : Observable
     {
-        [DataMember]
+        private string _fileName;
+        
+        public string FileName
+        {
+            get => _fileName;
+            set => Set(ref _fileName, value);
+        }
+        
         public DocumentDetailsModel Details { get; }
-
-        [DataMember]
+        
         public ObservableCollection<FieldDocumentModelBase> Fields { get; }
-
-        [DataMember]
+        
         public ObservableCollection<IAutomation> Automations { get; }
 
         public DocumentModel(DocumentDetailsModel details, ObservableCollection<FieldDocumentModelBase> fields, ObservableCollection<IAutomation> automations)

@@ -69,6 +69,8 @@ namespace Stutton.DocumentCreator.Services.Document
                     Directory.CreateDirectory(_documentSaveDirectoryName);
                 }
 
+                model.FileName = name;
+
                 var documentDto = _mapper.Map<DocumentDto>(model);
 
                 var documentJson = await Task.Run(
@@ -131,6 +133,32 @@ namespace Stutton.DocumentCreator.Services.Document
             catch (Exception ex)
             {
                 return Response<IEnumerable<DocumentModel>>.FromException("Failed to load saved documents", ex);
+            }
+        }
+
+        public async Task<IResponse> DeleteSavedDocumentAsync(DocumentModel model)
+        {
+            try
+            {
+                if (!Directory.Exists(_documentSaveDirectoryName))
+                {
+                    return Response.FromFailure("Document directory does not exist", ResponseCode.FileNotFound);
+                }
+
+                var fileToDelete = $"{_documentSaveDirectoryName}\\{model}.{_documentSaveFileExtension}";
+
+                if (!File.Exists(fileToDelete))
+                {
+                    return Response.FromFailure("Document save file does not exist", ResponseCode.FileNotFound);
+                }
+
+                await Task.Run(() => File.Delete(fileToDelete));
+
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException("Error deleting document", ex);
             }
         }
 

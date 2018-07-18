@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:documents="clr-namespace:Stutton.DocumentCreator.ViewModels.Documents"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
@@ -22,49 +23,152 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                  VerticalScrollBarVisibility="Auto">
-        <Grid Margin="16">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-            <ItemsControl ItemsSource="{Binding Templates}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <controls:TilePanel Orientation="Vertical"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Top">
-                            <i:Interaction.Behaviors>
-                                <ei:FluidMoveBehavior AppliesTo="Children" Duration="0:0:0.4">
-                                    <ei:FluidMoveBehavior.EaseX>
-                                        <CircleEase EasingMode="EaseInOut" />
-                                    </ei:FluidMoveBehavior.EaseX>
-                                    <ei:FluidMoveBehavior.EaseY>
-                                        <CircleEase EasingMode="EaseInOut" />
-                                    </ei:FluidMoveBehavior.EaseY>
-                                </ei:FluidMoveBehavior>
-                            </i:Interaction.Behaviors>
-                        </controls:TilePanel>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+        <Grid Grid.Row="0"
+              Grid.RowSpan="2"
+              Grid.Column="0"
+              Background="{DynamicResource MaterialDesignLightBackground}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Saved Documents"
+                       Margin="8,8,0,0"
+                       Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                       Opacity="0.3" />
 
-            <Button VerticalAlignment="Bottom"
-                    HorizontalAlignment="Right"
-                    Margin="24"
-                    Style="{DynamicResource MaterialDesignFloatingActionButton}"
-                    Command="{Binding CreateDocumentTemplateCommand}">
-                <materialDesign:PackIcon Kind="Plus"
-                                         Height="24"
-                                         Width="24"/>
-            </Button>
+            <ScrollViewer Grid.Row="1"
+                          Grid.Column="0"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalAlignment="Stretch"
+                          Margin="0,8,0,0"
+                          Background="{DynamicResource MaterialDesignLightBackground}">
+                <ListBox ItemsSource="{Binding SavedDocuments}"
+                         VerticalAlignment="Top"
+                         HorizontalContentAlignment="Stretch"
+                         SelectionMode="Single"
+                         SelectionChanged="SavedDocuments_OnSelectionChanged">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type documents:DocumentCardViewModel}">
+                            <Border Background="Transparent">
+                                <DockPanel Margin="8">
 
-            <ProgressBar Width="24"
-                         Height="24"
-                         Margin="16"
-                         IsIndeterminate="True"
-                         Style="{DynamicResource MaterialDesignCircularProgressBar}"
-                         Value="0"
-                         Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    <Grid DockPanel.Dock="Left">
+                                        <Ellipse Width="40"
+                                                 Height="40"
+                                                 Fill="{DynamicResource PrimaryHueDarkBrush}" />
+                                        <materialDesign:PackIcon Width="20"
+                                                                 Height="20"
+                                                                 HorizontalAlignment="Center"
+                                                                 VerticalAlignment="Center"
+                                                                 Foreground="White"
+                                                                 Kind="Floppy" />
+                                    </Grid>
 
+                                    <Button Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                                            Command="{Binding DeleteCommand}"
+                                            DockPanel.Dock="Right"
+                                            VerticalAlignment="Top"
+                                            HorizontalAlignment="Right">
+                                        <materialDesign:PackIcon Width="24"
+                                                                 Height="24"
+                                                                 Kind="Delete"
+                                                                 Foreground="Black"
+                                                                 Opacity="0.7" />
+                                    </Button>
+
+                                    <Grid Margin="16,4,16,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="16" />
+                                            <RowDefinition Height="20" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                   FontWeight="Bold"
+                                                   Text="{Binding Model.FileName}"
+                                                   VerticalAlignment="Bottom" />
+                                        <TextBlock Grid.Row="1"
+                                                   Margin="0,-4,0,0"
+                                                   VerticalAlignment="Bottom"
+                                                   Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                                   Opacity="0.5">
+                                        <Run Text="{Binding Model.Fields.Count, Mode=OneWay}" />
+                                        <Run Text="fields and" />
+                                        <Run Text="{Binding Model.Automations.Count, Mode=OneWay}" />
+                                        <Run Text="automations" />
+                                        </TextBlock>
+                                    </Grid>
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
         </Grid>
-    </ScrollViewer>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Text="Document Templates"
+                   Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                   Opacity="0.3" 
+                   Margin="16,8,0,0"/>
+
+        <ScrollViewer Grid.Row="1" 
+                      Grid.Column="1"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid Margin="16,0,16,16">
+
+                <ItemsControl ItemsSource="{Binding Templates}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <controls:TilePanel Orientation="Vertical"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top">
+                                <i:Interaction.Behaviors>
+                                    <ei:FluidMoveBehavior AppliesTo="Children"
+                                                          Duration="0:0:0.4">
+                                        <ei:FluidMoveBehavior.EaseX>
+                                            <CircleEase EasingMode="EaseInOut" />
+                                        </ei:FluidMoveBehavior.EaseX>
+                                        <ei:FluidMoveBehavior.EaseY>
+                                            <CircleEase EasingMode="EaseInOut" />
+                                        </ei:FluidMoveBehavior.EaseY>
+                                    </ei:FluidMoveBehavior>
+                                </i:Interaction.Behaviors>
+                            </controls:TilePanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+                <Button VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        Margin="24"
+                        Style="{DynamicResource MaterialDesignFloatingActionButton}"
+                        Command="{Binding CreateDocumentTemplateCommand}">
+                    <materialDesign:PackIcon Kind="Plus"
+                                             Height="24"
+                                             Width="24" />
+                </Button>
+
+                <ProgressBar Width="24"
+                             Height="24"
+                             Margin="16"
+                             IsIndeterminate="True"
+                             Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                             Value="0"
+                             Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            </Grid>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

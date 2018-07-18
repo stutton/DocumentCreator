@@ -14,6 +14,9 @@ namespace Stutton.DocumentCreator.Models.Document
     public class DocumentDto
     {
         [DataMember]
+        public string FileName { get; set; }
+
+        [DataMember]
         public DocumentDetailsModel Details { get; set; }
 
         [DataMember]

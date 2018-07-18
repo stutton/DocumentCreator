@@ -13,6 +13,10 @@ namespace Stutton.DocumentCreator.Fields.List.Document
     {
         public BitmapSource Convert(byte[] source, BitmapSource destination, ResolutionContext context)
         {
+            if (source == null)
+            {
+                return null;
+            }
             using (var stream = new MemoryStream(source))
             {
                 return BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);

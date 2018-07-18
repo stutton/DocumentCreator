@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Stutton.DocumentCreator.ViewModels.Documents;
+using Stutton.DocumentCreator.ViewModels.Pages;
 
 namespace Stutton.DocumentCreator.Views.Pages
 {
@@ -23,6 +25,20 @@ namespace Stutton.DocumentCreator.Views.Pages
         public DocumentsPage()
         {
             InitializeComponent();
+        }
+
+        private void SavedDocuments_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count != 1)
+            {
+                return;
+            }
+
+            if (DataContext is DocumentsPageViewModel vm)
+            {
+                var item = (DocumentCardViewModel) e.AddedItems[0];
+                item.SelectCommand.Execute(null);
+            }
         }
     }
 }
