@@ -13,6 +13,7 @@ using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
+using Stutton.DocumentCreator.ViewModels.Navigation;
 
 namespace Stutton.DocumentCreator.ViewModels.Pages
 {
@@ -29,7 +30,12 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public override string Title => Resources.SettingsPage_Settings;
         public override bool IsOnDemandPage => false;
 
-        public SettingsPageViewModel(ISettingsService settingsService, ITfsService tfsService, ISnackbarMessageQueue messageQueue, ITelemetryService telemetryService)
+        public SettingsPageViewModel(ISettingsService settingsService, 
+                                     ITfsService tfsService, 
+                                     ISnackbarMessageQueue messageQueue, 
+                                     ITelemetryService telemetryService,
+                                     INavigationService navigationService)
+        :base(navigationService)
         {
             _settingsService = settingsService;
             _tfsService = tfsService;

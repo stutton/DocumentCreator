@@ -138,7 +138,12 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         #endregion
 
-        public DocumentCreatorPageViewModel(INavigationService navigationService, ITfsService tfsService, ITelemetryService telemetryService, IDocumentService documentService, ISnackbarMessageQueue messageQueue)
+        public DocumentCreatorPageViewModel(INavigationService navigationService, 
+                                            ITfsService tfsService, 
+                                            ITelemetryService telemetryService, 
+                                            IDocumentService documentService, 
+                                            ISnackbarMessageQueue messageQueue)
+        :base(navigationService)
         {
             _navigationService = navigationService;
             _tfsService = tfsService;

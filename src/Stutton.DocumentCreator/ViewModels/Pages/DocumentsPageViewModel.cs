@@ -37,6 +37,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                                       ITelemetryService telemetryService,
                                       IDocumentService documentService,
                                       ISnackbarMessageQueue messageQueue)
+        :base(navigationService)
         {
             _templatesService = templatesService;
             _navigationService = navigationService;

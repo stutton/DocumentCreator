@@ -49,6 +49,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             ITemplatesService templatesService,
             ITelemetryService telemetryService,
             ITfsService tfsService)
+        :base(navigationService)
         {
             _navigationService = navigationService;
             _fieldFactoryService = fieldFactoryService;
