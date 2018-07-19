@@ -16,6 +16,6 @@
         <controls:OpenFileControl Filters="Word Document|*.docx|All Files|*.*"
                                   CurrentFile="{Binding SelectedFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   FileSelected="BaseFileControl_OnFileSelected"
-                                  Cancel="FileSystemControl_OnCancel"/>
+                                  Cancel="FileSystemControl_OnCancel" />
     </Grid>
 </UserControl>

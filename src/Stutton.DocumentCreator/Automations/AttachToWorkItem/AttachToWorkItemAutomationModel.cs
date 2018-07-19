@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Stutton.DocumentCreator.Models.Document;
 using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Models.WorkItems;
@@ -9,27 +10,29 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Automations.AttachToWorkItem
 {
-    public class AttachToWorkItemAutomationModel : IAutomation
+    public class AttachToWorkItemAutomationModel : AutomationModelBase
     {
-        public string Name => "Attach to work item";
-        public string Description => "Upload and attache the document to work item";
+        private readonly ITfsService _tfsService;
 
-        public async Task<IResponse> Execute(DocumentTemplateModel model, IWorkItem workItem, string documentPath, IServiceResolver serviceResolver)
+        public AttachToWorkItemAutomationModel(ITfsService tfsService)
         {
-            var serviceResponse = serviceResolver.Resolve<ITfsService>();
-            if (!serviceResponse.Success)
-            {
-                return Response.FromFailure(serviceResponse.Message);
-            }
+            _tfsService = tfsService;
+        }
 
-            var tfsService = serviceResponse.Value;
-            var response = await tfsService.AttachFileToWorkItemAsync(documentPath, workItem.Id);
-            if (!response.Success)
-            {
-                return Response.FromFailure(response.Message);
-            }
+        public override string TypeDisplayName => "Attach to work item";
+        public override string Description => "Upload and attache the document to work item";
 
-            return Response.FromSuccess();
+        private string _name;
+        public override string Name
+        {
+            get => _name;
+            set => Set(ref _name, value);
+        }
+
+        public override async Task<IResponse> Execute(DocumentModel document, IWorkItem workItem, string documentPath)
+        {
+            var response = await _tfsService.AttachFileToWorkItemAsync(documentPath, workItem.Id);
+            return !response.Success ? Response.FromFailure(response.Message) : Response.FromSuccess();
         }
     }
 }

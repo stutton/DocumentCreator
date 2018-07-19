@@ -57,11 +57,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationDto.cs" />
     <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationModel.cs" />
     <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationView.xaml.cs">
       <DependentUpon>AttachToWorkItemAutomationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Automations\AutomationDtoBase.cs" />
+    <Compile Include="Automations\AutomationModelBase.cs" />
     <Compile Include="Automations\IAutomation.cs" />
+    <Compile Include="Automations\SaveAs\SaveAsAutomationModel.cs" />
+    <Compile Include="Automations\SaveAs\SaveAsAutomationView.xaml.cs">
+      <DependentUpon>SaveAsAutomationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fields\FieldDocumentMapperProfile.cs" />
     <Compile Include="Fields\FieldDocumentModelBase.cs" />
     <Compile Include="Fields\FieldDocumentDtoBase.cs" />
@@ -173,6 +180,7 @@
     <Compile Include="ViewModels\Dialogs\AddImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MaterialOpenFileDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\MaterialOpenFolderDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\StringPromptDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
@@ -214,6 +222,9 @@
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Views\Dialogs\AddImageDialog.xaml.cs">
       <DependentUpon>AddImageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\MaterialOpenFolderDialog.xaml.cs">
+      <DependentUpon>MaterialOpenFolderDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\StringPromptDialog.xaml.cs">
       <DependentUpon>StringPromptDialog.xaml</DependentUpon>
@@ -282,6 +293,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Automations\SaveAs\SaveAsAutomationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Fields\FieldDocumentTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -347,6 +362,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\AddImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\MaterialOpenFolderDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

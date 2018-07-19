@@ -24,4 +24,8 @@
         <dialogs:StringPromptDialog/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialogVms:MaterialOpenFolderDialogViewModel}">
+        <dialogs:MaterialOpenFolderDialog/>
+    </DataTemplate>
+
 </ResourceDictionary>
