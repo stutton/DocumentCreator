@@ -31,7 +31,22 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
         public IWorkItem SelectedWorkItem
         {
             get => _selectedWorkItem;
-            set => Set(ref _selectedWorkItem, value);
+            set
+            {
+                var selectedItem = _selectedWorkItem;
+                if (Set(ref _selectedWorkItem, value))
+                {
+                    if (selectedItem != null)
+                    {
+                        selectedItem.Selected = false;
+                    }
+
+                    if (_selectedWorkItem != null)
+                    {
+                        _selectedWorkItem.Selected = true;
+                    }
+                }
+            }
         }
 
         private bool _isBusy;
@@ -50,11 +65,6 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
         private void SelectWorkItem(IWorkItem workItem)
         {
             SelectedWorkItem = workItem;
-            workItem.Selected = true;
-            foreach (var w in WorkItems.Where(w => w != workItem))
-            {
-                w.Selected = false;
-            }
         }
 
         #endregion

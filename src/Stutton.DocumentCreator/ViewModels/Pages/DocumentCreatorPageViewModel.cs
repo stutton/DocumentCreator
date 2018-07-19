@@ -60,11 +60,11 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         #region ICommand CancelCommand
 
         private ICommand _cancelCommand;
-        public ICommand CancelCommand => _cancelCommand ?? (_cancelCommand = new RelayCommand(Cancel));
+        public ICommand CancelCommand => _cancelCommand ?? (_cancelCommand = new RelayCommand(async () => await Cancel()));
 
-        private void Cancel()
+        private async Task Cancel()
         {
-            
+            await _navigationService.GoBack();
         }
 
         #endregion
@@ -119,13 +119,18 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         private async Task Save()
         {
-            var dialogVm = new StringPromptDialogViewModel{PromptMessage = "Pick a name for the save file"};
-            if (!(bool) await DialogHost.Show(dialogVm))
+            Document.SelectedWorkItemId = WorkItemStepVm.SelectedWorkItem?.Id;
+            var saveName = Document.FileName;
+            if (string.IsNullOrEmpty(saveName))
             {
-                return;
+                var dialogVm = new StringPromptDialogViewModel {PromptMessage = "Pick a name for the save file"};
+                if (!(bool) await DialogHost.Show(dialogVm))
+                {
+                    return;
+                }
+                saveName = dialogVm.InputString;
             }
 
-            var saveName = dialogVm.InputString;
             var response = await _documentService.SaveDocumentAsync(Document, WorkItemStepVm.SelectedWorkItem, saveName);
             if (!response.Success)
             {
@@ -185,6 +190,8 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
             WorkItemStepVm = new WorkItemStepViewModel(_tfsService, Document.Details.WorkItemQuery, _telemetryService);
             await WorkItemStepVm.InitializeAsync();
+            WorkItemStepVm.SelectedWorkItem =
+                WorkItemStepVm.WorkItems.FirstOrDefault(w => w.Id == Document.SelectedWorkItemId);
 
             var fieldsStep = new FieldsStepViewModel(Document.Fields);
             var summaryStep = new SummaryStepViewModel(Document);

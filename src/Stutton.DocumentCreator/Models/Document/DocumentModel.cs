@@ -21,6 +21,14 @@ namespace Stutton.DocumentCreator.Models.Document
             get => _fileName;
             set => Set(ref _fileName, value);
         }
+
+        private int? _selectedWorkItemId;
+
+        public int? SelectedWorkItemId
+        {
+            get => _selectedWorkItemId;
+            set => Set(ref _selectedWorkItemId, value);
+        }
         
         public DocumentDetailsModel Details { get; }
         

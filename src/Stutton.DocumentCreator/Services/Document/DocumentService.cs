@@ -145,7 +145,7 @@ namespace Stutton.DocumentCreator.Services.Document
                     return Response.FromFailure("Document directory does not exist", ResponseCode.FileNotFound);
                 }
 
-                var fileToDelete = $"{_documentSaveDirectoryName}\\{model}.{_documentSaveFileExtension}";
+                var fileToDelete = $"{_documentSaveDirectoryName}\\{model.FileName}.{_documentSaveFileExtension}";
 
                 if (!File.Exists(fileToDelete))
                 {

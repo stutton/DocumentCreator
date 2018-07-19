@@ -17,6 +17,9 @@ namespace Stutton.DocumentCreator.Models.Document
         public string FileName { get; set; }
 
         [DataMember]
+        public int? SelectedWorkItemId { get; set; }
+
+        [DataMember]
         public DocumentDetailsModel Details { get; set; }
 
         [DataMember]
