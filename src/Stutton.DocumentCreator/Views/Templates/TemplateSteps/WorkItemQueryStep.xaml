@@ -42,7 +42,7 @@
                                 <ColumnDefinition Width="80" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding FieldName}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Field}" />
                             <TextBlock Grid.Column="1"
                                        Margin="8,0"
                                        VerticalAlignment="Center"
@@ -67,7 +67,7 @@
                         <!-- There seems to be an issue with this ItemsSource binding that causes the Text to get cleared when
                                the stepper moves to away from this step. Changing the binding Mode to OneTime seems to mitigate
                                the problem and should be OK for this use case. -->
-                        <ComboBox SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <ComboBox SelectedItem="{Binding Field, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   DisplayMemberPath="Name"
                                   ItemsSource="{Binding DataContext.WorkItemFields, Mode=OneTime, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemQueryStep}}}"
                                   MinWidth="200"

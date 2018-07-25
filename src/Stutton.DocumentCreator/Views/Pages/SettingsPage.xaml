@@ -44,7 +44,7 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="225"
-                                                DisplayMemberBinding="{Binding FieldName}"
+                                                DisplayMemberBinding="{Binding Field}"
                                                 Header="Field"/>
                                 <GridViewColumn DisplayMemberBinding="{Binding Operator}"
                                                 Header="Operator"/>

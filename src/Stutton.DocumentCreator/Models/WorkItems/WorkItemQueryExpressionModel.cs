@@ -15,7 +15,7 @@ namespace Stutton.DocumentCreator.Models.WorkItems
     [DataContract(Name = "QueryExpression")]
     public class WorkItemQueryExpressionModel : Observable
     {
-        private string _fieldName;
+        private WorkItemFieldModel _field;
         private WorkItemQueryExpressionOperator _operator;
         private string _value;
         private ObservableCollection<WorkItemQueryInValue> _values = new ObservableCollection<WorkItemQueryInValue>();
@@ -26,10 +26,10 @@ namespace Stutton.DocumentCreator.Models.WorkItems
         }
         
         [DataMember]
-        public string FieldName
+        public WorkItemFieldModel Field
         {
-            get => _fieldName;
-            set => Set(ref _fieldName, value);
+            get => _field;
+            set => Set(ref _field, value);
         }
 
         [DataMember]

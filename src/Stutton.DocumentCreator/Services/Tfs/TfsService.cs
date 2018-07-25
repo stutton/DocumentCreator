@@ -80,7 +80,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 {
                     sb.Append(" AND ");
 
-                    sb.Append($"[{expression.FieldName}] ");
+                    sb.Append($"[{expression.Field.ReferenceName}] ");
 
                     sb.Append($"{GetExpressionOperatorString(expression.Operator)} ");
 
