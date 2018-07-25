@@ -15,8 +15,8 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
         private readonly ITfsService _tfsService;
         public WorkItemQueryModel Model { get; }
 
-        private ObservableCollection<string> _workItemFields;
-        public ObservableCollection<string> WorkItemFields
+        private ObservableCollection<WorkItemFieldModel> _workItemFields;
+        public ObservableCollection<WorkItemFieldModel> WorkItemFields
         {
             get => _workItemFields;
             private set => Set(ref _workItemFields, value);
@@ -43,7 +43,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
                 await DialogHost.Show(new ErrorMessageDialogViewModel(workItemFieldsResponse.Message), MainWindow.RootDialog);
                 return;
             }
-            WorkItemFields = new ObservableCollection<string>(workItemFieldsResponse.Value);
+            WorkItemFields = new ObservableCollection<WorkItemFieldModel>(workItemFieldsResponse.Value);
         }
 
         public WorkItemQueryStepViewModel(WorkItemQueryModel model, ITfsService tfsService)

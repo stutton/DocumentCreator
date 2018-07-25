@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Stutton.DocumentCreator.Models.Document;
 using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Models.Template;
@@ -10,6 +11,8 @@ namespace Stutton.DocumentCreator.Automations
 {
     public interface IAutomation
     {
+        event EventHandler<EventArgs> RequestDeleteMe;
+
         string TypeDisplayName { get; }
 
         string Description { get; }

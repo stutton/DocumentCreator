@@ -188,31 +188,36 @@ namespace Stutton.DocumentCreator.Services.Tfs
             }
         }
 
-        public async Task<IResponse<IEnumerable<string>>> GetWorkItemFields()
+        public async Task<IResponse<IEnumerable<WorkItemFieldModel>>> GetWorkItemFields()
         {
             try
             {
                 var connectionResponse = await GetUpdatedVssConnection();
                 if (!connectionResponse.Success)
                 {
-                    return Response<IEnumerable<string>>.FromFailure(connectionResponse.Message);
+                    return Response<IEnumerable<WorkItemFieldModel>>.FromFailure(connectionResponse.Message);
                 }
 
                 var connection = connectionResponse.Value;
                 var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
                 var result = await workItemClient.GetFieldsAsync().ConfigureAwait(false);
-                return Response<IEnumerable<string>>.FromSuccess(result.Select(f => f.Name).ToList());
+                return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(result.Select(f => new WorkItemFieldModel{ Name = f.Name, ReferenceName = f.ReferenceName}).ToList());
             }
             catch (Exception ex)
             {
-                return Response<IEnumerable<string>>.FromException("Failed to get work item fields", ex);
+                return Response<IEnumerable<WorkItemFieldModel>>.FromException("Failed to get work item fields", ex);
             }
         }
 
-        public async Task<IResponse<string>> GetWorkItemFieldValue(int id, string field)
+        public async Task<IResponse<string>> GetWorkItemFieldValue(int id, WorkItemFieldModel field)
         {
             try
             {
+                if (field.Name.Equals("ID", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return Response<string>.FromSuccess(id.ToString());
+                }
+
                 var connectionResponse = await GetUpdatedVssConnection();
                 if (!connectionResponse.Success)
                 {
@@ -222,13 +227,13 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 var connection = connectionResponse.Value;
                 var workItemClient =
                     await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
-                var workItem = await workItemClient.GetWorkItemAsync(id, new[] {field});
+                var workItem = await workItemClient.GetWorkItemAsync(id, new[] {field.ReferenceName});
                 if (workItem?.Id == null)
                 {
                     return Response<string>.FromFailure($"No work item with ID '{id}' returned");
                 }
 
-                var fieldValue = workItem.Fields[field].ToString();
+                var fieldValue = workItem.Fields[field.ReferenceName].ToString();
                 return Response<string>.FromSuccess(fieldValue);
             }
             catch (Exception ex)

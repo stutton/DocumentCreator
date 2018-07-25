@@ -63,8 +63,9 @@
                       materialDesign:HintAssist.Hint="With This Field"
                       Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
                       ItemsSource="{Binding WorkItemFields}"
+                      DisplayMemberPath="Name"
                       IsEditable="True"
-                      Text="{Binding SelectedField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                      SelectedItem="{Binding SelectedField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel />

@@ -61,7 +61,7 @@
                               Margin="0,8,0,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type fields1:FieldTemplateModelBase}">
-                            <TextBlock Text="{Binding Description}"/>
+                            <TextBlock Text="{Binding Name}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

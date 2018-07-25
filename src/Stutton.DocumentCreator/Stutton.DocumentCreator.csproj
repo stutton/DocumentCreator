@@ -58,13 +58,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationDto.cs" />
+    <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationMapperProfile.cs" />
     <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationModel.cs" />
     <Compile Include="Automations\AttachToWorkItem\AttachToWorkItemAutomationView.xaml.cs">
       <DependentUpon>AttachToWorkItemAutomationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Automations\AutomationDtoBase.cs" />
     <Compile Include="Automations\AutomationModelBase.cs" />
+    <Compile Include="Automations\AutomationsMapperProfile.cs" />
     <Compile Include="Automations\IAutomation.cs" />
+    <Compile Include="Automations\SaveAs\SaveAsAutomationDto.cs" />
+    <Compile Include="Automations\SaveAs\SaveAsAutomationMapperProfile.cs" />
     <Compile Include="Automations\SaveAs\SaveAsAutomationModel.cs" />
     <Compile Include="Automations\SaveAs\SaveAsAutomationView.xaml.cs">
       <DependentUpon>SaveAsAutomationView.xaml</DependentUpon>
@@ -139,6 +143,7 @@
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Models\Settings\SettingsTransformModel.cs" />
+    <Compile Include="Models\WorkItems\WorkItemFieldModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionModel.cs" />
     <Compile Include="Models\WorkItems\WorkItemQueryExpressionOperator.cs" />
@@ -220,6 +225,7 @@
     <Compile Include="Views\Controls\EditorExpander.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Views\Converters\NullToDefaultValueConverter.cs" />
     <Compile Include="Views\Dialogs\AddImageDialog.xaml.cs">
       <DependentUpon>AddImageDialog.xaml</DependentUpon>
     </Compile>

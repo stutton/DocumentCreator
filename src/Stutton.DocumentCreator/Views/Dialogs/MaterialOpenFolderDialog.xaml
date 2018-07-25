@@ -6,12 +6,19 @@
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Views.Dialogs"
              xmlns:controls="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
              xmlns:dialogVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Dialogs"
+             xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
              d:DataContext="{d:DesignInstance dialogVms:MaterialOpenFolderDialogViewModel}"
              mc:Ignorable="d"
              Height="640"
              Width="600">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:NullToDefaultValueConverter x:Key="NullToDefaultPathConverter"
+                                                    DefaultValue="C:\"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-        <controls:OpenDirectoryControl CurrentDirectory="{Binding SelectedFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <controls:OpenDirectoryControl CurrentDirectory="{Binding SelectedFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToDefaultPathConverter}}"
                                        DirectorySelected="OpenDirectoryControl_OnDirectorySelected"
                                        Cancel="FileSystemControl_OnCancel"/>
     </Grid>

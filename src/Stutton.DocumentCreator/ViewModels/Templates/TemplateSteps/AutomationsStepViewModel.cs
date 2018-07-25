@@ -60,19 +60,10 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
                 await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
                 return;
             }
+
+            var newAutomation = response.Value;
+            newAutomation.RequestDeleteMe += AutomationOnRequestDeleteMe;
             Automations.Add(response.Value);
-        }
-
-        #endregion
-
-        #region ICommand DeleteAutomationCommand
-
-        private ICommand _deleteAutomationCommand;
-        public ICommand DeleteAutomationCommand => _deleteAutomationCommand ?? (_deleteAutomationCommand = new RelayCommand<IAutomation>(DeleteAutomation));
-
-        private void DeleteAutomation(IAutomation automation)
-        {
-            Automations.Remove(automation);
         }
 
         #endregion
@@ -82,6 +73,10 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             _automationFactoryService = automationFactoryService;
             _telemetryService = telemetryService;
             Automations = automations;
+            foreach (var automation in Automations)
+            {
+                automation.RequestDeleteMe += AutomationOnRequestDeleteMe;
+            }
         }
 
         public async Task InitializeAsync()
@@ -94,6 +89,13 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
                 return;
             }
             AvailableAutomationTypes = new ObservableDictionary<string, Type>(response.Value);
+        }
+
+        private void AutomationOnRequestDeleteMe(object sender, EventArgs e)
+        {
+            var automation = (IAutomation) sender;
+            automation.RequestDeleteMe -= AutomationOnRequestDeleteMe;
+            Automations.Remove(automation);
         }
     }
 }

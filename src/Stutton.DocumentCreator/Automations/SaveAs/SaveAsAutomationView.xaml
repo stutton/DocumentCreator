@@ -23,7 +23,7 @@
                                          Height="24"
                                          Margin="0,0,4,0"
                                          VerticalAlignment="Center"
-                                         Kind="Paperclip" />
+                                         Kind="Floppy" />
                 <TextBlock Grid.Column="1"
                            VerticalAlignment="Center"
                            Text="{Binding Name}" />
@@ -56,7 +56,7 @@
 
             <TextBox Margin="0,16,16,16"
                      Grid.Column="1"
-                     materialDesign:HintAssist.Hint="Name"
+                     materialDesign:HintAssist.Hint="Path"
                      Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding SavePath}" />
 

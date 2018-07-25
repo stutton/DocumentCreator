@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Stutton.DocumentCreator.Fields.WorkItemField.Document;
+using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
@@ -12,6 +14,7 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
     public class WorkItemFieldTemplateModel : FieldTemplateModelBase, IRequiresInitialization
     {
+        private static IEnumerable<WorkItemFieldModel> CachedWorkItemFields;
         private readonly ITfsService _tfsService;
         public const string Key = "WorkItemField";
 
@@ -20,8 +23,8 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
         public override string TypeDisplayName => "Work Item Field";
         public override string FieldKey => Key;
 
-        private ObservableCollection<string> _workItemFields;
-        public ObservableCollection<string> WorkItemFields
+        private ObservableCollection<WorkItemFieldModel> _workItemFields;
+        public ObservableCollection<WorkItemFieldModel> WorkItemFields
         {
             get => _workItemFields;
             set => Set(ref _workItemFields, value);
@@ -34,8 +37,8 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
             set => Set(ref _textToReplace, value);
         }
 
-        private string _selectedField;
-        public string SelectedField
+        private WorkItemFieldModel _selectedField;
+        public WorkItemFieldModel SelectedField
         {
             get => _selectedField;
             set => Set(ref _selectedField, value);
@@ -55,13 +58,20 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 
         public async Task<IResponse> Initialize()
         {
+            if (CachedWorkItemFields != null)
+            {
+                WorkItemFields = new ObservableCollection<WorkItemFieldModel>(CachedWorkItemFields);
+                return Response.FromSuccess();
+            }
+
             var tfsServiceResponse = await _tfsService.GetWorkItemFields();
             if (!tfsServiceResponse.Success)
             {
                 return tfsServiceResponse;
             }
 
-            WorkItemFields = new ObservableCollection<string>(tfsServiceResponse.Value);
+            CachedWorkItemFields = tfsServiceResponse.Value;
+            WorkItemFields = new ObservableCollection<WorkItemFieldModel>(tfsServiceResponse.Value);
             return Response.FromSuccess();
         }
 

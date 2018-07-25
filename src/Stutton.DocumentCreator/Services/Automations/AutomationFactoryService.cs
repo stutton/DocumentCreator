@@ -59,7 +59,7 @@ namespace Stutton.DocumentCreator.Services.Automations
                 {
                     if (_automationResolver(automationType) is IAutomation automation)
                     {
-                        _automationTypes.Add(automation.Name, automationType);
+                        _automationTypes.Add(automation.TypeDisplayName, automationType);
                     }
                 }
 

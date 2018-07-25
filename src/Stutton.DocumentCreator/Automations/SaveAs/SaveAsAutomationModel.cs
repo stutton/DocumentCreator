@@ -16,7 +16,7 @@ namespace Stutton.DocumentCreator.Automations.SaveAs
     public class SaveAsAutomationModel : AutomationModelBase
     {
         public override string TypeDisplayName => "Save As";
-        public override string Description => "Save the document to specified location";
+        public override string Description => "Save the document to a specified location";
 
         private string _name;
         public override string Name
@@ -40,7 +40,7 @@ namespace Stutton.DocumentCreator.Automations.SaveAs
         private async Task Browse()
         {
             var dialogVm = new MaterialOpenFolderDialogViewModel();
-            if ((bool) await DialogHost.Show(dialogVm))
+            if ((bool) await DialogHost.Show(dialogVm, MainWindow.RootDialog))
             {
                 SavePath = dialogVm.SelectedFolder;
             }
