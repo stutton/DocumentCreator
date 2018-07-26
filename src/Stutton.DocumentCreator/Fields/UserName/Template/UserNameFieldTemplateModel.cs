@@ -29,7 +29,13 @@ namespace Stutton.DocumentCreator.Fields.UserName.Template
         public string TextToReplace
         {
             get => _textToReplace;
-            set => Set(ref _textToReplace, value);
+            set
+            {
+                if (Set(ref _textToReplace, value))
+                {
+                    RaisePropertyChanged(nameof(Description));
+                }
+            }
         }
 
         public UserNameFieldTemplateModel(ITfsService tfsService)

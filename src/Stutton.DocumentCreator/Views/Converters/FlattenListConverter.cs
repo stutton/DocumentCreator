@@ -32,7 +32,8 @@ namespace Stutton.DocumentCreator.Views.Converters
                     var sb = new StringBuilder();
                     foreach (var item in list)
                     {
-                        var valueStr = useProperty ? item.GetType().GetProperty(PropertyName).GetValue(item).ToString() : item.ToString();
+                        var valueObj = useProperty ? item.GetType().GetProperty(PropertyName).GetValue(item) : item;
+                        var valueStr = valueObj?.ToString() ?? string.Empty;
 
                         sb.Append($"{valueStr}{Separator} ");
                     }

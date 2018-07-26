@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Stutton.DocumentCreator.Models.WorkItems;
 
 namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
@@ -15,6 +16,6 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
         [DataMember]
         public string TextToReplace { get; set; }
         [DataMember]
-        public string SelectedField { get; set; }
+        public WorkItemFieldModel SelectedField { get; set; }
     }
 }

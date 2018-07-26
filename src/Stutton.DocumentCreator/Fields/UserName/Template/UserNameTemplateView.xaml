@@ -57,7 +57,7 @@
                      Grid.Column="1"
                      materialDesign:HintAssist.Hint="Text To Replace"
                      Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding TextToReplace}" />
+                     Text="{Binding TextToReplace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
     </controls:EditorExpander>
 </UserControl>

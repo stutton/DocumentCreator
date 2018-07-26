@@ -38,8 +38,9 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type workItemModels:WorkItemQueryExpressionModel}">
                             <TextBlock Style="{DynamicResource MaterialDesignBody1TextBlock}">
-                                <Run Text="{Binding Field}"/>
+                                <Run Text="{Binding Field.Name}"/>
                                 <Run Text="{Binding Operator}"/>
+                                <Run Text="{Binding Value}"/>
                                 <Run Text="{Binding Values, Converter={StaticResource ListOfStringExpanderConverter}}"/>
                             </TextBlock>
                         </DataTemplate>

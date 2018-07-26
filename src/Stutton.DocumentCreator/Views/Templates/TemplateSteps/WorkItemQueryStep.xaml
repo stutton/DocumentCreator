@@ -42,7 +42,7 @@
                                 <ColumnDefinition Width="80" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Field}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Field.Name}" />
                             <TextBlock Grid.Column="1"
                                        Margin="8,0"
                                        VerticalAlignment="Center"
