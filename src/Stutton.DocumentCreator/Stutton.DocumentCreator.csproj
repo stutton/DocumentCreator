@@ -169,6 +169,7 @@
     <Compile Include="Services\Fields\IFieldTemplateFactoryService.cs" />
     <Compile Include="Services\Telemetry\ITelemetryService.cs" />
     <Compile Include="Services\Telemetry\TelemetryService.cs" />
+    <Compile Include="Shared\DocumentHelpers.cs" />
     <Compile Include="Shared\Extensions.cs" />
     <Compile Include="Shared\IResponse.cs" />
     <Compile Include="Shared\ObservableDictionary.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Services\Tfs\TfsService.cs" />
     <Compile Include="Services\Tfs\TfsWorkItemMapper.cs" />
     <Compile Include="Setup.cs" />
+    <Compile Include="Shared\WpfContext.cs" />
     <Compile Include="ViewModels\Dialogs\AddImageDialogResult.cs" />
     <Compile Include="ViewModels\Dialogs\AddImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />

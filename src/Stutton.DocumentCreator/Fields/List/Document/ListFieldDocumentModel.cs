@@ -6,7 +6,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using DocumentFormat.OpenXml.Packaging;
+using Microsoft.VisualStudio.Services.Common;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Image;
 using Stutton.DocumentCreator.Shared;
@@ -42,9 +44,37 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         #endregion
 
-        public override Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
+        public override async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    AddImageToDocument(document);
+                });
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException("Failed to write step to document", ex);
+            }
+        }
+
+        private void AddImageToDocument(WordprocessingDocument document)
+        {
+            if (WpfContext.IsInvokeRequired)
+            {
+                WpfContext.Invoke(() => AddImageToDocument(document));
+                return;
+            }
+            foreach (var step in Steps)
+            {
+                document.AddNumberedTextToBody(step.Text, step.Index);
+                if (step.HasImage)
+                {
+                    document.AddImageToBody(step.Image);
+                }
+            }
         }
 
         private ListFieldStepModel GetNewStep()
@@ -87,6 +117,11 @@ namespace Stutton.DocumentCreator.Fields.List.Document
             {
                 Steps[i].Index = i + 1;
             }
+        }
+
+        private void AddImage(WordprocessingDocument document, BitmapSource image)
+        {
+
         }
     }
 }
