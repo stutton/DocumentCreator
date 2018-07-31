@@ -34,9 +34,9 @@ namespace Stutton.DocumentCreator.Models.Document
         
         public ObservableCollection<FieldDocumentModelBase> Fields { get; }
         
-        public ObservableCollection<IAutomation> Automations { get; }
+        public ObservableCollection<AutomationModelBase> Automations { get; }
 
-        public DocumentModel(DocumentDetailsModel details, ObservableCollection<FieldDocumentModelBase> fields, ObservableCollection<IAutomation> automations)
+        public DocumentModel(DocumentDetailsModel details, ObservableCollection<FieldDocumentModelBase> fields, ObservableCollection<AutomationModelBase> automations)
         {
             Details = details ?? throw new ArgumentNullException(nameof(details));
             Fields = fields ?? throw new ArgumentNullException(nameof(fields));

@@ -11,36 +11,36 @@ namespace Stutton.DocumentCreator.Services.Automations
 {
     public class AutomationFactoryService : IAutomationFactoryService
     {
-        private readonly Func<Type, IAutomation> _automationResolver;
+        private readonly Func<Type, AutomationModelBase> _automationResolver;
 
         private Dictionary<string, Type> _automationTypes;
 
-        public AutomationFactoryService(Func<Type, IAutomation> automationResolver)
+        public AutomationFactoryService(Func<Type, AutomationModelBase> automationResolver)
         {
             _automationResolver = automationResolver;
         }
 
-        public IResponse<IAutomation> CreateAutomation(Type automationType)
+        public IResponse<AutomationModelBase> CreateAutomation(Type automationType)
         {
             try
             {
-                if (!typeof(IAutomation).IsAssignableFrom(automationType))
+                if (!typeof(AutomationModelBase).IsAssignableFrom(automationType))
                 {
-                    return Response<IAutomation>.FromFailure(
-                        $"Type '{automationType.Name}' does not inherit from IAutomation");
+                    return Response<AutomationModelBase>.FromFailure(
+                        $"Type '{automationType.Name}' does not inherit from AutomationModelBase");
                 }
 
                 var automation = _automationResolver(automationType);
                 if (automation == null)
                 {
-                    return Response<IAutomation>.FromFailure($"Failed to create field of type '{automationType.Name}'");
+                    return Response<AutomationModelBase>.FromFailure($"Failed to create field of type '{automationType.Name}'");
                 }
 
-                return Response<IAutomation>.FromSuccess(automation);
+                return Response<AutomationModelBase>.FromSuccess(automation);
             }
             catch (Exception ex)
             {
-                return Response<IAutomation>.FromException("Failed to create field for unknown reason", ex);
+                return Response<AutomationModelBase>.FromException("Failed to create field for unknown reason", ex);
             }
         }
 
@@ -54,10 +54,10 @@ namespace Stutton.DocumentCreator.Services.Automations
                 }
 
                 _automationTypes = new Dictionary<string, Type>();
-                var automationTypes = typeof(IAutomation).Assembly.GetInheritingTypes<IAutomation>();
+                var automationTypes = typeof(AutomationModelBase).Assembly.GetInheritingTypes<AutomationModelBase>();
                 foreach (var automationType in automationTypes)
                 {
-                    if (_automationResolver(automationType) is IAutomation automation)
+                    if (_automationResolver(automationType) is AutomationModelBase automation)
                     {
                         _automationTypes.Add(automation.TypeDisplayName, automationType);
                     }

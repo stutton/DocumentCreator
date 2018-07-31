@@ -19,7 +19,7 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
         public const string Key = "WorkItemField";
 
         public override Type DtoType => typeof(WorkItemFieldTemplateDto);
-        public override string Description => $"Replace '{TextToReplace}' with the value of '{SelectedField.Name}' from the selected work item";
+        public override string Description => $"Replace '{TextToReplace}' with the value of '{SelectedField?.Name}' from the selected work item";
         public override string TypeDisplayName => "Work Item Field";
         public override string FieldKey => Key;
 

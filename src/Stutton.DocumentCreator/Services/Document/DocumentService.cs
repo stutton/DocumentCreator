@@ -164,17 +164,16 @@ namespace Stutton.DocumentCreator.Services.Document
 
         public async Task<IResponse> ExecuteAutomationsAsync(DocumentModel model, IWorkItem workItem, string documentPath)
         {
-            //foreach (var automation in model.Automations)
-            //{
-            //    var response = await automation.Execute(model, workItem, documentPath, _serviceResolver);
-            //    if (!response.Success)
-            //    {
-            //        return Response.FromFailure(response.Message);
-            //    }
-            //}
+            foreach (var automation in model.Automations)
+            {
+                var response = await automation.Execute(model, workItem, documentPath);
+                if (!response.Success)
+                {
+                    return response;
+                }
+            }
 
-            //return Response.FromSuccess();
-            throw new NotImplementedException();
+            return Response.FromSuccess();
         }
     }
 }

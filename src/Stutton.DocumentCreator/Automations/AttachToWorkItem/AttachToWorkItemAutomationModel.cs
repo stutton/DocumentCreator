@@ -16,11 +16,11 @@ namespace Stutton.DocumentCreator.Automations.AttachToWorkItem
 
         public AttachToWorkItemAutomationModel(ITfsService tfsService)
         {
-            _tfsService = tfsService;
+            _tfsService = tfsService ?? throw new ArgumentNullException(nameof(tfsService));
         }
 
         public override string TypeDisplayName => "Attach to work item";
-        public override string Description => "Upload and attache the document to work item";
+        public override string Description => "Upload and attach the document to work item";
 
         private string _name;
         public override string Name

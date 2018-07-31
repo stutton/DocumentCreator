@@ -11,7 +11,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Automations
 {
-    public abstract class AutomationModelBase : Observable, IAutomation
+    public abstract class AutomationModelBase : Observable
     {
         public event EventHandler<EventArgs> RequestDeleteMe;
 

@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Profile;
 using Microsoft.VisualStudio.Services.Profile.Client;
 using Microsoft.VisualStudio.Services.WebApi;
+using Microsoft.VisualStudio.Services.WebApi.Patch;
+using Microsoft.VisualStudio.Services.WebApi.Patch.Json;
 using Stutton.DocumentCreator.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Settings;
@@ -144,14 +146,79 @@ namespace Stutton.DocumentCreator.Services.Tfs
             }
         }
 
-        public Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue)
+        public async Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var connectionResponse = await GetUpdatedVssConnection();
+                if (!connectionResponse.Success)
+                {
+                    return Response<ProfileModel>.FromFailure(connectionResponse.Message);
+                }
+                var connection = connectionResponse.Value;
+                var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
+
+                var patchDocument = new JsonPatchDocument
+                {
+                    new JsonPatchOperation
+                    {
+                        Operation = Operation.Add,
+                        Path = $"/fields/{fieldToUpdate}",
+                        Value = newValue
+                    }
+                };
+
+                await workItemClient.UpdateWorkItemAsync(patchDocument, id).ConfigureAwait(false);
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException($"Failed to update field '{fieldToUpdate}' to work item '{id}'", ex);
+            }
         }
 
-        public Task<IResponse> AttachFileToWorkItemAsync(string filePath, int workItemId)
+        public async Task<IResponse> AttachFileToWorkItemAsync(string filePath, int workItemId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var connectionResponse = await GetUpdatedVssConnection();
+                if (!connectionResponse.Success)
+                {
+                    return Response<ProfileModel>.FromFailure(connectionResponse.Message);
+                }
+                var connection = connectionResponse.Value;
+                var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
+
+                var fileName = Path.GetFileName(filePath);
+                var attachmentReference = await workItemClient.CreateAttachmentAsync(filePath).ConfigureAwait(false);
+
+                var patchDocument = new JsonPatchDocument
+                {
+                    new JsonPatchOperation
+                    {
+                        Operation = Operation.Add,
+                        Path = "/fields/System.History",
+                        Value = $"Attaching file {fileName}"
+                    },
+                    new JsonPatchOperation
+                    {
+                        Operation = Operation.Add,
+                        Path = "/relations/-",
+                        Value = new
+                        {
+                            rel = "AttachedFile",
+                            url = attachmentReference.Url,
+                            attributes = new {comment = fileName}
+                        }
+                    }
+                };
+                await workItemClient.UpdateWorkItemAsync(patchDocument, workItemId).ConfigureAwait(false);
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException($"Failed to attach document to work item '{workItemId}'", ex);
+            }
         }
 
         public async Task<IResponse<ProfileModel>> GetUserProfileAsync()

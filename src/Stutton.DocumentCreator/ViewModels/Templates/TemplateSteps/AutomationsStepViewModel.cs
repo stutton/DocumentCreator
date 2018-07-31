@@ -16,7 +16,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
         private readonly IAutomationFactoryService _automationFactoryService;
         private readonly ITelemetryService _telemetryService;
 
-        public ObservableCollection<IAutomation> Automations { get; }
+        public ObservableCollection<AutomationModelBase> Automations { get; }
 
         private ObservableDictionary<string, Type> _availableAutomationTypes;
         public ObservableDictionary<string, Type> AvailableAutomationTypes
@@ -68,7 +68,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         #endregion
 
-        public AutomationsStepViewModel(ObservableCollection<IAutomation> automations, IAutomationFactoryService automationFactoryService, ITelemetryService telemetryService)
+        public AutomationsStepViewModel(ObservableCollection<AutomationModelBase> automations, IAutomationFactoryService automationFactoryService, ITelemetryService telemetryService)
         {
             _automationFactoryService = automationFactoryService;
             _telemetryService = telemetryService;
@@ -93,7 +93,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         private void AutomationOnRequestDeleteMe(object sender, EventArgs e)
         {
-            var automation = (IAutomation) sender;
+            var automation = (AutomationModelBase) sender;
             automation.RequestDeleteMe -= AutomationOnRequestDeleteMe;
             Automations.Remove(automation);
         }

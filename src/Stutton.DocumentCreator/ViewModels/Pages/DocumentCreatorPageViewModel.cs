@@ -88,14 +88,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
                 var documentPath = result.Value;
 
-                //var automationResponse = await
-                //    _documentService.ExecuteAutomations(Document, WorkItemStepVm.SelectedWorkItem, documentPath);
+                var automationResponse = await
+                    _documentService.ExecuteAutomationsAsync(Document, WorkItemStepVm.SelectedWorkItem, documentPath);
 
-                //if (!automationResponse.Success)
-                //{
-                //    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
-                //    return;
-                //}
+                if (!automationResponse.Success)
+                {
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
+                    return;
+                }
 
                 await DialogHost.Show(new SuccessMessageDialogViewModel("Document created and automations run"),
                     MainWindow.RootDialog);

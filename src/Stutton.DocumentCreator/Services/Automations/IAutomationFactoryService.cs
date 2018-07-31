@@ -10,7 +10,7 @@ namespace Stutton.DocumentCreator.Services.Automations
 {
     public interface IAutomationFactoryService
     {
-        IResponse<IAutomation> CreateAutomation(Type automationType);
+        IResponse<AutomationModelBase> CreateAutomation(Type automationType);
         IResponse<Dictionary<string, Type>> GetAllAutomationKeys();
     }
 }

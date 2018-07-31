@@ -81,7 +81,7 @@
                 <ItemsControl ItemsSource="{Binding Model.Automations}"
                               Margin="0,8,0,0">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type automations:IAutomation}">
+                        <DataTemplate DataType="{x:Type automations:AutomationModelBase}">
                             <TextBlock Text="{Binding Name}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
