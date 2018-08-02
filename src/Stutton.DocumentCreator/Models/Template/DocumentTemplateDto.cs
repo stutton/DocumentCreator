@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Stutton.DocumentCreator.Automations;
 using Stutton.DocumentCreator.Fields;
-using Stutton.DocumentCreator.Models.Template.Details;
 
 namespace Stutton.DocumentCreator.Models.Template
 {
@@ -14,6 +13,6 @@ namespace Stutton.DocumentCreator.Models.Template
         public string Id { get; set; }
         public DocumentTemplateDetailsModel TemplateDetails { get; set; }
         public ICollection<FieldTemplateDtoBase> Fields { get; set; }
-        public ICollection<AutomationModelBase> Automations { get; set; }
+        public ICollection<AutomationDtoBase> Automations { get; set; }
     }
 }

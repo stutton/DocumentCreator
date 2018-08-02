@@ -18,9 +18,10 @@
                  materialDesign:HintAssist.Hint="Name"/>
 
         <TextBox Text="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 materialDesign:HintAssist.Hint="Description"/>
+                 materialDesign:HintAssist.Hint="Description"
+                 Margin="0,8,0,0"/>
 
-        <Grid>
+        <Grid Margin="0,8,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
@@ -34,5 +35,9 @@
                     Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding BrowseCommand}"/>
         </Grid>
+        
+        <TextBox Text="{Binding Model.GeneratedFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="File Name"
+                 Margin="0,8,0,0"/>
     </StackPanel>
 </UserControl>

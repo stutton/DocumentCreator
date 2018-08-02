@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
-using Stutton.DocumentCreator.Models.Template.Details;
+using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 

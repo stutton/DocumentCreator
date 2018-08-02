@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Stutton.DocumentCreator.Automations;
 using Stutton.DocumentCreator.Fields;
-using Stutton.DocumentCreator.Models.Document.Details;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Models.Document

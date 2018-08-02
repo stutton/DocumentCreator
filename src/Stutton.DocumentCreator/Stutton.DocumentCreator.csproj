@@ -130,10 +130,10 @@
     <Compile Include="Fields\WorkItemField\Template\WorkItemFieldTemplateView.xaml.cs">
       <DependentUpon>WorkItemFieldTemplateView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Document\Details\DocumentDetailsModel.cs" />
+    <Compile Include="Models\Document\DocumentDetailsModel.cs" />
     <Compile Include="Models\Document\DocumentDto.cs" />
     <Compile Include="Models\Document\DocumentModel.cs" />
-    <Compile Include="Models\Template\Details\DocumentTemplateDetailsModel.cs" />
+    <Compile Include="Models\Template\DocumentTemplateDetailsModel.cs" />
     <Compile Include="Models\Template\DocumentTemplateDto.cs" />
     <Compile Include="Models\Template\DocumentType.cs" />
     <Compile Include="Models\Template\DocumentTemplateModel.cs" />

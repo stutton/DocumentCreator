@@ -42,7 +42,9 @@ namespace Stutton.DocumentCreator.Services.Document
             }
 
             //TODO: Create meaningful file name
-            var outFile = Path.GetTempFileName();
+
+            var outFile = Path.Combine(Path.GetTempPath(), model.Details.GeneratedFileName);
+            //var outFile = Path.GetTempFileName();
             await Task.Run(() => File.Copy(model.Details.TemplateFilePath, outFile, true));
             using (var doc = WordprocessingDocument.Open(outFile, true))
             {

@@ -4,7 +4,6 @@ using System.Runtime.Serialization;
 using Stutton.DocumentCreator.Automations;
 using Stutton.DocumentCreator.Fields;
 using Stutton.DocumentCreator.Models.Document;
-using Stutton.DocumentCreator.Models.Template.Details;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Models.Template
