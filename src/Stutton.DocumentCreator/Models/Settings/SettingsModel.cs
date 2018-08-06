@@ -16,6 +16,7 @@ namespace Stutton.DocumentCreator.Models.Settings
         private string _tfsDefaultCollection;
         private string _tfsUserName;
         private WorkItemQueryModel _workItemQuery = new WorkItemQueryModel();
+        private string _updateReleasesLocation;
 
         [DataMember]
         public string TfsUrl
@@ -52,6 +53,13 @@ namespace Stutton.DocumentCreator.Models.Settings
         {
             get => _applicationInsightsKey;
             set => Set(ref _applicationInsightsKey, value);
+        }
+
+        [DataMember]
+        public string UpdateReleasesLocation
+        {
+            get => _updateReleasesLocation;
+            set => Set(ref _updateReleasesLocation, value);
         }
     }
 }

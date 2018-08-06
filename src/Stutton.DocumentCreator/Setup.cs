@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using MaterialDesignThemes.Wpf;
@@ -23,6 +19,7 @@ using Stutton.DocumentCreator.Services.Settings;
 using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Services.Templates;
 using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Updating;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
@@ -41,6 +38,7 @@ namespace Stutton.DocumentCreator
             Configure(messageQueue);
             await LoadInitialSettings();
             await InitializeTelemetryService();
+            CheckForUpdate();
             LoadPages();
         }
 
@@ -70,6 +68,7 @@ namespace Stutton.DocumentCreator
                 new AutomationFactoryService(t => _container.Resolve(t) as AutomationModelBase));
             _container.RegisterType<IDocumentService, DocumentService>(new ContainerControlledLifetimeManager());
             _container.RegisterInstance(messageQueue, new ExternallyControlledLifetimeManager());
+            _container.RegisterType<IUpdaterService, UpdaterService>(new ContainerControlledLifetimeManager());
         }
 
         private static Mapper InitializeMapper()
@@ -235,6 +234,26 @@ namespace Stutton.DocumentCreator
             {
                 await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
             }
+        }
+
+        private static void CheckForUpdate()
+        {
+            Task.Run(async () =>
+            {
+                var updaterService = _container.Resolve<IUpdaterService>();
+                var response = await updaterService.Update();
+                if (!response.Success)
+                {
+                    var telemetryService = _container.Resolve<ITelemetryService>();
+                    telemetryService.TrackFailedResponse(response);
+                }
+
+                if (response.Value.UpdateInstalled)
+                {
+                    var messageQueue = _container.Resolve<ISnackbarMessageQueue>();
+                    messageQueue.Enqueue($"Update {response.Value.NewVersion} installed. Restart to get new features and fixes.");
+                }
+            });
         }
     }
 }
