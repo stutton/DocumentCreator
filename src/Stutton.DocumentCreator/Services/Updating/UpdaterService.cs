@@ -28,19 +28,27 @@ namespace Stutton.DocumentCreator.Services.Updating
             }
 
             var updateReleasesLocation = response.Value.UpdateReleasesLocation;
-            var result = new CheckForUpdateResult();
-            using (var mgr = new UpdateManager(updateReleasesLocation))
+            using (var mgr = await GetUpdateManager(updateReleasesLocation))
             {
                 var oldVersion = mgr.CurrentlyInstalledVersion();
                 var newVersion = await mgr.UpdateApp();
                 if (oldVersion.Version < newVersion.Version.Version)
                 {
-                    result.NewVersion = newVersion.Version.Version;
-                    result.UpdateInstalled = true;
+                    return Response<CheckForUpdateResult>.FromSuccess(
+                       CheckForUpdateResult.FromUpdate(oldVersion.Version, newVersion.Version.Version));
                 }
             }
 
-            return Response<CheckForUpdateResult>.FromSuccess(result);
+            return Response<CheckForUpdateResult>.FromSuccess(CheckForUpdateResult.FromNoUpdate());
+        }
+
+        private async Task<IUpdateManager> GetUpdateManager(string updateReleasesLocation)
+        {
+            if (updateReleasesLocation.Contains("github"))
+            {
+                return await UpdateManager.GitHubUpdateManager(updateReleasesLocation);
+            }
+            return new UpdateManager(updateReleasesLocation);
         }
     }
 }
