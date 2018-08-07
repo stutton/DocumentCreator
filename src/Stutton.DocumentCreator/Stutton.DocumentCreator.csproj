@@ -72,6 +72,9 @@
     <Compile Include="Automations\SaveAs\SaveAsAutomationView.xaml.cs">
       <DependentUpon>SaveAsAutomationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\Date\Template\DateFieldTemplateDto.cs" />
+    <Compile Include="Fields\Date\Template\DateFieldTemplateMapperProfile.cs" />
+    <Compile Include="Fields\Date\Template\DateFieldTemplateModel.cs" />
     <Compile Include="Fields\FieldDocumentMapperProfile.cs" />
     <Compile Include="Fields\FieldDocumentModelBase.cs" />
     <Compile Include="Fields\FieldDocumentDtoBase.cs" />

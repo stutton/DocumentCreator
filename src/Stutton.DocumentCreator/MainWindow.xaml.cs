@@ -39,7 +39,11 @@ namespace Stutton.DocumentCreator
 
         private async void DialogHost_OnLoaded(object sender, RoutedEventArgs e)
         {
-            await Setup.DoSetup(MainSnackbar.MessageQueue);
+            var debugging = false;
+#if DEBUG
+            debugging = true;
+#endif
+            await Setup.DoSetup(MainSnackbar.MessageQueue, debugging);
 
             _shellViewModel = Setup.GetShellViewModel();
             ShellView.DataContext = _shellViewModel;

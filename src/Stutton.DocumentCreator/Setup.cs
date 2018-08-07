@@ -33,12 +33,15 @@ namespace Stutton.DocumentCreator
     public static class Setup
     {
         private static IUnityContainer _container;
-        public static async Task DoSetup(ISnackbarMessageQueue messageQueue)
+        public static async Task DoSetup(ISnackbarMessageQueue messageQueue, bool debugging)
         {
             Configure(messageQueue);
             await LoadInitialSettings();
             await InitializeTelemetryService();
-            CheckForUpdate();
+            if (!debugging)
+            {
+                CheckForUpdate();
+            }
             LoadPages();
         }
 
