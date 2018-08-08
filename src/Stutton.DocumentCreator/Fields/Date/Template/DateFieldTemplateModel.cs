@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+using Stutton.DocumentCreator.Fields.Date.Document;
 
 namespace Stutton.DocumentCreator.Fields.Date.Template
 {
@@ -38,7 +34,12 @@ namespace Stutton.DocumentCreator.Fields.Date.Template
 
         public override FieldDocumentModelBase GetDocumentField()
         {
-            
+            var documentField = new DateFieldDocumentModel()
+            {
+                Name = Name,
+                TextToReplace = TextToReplace
+            };
+            return documentField;
         }
     }
 }

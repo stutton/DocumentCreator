@@ -72,9 +72,18 @@
     <Compile Include="Automations\SaveAs\SaveAsAutomationView.xaml.cs">
       <DependentUpon>SaveAsAutomationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fields\Date\Document\DateFieldDocumentDto.cs" />
+    <Compile Include="Fields\Date\Document\DateFieldDocumentMapperProfile.cs" />
+    <Compile Include="Fields\Date\Document\DateFieldDocumentModel.cs" />
+    <Compile Include="Fields\Date\Document\DateFieldDocumentView.xaml.cs">
+      <DependentUpon>DateFieldDocumentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fields\Date\Template\DateFieldTemplateDto.cs" />
     <Compile Include="Fields\Date\Template\DateFieldTemplateMapperProfile.cs" />
     <Compile Include="Fields\Date\Template\DateFieldTemplateModel.cs" />
+    <Compile Include="Fields\Date\Template\DateFieldTemplateView.xaml.cs">
+      <DependentUpon>DateFieldTemplateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fields\FieldDocumentMapperProfile.cs" />
     <Compile Include="Fields\FieldDocumentModelBase.cs" />
     <Compile Include="Fields\FieldDocumentDtoBase.cs" />
@@ -307,6 +316,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Automations\SaveAs\SaveAsAutomationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\Date\Document\DateFieldDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Fields\Date\Template\DateFieldTemplateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -10,7 +10,8 @@
                     xmlns:document="clr-namespace:Stutton.DocumentCreator.Fields.List.Document"
                     xmlns:textDocument="clr-namespace:Stutton.DocumentCreator.Fields.Text.Document"
                     xmlns:userNameDocument="clr-namespace:Stutton.DocumentCreator.Fields.UserName.Document"
-                    xmlns:workItemFieldDocument="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Document">
+                    xmlns:workItemFieldDocument="clr-namespace:Stutton.DocumentCreator.Fields.WorkItemField.Document"
+                    xmlns:dateField="clr-namespace:Stutton.DocumentCreator.Fields.Date.Document">
 
     <DataTemplate DataType="{x:Type textDocument:TextFieldDocumentModel}">
         <text:TextFieldDocumentView />
@@ -26,6 +27,10 @@
 
     <DataTemplate DataType="{x:Type document:ListFieldDocumentModel}">
         <document:ListFieldDocumentView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type dateField:DateFieldDocumentModel}">
+        <dateField:DateFieldDocumentView/>
     </DataTemplate>
 
 </ResourceDictionary>

@@ -12,7 +12,7 @@ namespace Stutton.DocumentCreator.Fields.Date.Template
         public DateFieldTemplateMapperProfile()
         {
             CreateMap<DateFieldTemplateModel, DateFieldTemplateDto>()
-                .IncludeBase<FieldDocumentModelBase, FieldDocumentDtoBase>()
+                .IncludeBase<FieldTemplateModelBase, FieldTemplateDtoBase>()
                 .ReverseMap()
                 .ConstructUsingServiceLocator();
         }
