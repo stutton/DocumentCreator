@@ -130,7 +130,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         private async Task<BitmapSource> GetImageFromClipboard()
         {
-            var response = await _imageService.GetImageFromClipboard();
+            var response = _imageService.GetImageFromClipboard();
             if (!response.Success)
             {
                 var dialogVm = new ErrorMessageDialogViewModel(response.Message);

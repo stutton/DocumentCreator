@@ -19,7 +19,6 @@ namespace Stutton.DocumentCreator.Services.Document
 {
     public class DocumentService : IDocumentService
     {
-        private readonly IServiceResolver _serviceResolver;
         private readonly IMapper _mapper;
         private static readonly string TempDirectory = Path.GetTempPath();
 
@@ -28,9 +27,8 @@ namespace Stutton.DocumentCreator.Services.Document
 
         private readonly string _documentSaveFileExtension = "dcs";
 
-        public DocumentService(IServiceResolver serviceResolver, IMapper mapper)
+        public DocumentService(IMapper mapper)
         {
-            _serviceResolver = serviceResolver;
             _mapper = mapper;
         }
 
@@ -41,10 +39,7 @@ namespace Stutton.DocumentCreator.Services.Document
                 return Response<string>.FromFailure($"Template file not found '{model.Details.TemplateFilePath}'");
             }
 
-            //TODO: Create meaningful file name
-
-            var outFile = Path.Combine(Path.GetTempPath(), model.Details.GeneratedFileName);
-            //var outFile = Path.GetTempFileName();
+            var outFile = Path.Combine(Path.GetTempPath(), model.Details.GeneratedFileName.Replace("{ID}", workItem.Id.ToString()));
             await Task.Run(() => File.Copy(model.Details.TemplateFilePath, outFile, true));
             using (var doc = WordprocessingDocument.Open(outFile, true))
             {

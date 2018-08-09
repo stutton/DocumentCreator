@@ -25,6 +25,6 @@ namespace Stutton.DocumentCreator.Models.Document
         public List<FieldDocumentDtoBase> Fields { get; set; } = new List<FieldDocumentDtoBase>();
 
         [DataMember]
-        public List<AutomationModelBase> Automations { get; set; } = new List<AutomationModelBase>();
+        public List<AutomationDtoBase> Automations { get; set; } = new List<AutomationDtoBase>();
     }
 }

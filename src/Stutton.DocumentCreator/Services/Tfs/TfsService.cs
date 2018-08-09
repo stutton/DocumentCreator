@@ -10,6 +10,7 @@ using Flurl;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.Client;
+using Microsoft.VisualStudio.Services.Identity.Client;
 using Microsoft.VisualStudio.Services.Profile;
 using Microsoft.VisualStudio.Services.Profile.Client;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -24,7 +25,12 @@ namespace Stutton.DocumentCreator.Services.Tfs
 {
     public class TfsService : ITfsService
     {
+        private const string GlobalProfileUrl = "https://app.vssps.visualstudio.com/";
+
         private readonly ISettingsService _settingsService;
+
+        private VssConnection _connection;
+        private VssConnection _profileConnection;
 
         public TfsService(ISettingsService settingsService)
         {
@@ -225,15 +231,12 @@ namespace Stutton.DocumentCreator.Services.Tfs
         {
             try
             {
-                var connectionResponse = await GetUpdatedVssConnection();
-
-                if (!connectionResponse.Success)
+                if (_profileConnection == null)
                 {
-                    return Response<ProfileModel>.FromFailure(connectionResponse.Message);
+                    _profileConnection = new VssConnection(new Uri(GlobalProfileUrl), new VssClientCredentials());
                 }
-
-                var connection = connectionResponse.Value;
-                var profileClient = await connection.GetClientAsync<ProfileHttpClient>();
+                
+                var profileClient = await _profileConnection.GetClientAsync<ProfileHttpClient>();
                 var name = await profileClient.GetDisplayNameAsync(null);
                 var avatar = await profileClient.GetAvatarAsync(AvatarSize.Large);
 
@@ -267,6 +270,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
 
                 var connection = connectionResponse.Value;
                 var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
+                
                 var result = await workItemClient.GetFieldsAsync().ConfigureAwait(false);
                 return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(result.Select(f => new WorkItemFieldModel{ Name = f.Name, ReferenceName = f.ReferenceName}).ToList());
             }
@@ -343,13 +347,15 @@ namespace Stutton.DocumentCreator.Services.Tfs
 
                 var settings = settingsResponse.Value;
                 var tfsUrl = settings.TfsUrl;
-
                 var defaultCollection = settingsResponse.Value.TfsDefaultCollection;
-
                 var defaultCollectionUrl = Url.Combine(tfsUrl, defaultCollection);
 
-                var connection = new VssConnection(new Uri(defaultCollectionUrl), new VssClientCredentials());
-                return Response<VssConnection>.FromSuccess(connection);
+                if (_connection == null || _connection.Uri.AbsoluteUri != defaultCollectionUrl)
+                {
+                    _connection = new VssConnection(new Uri(defaultCollectionUrl), new VssClientCredentials());
+                }
+
+                return Response<VssConnection>.FromSuccess(_connection);
             }
             catch (Exception ex)
             {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.Activation.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -79,6 +78,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             try
             {
                 IsBusy = true;
+
                 var result = await _documentService.CreateDocumentAsync(Document, WorkItemStepVm.SelectedWorkItem);
                 if (!result.Success)
                 {

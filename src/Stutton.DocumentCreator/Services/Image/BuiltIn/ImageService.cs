@@ -30,28 +30,27 @@ namespace Stutton.DocumentCreator.Services.Image.BuiltIn
             return Response<BitmapSource>.FromSuccess(captureWindowBitmap);
         }
 
-        public async Task<IResponse<BitmapSource>> GetImageFromClipboard()
+        public IResponse<BitmapSource> GetImageFromClipboard()
         {
-            if (!await Task.Run(() => Clipboard.ContainsImage()))
+            if (!Clipboard.ContainsImage())
             {
                 return Response<BitmapSource>.FromFailure("No image on clipboard");
             }
 
-            var clipboardData = await Task.Run(() => System.Windows.Forms.Clipboard.GetDataObject());
+            var clipboardData = System.Windows.Forms.Clipboard.GetDataObject();
             if (clipboardData == null)
             {
                 return Response<BitmapSource>.FromFailure("No data on clipboard");
             }
 
-            if (!await Task.Run(() => clipboardData.GetDataPresent(System.Windows.Forms.DataFormats.Bitmap)))
+            if (!clipboardData.GetDataPresent(System.Windows.Forms.DataFormats.Bitmap))
             {
                 return Response<BitmapSource>.FromFailure("Failed to get bitmap from clipboard");
             }
 
             var bitmap =
-                (System.Drawing.Bitmap) await Task.Run(
-                    () => clipboardData.GetData(System.Windows.Forms.DataFormats.Bitmap));
-            var hBitmap = await Task.Run(() => bitmap.GetHbitmap());
+                (System.Drawing.Bitmap) clipboardData.GetData(System.Windows.Forms.DataFormats.Bitmap);
+            var hBitmap = bitmap.GetHbitmap();
             try
             {
                 var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(

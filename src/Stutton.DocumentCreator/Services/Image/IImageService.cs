@@ -11,6 +11,6 @@ namespace Stutton.DocumentCreator.Services.Image
     public interface IImageService
     {
         IResponse<BitmapSource> GetWindowCapture();
-        Task<IResponse<BitmapSource>> GetImageFromClipboard();
+        IResponse<BitmapSource> GetImageFromClipboard();
     }
 }

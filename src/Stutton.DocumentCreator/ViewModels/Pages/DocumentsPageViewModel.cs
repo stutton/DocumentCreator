@@ -39,11 +39,11 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                                       ISnackbarMessageQueue messageQueue)
         :base(navigationService)
         {
-            _templatesService = templatesService;
-            _navigationService = navigationService;
-            _telemetryService = telemetryService;
-            _documentService = documentService;
-            _messageQueue = messageQueue;
+            _templatesService = templatesService ?? throw new ArgumentNullException(nameof(templatesService));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _telemetryService = telemetryService ?? throw new ArgumentNullException(nameof(telemetryService));
+            _documentService = documentService ?? throw new ArgumentNullException(nameof(documentService));
+            _messageQueue = messageQueue ?? throw new ArgumentNullException(nameof(messageQueue));
         }
 
         private ObservableCollection<TemplateCardViewModel> _propertyName;
