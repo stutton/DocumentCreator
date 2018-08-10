@@ -66,7 +66,8 @@ namespace Stutton.DocumentCreator.Models.Template
                 Description = Description,
                 TemplateFilePath = TemplateFilePath,
                 WorkItemQuery = WorkItemQuery,
-                DocumentType = DocumentType
+                DocumentType = DocumentType,
+                GeneratedFileName = GeneratedFileName
             };
             return documentDetails;
         }
