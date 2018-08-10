@@ -20,7 +20,6 @@ namespace Stutton.DocumentCreator.Services.Document
     public class DocumentService : IDocumentService
     {
         private readonly IMapper _mapper;
-        private static readonly string TempDirectory = Path.GetTempPath();
 
         private readonly string _documentSaveDirectoryName =
             $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Saves";
@@ -39,7 +38,7 @@ namespace Stutton.DocumentCreator.Services.Document
                 return Response<string>.FromFailure($"Template file not found '{model.Details.TemplateFilePath}'");
             }
 
-            var outFile = Path.Combine(Path.GetTempPath(), model.Details.GeneratedFileName.Replace("{ID}", workItem.Id.ToString()));
+            var outFile = Path.Combine(model.Details.GeneratedFileName.Replace("{ID}", workItem.Id.ToString()) + ".docx");
             await Task.Run(() => File.Copy(model.Details.TemplateFilePath, outFile, true));
             using (var doc = WordprocessingDocument.Open(outFile, true))
             {
@@ -48,7 +47,6 @@ namespace Stutton.DocumentCreator.Services.Document
                     var response = await field.ModifyDocument(doc, workItem);
                     if (!response.Success)
                     {
-                        // TODO: Should we fail if a field does?
                         return Response<string>.FromFailure(response.Message);
                     }
                 }

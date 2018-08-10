@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,10 +98,10 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                     return;
                 }
 
+                File.Delete(documentPath);
+
                 await DialogHost.Show(new SuccessMessageDialogViewModel("Document created and automations run"),
                     MainWindow.RootDialog);
-
-                System.Diagnostics.Process.Start(documentPath);
 
                 await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
             }

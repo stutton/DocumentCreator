@@ -195,7 +195,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 var connection = connectionResponse.Value;
                 var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
 
-                var fileName = Path.GetFileName(filePath);
+                var fileName = $"{Path.GetFileName(filePath)}.{Path.GetExtension(filePath)}";
                 var attachmentReference = await workItemClient.CreateAttachmentAsync(filePath).ConfigureAwait(false);
 
                 var patchDocument = new JsonPatchDocument
