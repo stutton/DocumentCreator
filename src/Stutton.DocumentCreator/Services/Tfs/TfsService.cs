@@ -32,6 +32,8 @@ namespace Stutton.DocumentCreator.Services.Tfs
         private VssConnection _connection;
         private VssConnection _profileConnection;
 
+        private IEnumerable<WorkItemFieldModel> _workItemFieldsCache;
+
         public TfsService(ISettingsService settingsService)
         {
             _settingsService = settingsService;
@@ -88,7 +90,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 {
                     sb.Append(" AND ");
 
-                    sb.Append($"[{expression.Field.ReferenceName}] ");
+                    sb.Append($"[{expression.Field}] ");
 
                     sb.Append($"{GetExpressionOperatorString(expression.Operator)} ");
 
@@ -262,6 +264,11 @@ namespace Stutton.DocumentCreator.Services.Tfs
         {
             try
             {
+                if (_workItemFieldsCache != null)
+                {
+                    return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(_workItemFieldsCache);
+                }
+
                 var connectionResponse = await GetUpdatedVssConnection();
                 if (!connectionResponse.Success)
                 {
@@ -272,7 +279,8 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
                 
                 var result = await workItemClient.GetFieldsAsync().ConfigureAwait(false);
-                return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(result.Select(f => new WorkItemFieldModel{ Name = f.Name, ReferenceName = f.ReferenceName}).ToList());
+                _workItemFieldsCache = result.Select(f => new WorkItemFieldModel {Name = f.Name, ReferenceName = f.ReferenceName});
+                return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(_workItemFieldsCache);
             }
             catch (Exception ex)
             {
@@ -280,11 +288,11 @@ namespace Stutton.DocumentCreator.Services.Tfs
             }
         }
 
-        public async Task<IResponse<string>> GetWorkItemFieldValue(int id, WorkItemFieldModel field)
+        public async Task<IResponse<string>> GetWorkItemFieldValue(int id, string field)
         {
             try
             {
-                if (field.Name.Equals("ID", StringComparison.InvariantCultureIgnoreCase))
+                if (field.Equals("System.ID", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return Response<string>.FromSuccess(id.ToString());
                 }
@@ -298,13 +306,13 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 var connection = connectionResponse.Value;
                 var workItemClient =
                     await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
-                var workItem = await workItemClient.GetWorkItemAsync(id, new[] {field.ReferenceName});
+                var workItem = await workItemClient.GetWorkItemAsync(id, new[] {field});
                 if (workItem?.Id == null)
                 {
                     return Response<string>.FromFailure($"No work item with ID '{id}' returned");
                 }
 
-                var fieldValue = workItem.Fields[field.ReferenceName].ToString();
+                var fieldValue = workItem.Fields[field].ToString();
                 return Response<string>.FromSuccess(fieldValue);
             }
             catch (Exception ex)

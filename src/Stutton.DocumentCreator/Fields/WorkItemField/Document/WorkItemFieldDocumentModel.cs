@@ -23,8 +23,8 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Document
             set => Set(ref _textToReplace, value);
         }
 
-        private WorkItemFieldModel _selectedField;
-        public WorkItemFieldModel SelectedField
+        private string _selectedField;
+        public string SelectedField
         {
             get => _selectedField;
             set => Set(ref _selectedField, value);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using Stutton.DocumentCreator.Automations;
 using Stutton.DocumentCreator.Fields;
 using Stutton.DocumentCreator.Models.Document;
@@ -9,7 +10,7 @@ using Stutton.DocumentCreator.Shared;
 namespace Stutton.DocumentCreator.Models.Template
 {
     [DataContract(Name = "DocumentTemplate")]
-    public class DocumentTemplateModel : Observable
+    public class DocumentTemplateModel : Observable, IRequiresInitialization
     {
         [DataMember]
         public string Id { get; set; } = $@"{Guid.NewGuid()}";
@@ -45,6 +46,27 @@ namespace Stutton.DocumentCreator.Models.Template
         private ObservableCollection<AutomationModelBase> GetDocumentAutomations()
         {
             return new ObservableCollection<AutomationModelBase>(Automations);
+        }
+
+        public async Task<IResponse> Initialize()
+        {
+            foreach (var field in Fields)
+            {
+                if (field is IRequiresInitialization initializeMe)
+                {
+                    await initializeMe.Initialize();
+                }
+            }
+
+            foreach (var automation in Automations)
+            {
+                if (automation is IRequiresInitialization initializeMe)
+                {
+                    await initializeMe.Initialize();
+                }
+            }
+
+            return Response.FromSuccess();
         }
     }
 }

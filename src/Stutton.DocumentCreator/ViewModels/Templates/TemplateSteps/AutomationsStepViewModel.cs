@@ -53,7 +53,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
                 return;
             }
 
-            var response = _automationFactoryService.CreateAutomation(SelectedType);
+            var response = await _automationFactoryService.CreateAutomation(SelectedType);
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);

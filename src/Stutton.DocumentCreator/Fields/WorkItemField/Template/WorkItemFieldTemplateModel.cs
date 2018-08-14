@@ -14,12 +14,11 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
     public class WorkItemFieldTemplateModel : FieldTemplateModelBase, IRequiresInitialization
     {
-        private static IEnumerable<WorkItemFieldModel> CachedWorkItemFields;
         private readonly ITfsService _tfsService;
         public const string Key = "WorkItemField";
 
         public override Type DtoType => typeof(WorkItemFieldTemplateDto);
-        public override string Description => $"Replace '{TextToReplace}' with the value of '{SelectedField?.Name}' from the selected work item";
+        public override string Description => $"Replace part of the document with the value of the selected work item field";
         public override string TypeDisplayName => "Work Item Field";
         public override string FieldKey => Key;
 
@@ -37,8 +36,8 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
             set => Set(ref _textToReplace, value);
         }
 
-        private WorkItemFieldModel _selectedField;
-        public WorkItemFieldModel SelectedField
+        private string _selectedField;
+        public string SelectedField
         {
             get => _selectedField;
             set => Set(ref _selectedField, value);
@@ -58,19 +57,12 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 
         public async Task<IResponse> Initialize()
         {
-            if (CachedWorkItemFields != null)
-            {
-                WorkItemFields = new ObservableCollection<WorkItemFieldModel>(CachedWorkItemFields);
-                return Response.FromSuccess();
-            }
-
             var tfsServiceResponse = await _tfsService.GetWorkItemFields();
             if (!tfsServiceResponse.Success)
             {
                 return tfsServiceResponse;
             }
 
-            CachedWorkItemFields = tfsServiceResponse.Value;
             WorkItemFields = new ObservableCollection<WorkItemFieldModel>(tfsServiceResponse.Value);
             return Response.FromSuccess();
         }

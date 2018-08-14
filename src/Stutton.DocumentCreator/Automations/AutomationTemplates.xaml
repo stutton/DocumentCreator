@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:attachToWorkItem="clr-namespace:Stutton.DocumentCreator.Automations.AttachToWorkItem"
-                    xmlns:local="clr-namespace:Stutton.DocumentCreator.Automations"
-                    xmlns:saveAs="clr-namespace:Stutton.DocumentCreator.Automations.SaveAs">
+                    xmlns:saveAs="clr-namespace:Stutton.DocumentCreator.Automations.SaveAs"
+                    xmlns:setWorkItemField="clr-namespace:Stutton.DocumentCreator.Automations.SetWorkItemField">
 
     <DataTemplate DataType="{x:Type attachToWorkItem:AttachToWorkItemAutomationModel}">
         <attachToWorkItem:AttachToWorkItemAutomationView />
@@ -10,6 +10,10 @@
 
     <DataTemplate DataType="{x:Type saveAs:SaveAsAutomationModel}">
         <saveAs:SaveAsAutomationView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type setWorkItemField:SetWorkItemFieldAutomationModel}">
+        <setWorkItemField:SetWorkItemFieldAutomationView/>
     </DataTemplate>
 
 </ResourceDictionary>

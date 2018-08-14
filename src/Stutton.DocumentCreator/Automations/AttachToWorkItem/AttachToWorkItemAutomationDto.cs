@@ -10,6 +10,7 @@ namespace Stutton.DocumentCreator.Automations.AttachToWorkItem
     [DataContract(Name = "AttachToWorkItem")]
     public class AttachToWorkItemAutomationDto : AutomationDtoBase
     {
-
+        [DataMember]
+        public override string Name { get; set; }
     }
 }

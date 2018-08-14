@@ -56,6 +56,7 @@ namespace Stutton.DocumentCreator.Services.Templates
                         TypeNameHandling = TypeNameHandling.Objects
                     }));
                     var template = _mapper.Map<DocumentTemplateModel>(templateDto);
+                    await template.Initialize();
                     templates.Add(template);
                 }
 

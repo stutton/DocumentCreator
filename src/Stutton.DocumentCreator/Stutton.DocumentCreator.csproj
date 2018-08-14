@@ -96,7 +96,7 @@
     <Compile Include="Fields\FieldTemplateMapperProfile.cs" />
     <Compile Include="Fields\FieldTemplateModelBase.cs" />
     <Compile Include="Fields\FieldTemplateDtoBase.cs" />
-    <Compile Include="Fields\IRequiresInitialization.cs" />
+    <Compile Include="Shared\IRequiresInitialization.cs" />
     <Compile Include="Fields\List\Document\BitmapSourceToBytesTypeConverter.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentDto.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentMapperProfile.cs" />

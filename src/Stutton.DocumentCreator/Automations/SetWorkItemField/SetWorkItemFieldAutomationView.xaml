@@ -4,9 +4,77 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Automations.SetWorkItemField"
+             xmlns:controls="clr-namespace:Stutton.DocumentCreator.Views.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance local:SetWorkItemFieldAutomationModel}">
+
+    <controls:EditorExpander>
+        <Expander.Header>
+            <Grid Height="32">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         Margin="0,0,4,0"
+                                         VerticalAlignment="Center"
+                                         Kind="Switch" />
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name}" />
+                <TextBlock Grid.Column="2"
+                           VerticalAlignment="Center"
+                           Text="{Binding Description}"
+                           TextTrimming="CharacterEllipsis" />
+            </Grid>
+        </Expander.Header>
+        <controls:EditorExpander.ToolBarItems>
+            <Button Command="{Binding DeleteCommand}"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                <materialDesign:PackIcon Width="24"
+                                         Height="24"
+                                         Kind="Delete" />
+            </Button>
+        </controls:EditorExpander.ToolBarItems>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Margin="0,16,16,16"
+                     Grid.Column="0"
+                     materialDesign:HintAssist.Hint="Name"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Name}" />
+
+            <ComboBox Margin="0,16,16,16"
+                      Grid.Column="1"
+                      materialDesign:HintAssist.Hint="Work Item Field"
+                      Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
+                      ItemsSource="{Binding WorkItemFields}"
+                      DisplayMemberPath="Name"
+                      IsEditable="True"
+                      SelectedValue="{Binding SelectedField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValuePath="ReferenceName">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
             
-    </Grid>
+            <TextBox Margin="0,16,16,16"
+                     Grid.Column="2"
+                     materialDesign:HintAssist.Hint="New Value"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding NewFieldValue}"/>
+        </Grid>
+    </controls:EditorExpander>
 </UserControl>

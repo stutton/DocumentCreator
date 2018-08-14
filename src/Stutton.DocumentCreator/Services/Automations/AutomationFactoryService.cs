@@ -20,7 +20,7 @@ namespace Stutton.DocumentCreator.Services.Automations
             _automationResolver = automationResolver;
         }
 
-        public IResponse<AutomationModelBase> CreateAutomation(Type automationType)
+        public async Task<IResponse<AutomationModelBase>> CreateAutomation(Type automationType)
         {
             try
             {
@@ -34,6 +34,11 @@ namespace Stutton.DocumentCreator.Services.Automations
                 if (automation == null)
                 {
                     return Response<AutomationModelBase>.FromFailure($"Failed to create field of type '{automationType.Name}'");
+                }
+
+                if (automation is IRequiresInitialization initializeMe)
+                {
+                    await initializeMe.Initialize();
                 }
 
                 return Response<AutomationModelBase>.FromSuccess(automation);

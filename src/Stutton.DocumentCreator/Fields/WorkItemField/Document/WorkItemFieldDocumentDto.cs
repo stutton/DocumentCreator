@@ -16,6 +16,6 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Document
         [DataMember]
         public string TextToReplace { get; set; }
         [DataMember]
-        public WorkItemFieldModel SelectedField { get; set; }
+        public string SelectedField { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Automations.SetWorkItemField
 {
-    public class SetWorkItemFieldAutomationModel : AutomationModelBase
+    public class SetWorkItemFieldAutomationModel : AutomationModelBase, IRequiresInitialization
     {
         private readonly ITfsService _tfsService;
 
@@ -30,9 +31,42 @@ namespace Stutton.DocumentCreator.Automations.SetWorkItemField
 
         public override string Description => "Set the value of a work item field to the given value";
 
-        public override Task<IResponse> Execute(DocumentModel document, IWorkItem workItem, string documentPath)
+        private ObservableCollection<WorkItemFieldModel> _workItemFields;
+        public ObservableCollection<WorkItemFieldModel> WorkItemFields
         {
-            throw new NotImplementedException();
+            get => _workItemFields;
+            set => Set(ref _workItemFields, value);
+        }
+
+        private string _selectedField;
+        public string SelectedField
+        {
+            get => _selectedField;
+            set => Set(ref _selectedField, value);
+        }
+
+        private string _newFieldValue;
+        public string NewFieldValue
+        {
+            get => _newFieldValue;
+            set => Set(ref _newFieldValue, value);
+        }
+
+        public async Task<IResponse> Initialize()
+        {
+            var response = await _tfsService.GetWorkItemFields();
+            if (!response.Success)
+            {
+                return response;
+            }
+
+            WorkItemFields = new ObservableCollection<WorkItemFieldModel>(response.Value);
+            return Response.FromSuccess();
+        }
+
+        public override async Task<IResponse> Execute(DocumentModel document, IWorkItem workItem, string documentPath)
+        {
+            return await _tfsService.UpdateWorkItemAsync(workItem.Id, SelectedField, NewFieldValue);
         }
     }
 }
