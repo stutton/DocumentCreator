@@ -72,6 +72,12 @@
     <Compile Include="Automations\SaveAs\SaveAsAutomationView.xaml.cs">
       <DependentUpon>SaveAsAutomationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Automations\SetWorkItemField\SetWorkItemFieldAutomationDto.cs" />
+    <Compile Include="Automations\SetWorkItemField\SetWorkItemFieldAutomationMapperProfile.cs" />
+    <Compile Include="Automations\SetWorkItemField\SetWorkItemFieldAutomationModel.cs" />
+    <Compile Include="Automations\SetWorkItemField\SetWorkItemFieldAutomationView.xaml.cs">
+      <DependentUpon>SetWorkItemFieldAutomationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fields\Date\Document\DateFieldDocumentDto.cs" />
     <Compile Include="Fields\Date\Document\DateFieldDocumentMapperProfile.cs" />
     <Compile Include="Fields\Date\Document\DateFieldDocumentModel.cs" />
@@ -316,6 +322,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Automations\SaveAs\SaveAsAutomationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Automations\SetWorkItemField\SetWorkItemFieldAutomationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
