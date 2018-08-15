@@ -10,6 +10,7 @@ namespace Stutton.DocumentCreator.Fields.List.Template
     public class ListFieldTemplateModel : FieldTemplateModelBase
     {
         private readonly IImageService _imageService;
+        private readonly IContext _context;
         public const string Key = "ListField";
 
         public override Type DtoType => typeof(ListFieldTemplateDto);
@@ -24,14 +25,15 @@ namespace Stutton.DocumentCreator.Fields.List.Template
             set => Set(ref _name, value);
         }
 
-        public ListFieldTemplateModel(IImageService imageService)
+        public ListFieldTemplateModel(IImageService imageService, IContext context)
         {
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public override FieldDocumentModelBase GetDocumentField()
         {
-            var documentField = new ListFieldDocumentModel(_imageService)
+            var documentField = new ListFieldDocumentModel(_imageService, _context)
             {
                 Name = Name,
             };

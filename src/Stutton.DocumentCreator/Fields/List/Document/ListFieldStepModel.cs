@@ -13,12 +13,14 @@ namespace Stutton.DocumentCreator.Fields.List.Document
     public class ListFieldStepModel : Observable
     {
         private readonly IImageService _imageService;
+        private readonly IContext _context;
         public event EventHandler<MoveListFieldStepEventArgs> RequestMove;
         public event EventHandler<EventArgs> RequestDeleteMe;
 
-        public ListFieldStepModel(IImageService imageService)
+        public ListFieldStepModel(IImageService imageService, IContext context)
         {
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         private int _index;
@@ -117,7 +119,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         private async Task<BitmapSource> GetWindowScreenShot()
         {
-            var response = _imageService.GetWindowCapture();
+            var response = TakeWindowScreenShot();
             if (!response.Success)
             {
                 var dialogVm = new ErrorMessageDialogViewModel(response.Message);
@@ -128,9 +130,21 @@ namespace Stutton.DocumentCreator.Fields.List.Document
             return response.Value;
         }
 
+        private IResponse<BitmapSource> TakeWindowScreenShot()
+        {
+            if (_context.IsInvokeRequired)
+            {
+                IResponse<BitmapSource> response = Response<BitmapSource>.FromFailure("Failed to take screenshot");
+                _context.Invoke(() => response = TakeWindowScreenShot());
+                return response;
+            }
+
+            return _imageService.GetWindowCapture();
+        }
+
         private async Task<BitmapSource> GetImageFromClipboard()
         {
-            var response = _imageService.GetImageFromClipboard();
+            var response = TakeImageFromClipboard();
             if (!response.Success)
             {
                 var dialogVm = new ErrorMessageDialogViewModel(response.Message);
@@ -139,6 +153,18 @@ namespace Stutton.DocumentCreator.Fields.List.Document
             }
 
             return response.Value;
+        }
+
+        private IResponse<BitmapSource> TakeImageFromClipboard()
+        {
+            if (_context.IsInvokeRequired)
+            {
+                IResponse<BitmapSource> response = Response<BitmapSource>.FromFailure("Failed to take image from clipboard");
+                _context.Invoke(() => response = TakeImageFromClipboard());
+                return response;
+            }
+
+            return _imageService.GetImageFromClipboard();
         }
     }
 }

@@ -8,28 +8,20 @@ using System.Windows.Threading;
 
 namespace Stutton.DocumentCreator.Shared
 {
-    public static class WpfContext
+    public sealed class WpfContext : IContext
     {
-        private static Dispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher;
 
-        static WpfContext()
+        public WpfContext(Dispatcher dispatcher)
         {
-            _dispatcher = Dispatcher.CurrentDispatcher;
+            _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
         }
 
-        public static bool IsSynchronized => _dispatcher.Thread == Thread.CurrentThread;
+        public WpfContext() : this(Dispatcher.CurrentDispatcher) { }
 
-        public static bool IsInvokeRequired => _dispatcher.Thread != Thread.CurrentThread;
+        public bool IsInvokeRequired => _dispatcher.Thread != Thread.CurrentThread;
 
-        public static void BeginInvoke(Action action)
-        {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _dispatcher.BeginInvoke(action);
-        }
-
-        public static void Invoke(Action action)
+        public void Invoke(Action action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));

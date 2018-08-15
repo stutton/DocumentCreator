@@ -58,6 +58,7 @@ namespace Stutton.DocumentCreator
         private static void Configure(ISnackbarMessageQueue messageQueue)
         {
             _container = new UnityContainer();
+            _container.RegisterInstance<IContext>(new WpfContext(), new ContainerControlledLifetimeManager());
             _container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISettingsService, SettingsService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITfsService, TfsService>(new ContainerControlledLifetimeManager());

@@ -42,7 +42,8 @@
                                 <ColumnDefinition Width="80" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Field.Name}" />
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding ElementName=WorkItemFieldComboBox, Path=Text}" />
                             <TextBlock Grid.Column="1"
                                        Margin="8,0"
                                        VerticalAlignment="Center"
@@ -64,7 +65,8 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <ComboBox SelectedValue="{Binding Field, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <ComboBox Name="WorkItemFieldComboBox" 
+                                  SelectedValue="{Binding Field, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   SelectedValuePath="ReferenceName"
                                   DisplayMemberPath="Name"
                                   ItemsSource="{Binding DataContext.WorkItemFields, Mode=OneTime, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemQueryStep}}}"

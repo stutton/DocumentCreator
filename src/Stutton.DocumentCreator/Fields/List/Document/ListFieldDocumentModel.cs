@@ -18,11 +18,13 @@ namespace Stutton.DocumentCreator.Fields.List.Document
     public class ListFieldDocumentModel : FieldDocumentModelBase
     {
         private readonly IImageService _imageService;
+        private readonly IContext _context;
         public const string Key = "ListField";
 
-        public ListFieldDocumentModel(IImageService imageService)
+        public ListFieldDocumentModel(IImageService imageService, IContext context)
         {
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
         
         public override string Description => "List of text and images";
@@ -62,9 +64,9 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         private void AddImageToDocument(WordprocessingDocument document)
         {
-            if (WpfContext.IsInvokeRequired)
+            if (_context.IsInvokeRequired)
             {
-                WpfContext.Invoke(() => AddImageToDocument(document));
+                _context.Invoke(() => AddImageToDocument(document));
                 return;
             }
             foreach (var step in Steps)
@@ -79,7 +81,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
 
         private ListFieldStepModel GetNewStep()
         {
-            var step = new ListFieldStepModel(_imageService);
+            var step = new ListFieldStepModel(_imageService, _context);
             step.RequestDeleteMe += StepOnRequestDeleteMe;
             step.RequestMove += StepOnRequestMove;
             step.Index = Steps.Count + 1;
