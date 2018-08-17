@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>DocumentCreator</id>
+    <version>$version$</version>
+    <authors>Stephen Tutton</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Document Creator</description>
+    <copyright>Copyright 2018 Stephen Tutton</copyright>
+  </metadata>
+  <files>
+    <file src="Stutton.DocumentCreator\bin\Release\*.dll" target="lib\net45"/>
+    <file src="Stutton.DocumentCreator\bin\Release\*.exe" target="lib\net45"/>
+    <file src="Stutton.DocumentCreator\bin\Release\*.config" target="lib\net45"/>
+  </files>
+</package>
