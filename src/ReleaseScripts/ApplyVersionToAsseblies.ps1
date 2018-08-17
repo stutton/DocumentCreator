@@ -41,7 +41,7 @@ elseif (-not (Test-Path $Env:BUILD_SOURCESDIRECTORY))
     exit 1
 }
 
-Write-Verbose "BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
+Write-Host "BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
 
 # Get and validate the version data
 $VersionData = [regex]::matches($Env:BUILD_BUILDNUMBER,$VersionRegex)
@@ -60,7 +60,7 @@ switch($VersionData.Count)
       }
 }
 $NewVersion = $VersionData[0]
-Write-Verbose "Version: $NewVersion"
+Write-Host "Version: $NewVersion"
 
 # Apply the version to the assembly property files
 $files = gci $Env:BUILD_SOURCESDIRECTORY -recurse -include "*Properties*","My Project" | 
@@ -68,13 +68,13 @@ $files = gci $Env:BUILD_SOURCESDIRECTORY -recurse -include "*Properties*","My Pr
     foreach { gci -Path $_.FullName -Recurse -include AssemblyInfo.* }
 if($files)
 {
-    Write-Verbose "Will apply $NewVersion to $($files.count) files."
+    Write-Host "Will apply $NewVersion to $($files.count) files."
 
     foreach ($file in $files) {
         $filecontent = Get-Content($file)
         attrib $file -r
         $filecontent -replace $VersionRegex, $NewVersion | Out-File $file
-        Write-Verbose "$file.FullName - version applied"
+        Write-Host "$file.FullName - version applied"
     }
 }
 else
