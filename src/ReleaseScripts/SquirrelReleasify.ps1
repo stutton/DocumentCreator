@@ -5,13 +5,11 @@
 [CmdletBinding()]
 param(
 	[Parameter(Mandatory=$True)]
-	[string]$appName,
+	[string]$AppName,
 	[Parameter(Mandatory=$True)]
-	[string]$packageFolder,
+	[string]$PackageFolder,
 	[Parameter(Mandatory=$True)]
-	[string]$releaseFolder,
-	[Parameter(Mandatory=$True)]
-	[string]$signCertPassword
+	[string]$ReleaseFolder
 )
 
 Set-Alias Squirrel '.\packages\squirrel.windows.1.8.0\tools\Squirrel.exe'
