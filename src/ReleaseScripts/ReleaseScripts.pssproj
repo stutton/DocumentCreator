@@ -27,7 +27,8 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="ApplyVersionToAsseblies.ps1" />
+    <Compile Include="CopyAzureBlob.ps1" />
+    <Compile Include="SquirrelReleasify.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />
