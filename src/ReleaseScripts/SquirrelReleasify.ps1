@@ -11,17 +11,19 @@ param(
 	[Parameter(Mandatory=$True)]
 	[string]$PackageFolder,
 	[Parameter(Mandatory=$True)]
-	[string]$ReleaseFolder
+	[string]$ReleaseFolder,
+	[Parameter(Mandatory=$True)]
+	[string]$SquirrelPackageFolder
 )
 
-Set-Alias Squirrel '.\packages\squirrel.windows.1.8.0\tools\Squirrel.exe'
+Set-Alias Squirrel "$SquirrelPackageFolder\squirrel.windows.*\tools\Squirrel.exe"
 
 # Regular expression pattern to find the version in the build number 
 $VersionRegex = "\d+\.\d+\.\d+\.\d+"
 
 $VersionData = [regex]::matches($Version,$VersionRegex)
-$NugetPackageFileName = $appName + "." + $VersionData + ".nupkg"
+$NugetPackageFileName = $AppName + "." + $VersionData + ".nupkg"
 
-Write-Host "Starting Squirrel releasify on" $packageFolder\$NugetPackageFileName "release directory:" $releaseFolder
+Write-Host "Starting Squirrel releasify on" $pPackageFolder\$NugetPackageFileName "release directory:" $ReleaseFolder
 
-Squirrel --releasify $packageFolder\$NugetPackageFileName --releaseDir $releaseFolder | Write-Output
+Squirrel --releasify $PackageFolder\$NugetPackageFileName --releaseDir $ReleaseFolder | Write-Output
