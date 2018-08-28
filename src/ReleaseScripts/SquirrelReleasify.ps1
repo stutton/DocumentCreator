@@ -18,6 +18,9 @@ param(
 
 Set-Alias Squirrel "$SquirrelPackageFolder\squirrel.windows\1.8.0\Squirrel.exe"
 
+Write-Host "Contents of package directory:"
+Get-ChildItem $SquirrelPackageFolder | Write-Output
+
 $NugetPackageFileName = $AppName + "." + $Version + ".nupkg"
 
 Write-Host "Starting Squirrel releasify on" $PackageFolder\$NugetPackageFileName "release directory:" $ReleaseFolder
