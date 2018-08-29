@@ -19,7 +19,7 @@ param(
 Set-Alias Squirrel "$SquirrelPackageFolder\squirrel.windows\1.8.0\Squirrel.exe"
 
 Write-Host "Contents of package directory:"
-Get-ChildItem $SquirrelPackageFolder | Write-Output
+Get-ChildItem "$SquirrelPackageFolder\squirrel.windows" | Write-Output
 
 $NugetPackageFileName = $AppName + "." + $Version + ".nupkg"
 
