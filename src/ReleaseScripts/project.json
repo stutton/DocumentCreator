@@ -1,5 +1,11 @@
 ﻿{
     "dependencies": {
         "squirrel.windows" : "1.8.0"
+    },
+    "frameworks": {
+      "net471": {}
+    },
+    "runtimes": {
+      "win10-x64": {}
     }
 }

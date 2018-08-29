@@ -25,7 +25,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="project.json" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="CopyAzureBlob.ps1" />
     <Compile Include="SquirrelReleasify.ps1" />
