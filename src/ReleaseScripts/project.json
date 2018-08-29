@@ -1,0 +1,5 @@
+﻿{
+    "dependencies": {
+        "squirrel.windows" : "1.8.0"
+    }
+}
