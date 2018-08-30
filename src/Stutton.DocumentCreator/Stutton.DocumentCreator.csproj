@@ -40,6 +40,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -212,6 +214,7 @@
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MaterialOpenFileDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MaterialOpenFolderDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\MaterialSaveFileDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\MessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\StringPromptDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
@@ -257,6 +260,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\MaterialOpenFolderDialog.xaml.cs">
       <DependentUpon>MaterialOpenFolderDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\MaterialSaveFileDialog.xaml.cs">
+      <DependentUpon>MaterialSaveFileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\StringPromptDialog.xaml.cs">
       <DependentUpon>StringPromptDialog.xaml</DependentUpon>
@@ -410,6 +416,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\MaterialOpenFolderDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\MaterialSaveFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

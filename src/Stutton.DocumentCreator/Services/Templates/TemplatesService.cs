@@ -5,15 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Newtonsoft.Json;
-using Stutton.DocumentCreator.Fields;
-using Stutton.DocumentCreator.Fields.List.Template;
-using Stutton.DocumentCreator.Fields.Text.Template;
-using Stutton.DocumentCreator.Fields.UserName.Template;
-using Stutton.DocumentCreator.Fields.WorkItemField.Template;
-using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Models.Template;
-using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Shared;
+using System.IO.Compression;
 
 namespace Stutton.DocumentCreator.Services.Templates
 {
@@ -108,6 +102,64 @@ namespace Stutton.DocumentCreator.Services.Templates
             catch (Exception ex)
             {
                 return Response.FromException($"Failed to delete template {document.TemplateDetails.Name}", ex);
+            }
+        }
+
+        public async Task<IResponse> ShareDocumentTemplate(DocumentTemplateModel document, string fileName)
+        {
+            try
+            {
+                if (!fileName.EndsWith(".zip"))
+                {
+                    fileName += ".zip";
+                }
+                var rootFolder = Path.GetDirectoryName(fileName);
+                if (rootFolder == null)
+                {
+                    return Response.FromFailure("Failed to determine directory to save file", ResponseCode.FileNotFound);
+                }
+
+                var zipDirectory = Path.Combine(rootFolder, "zip");
+
+                var sourceTemplateFile = $"{_documentTemplatesDirectoryName}\\{document.Id}.{_documentTemplateFileExtension}";
+                var destTemplateFile = $"{zipDirectory}\\{document.Id}.{_documentTemplateFileExtension}";
+                var sourceDocFile = document.TemplateDetails.TemplateFilePath;
+                var destDocFile = $"{zipDirectory}\\{document.Id}.docx";
+
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(zipDirectory);
+
+                        File.Copy(sourceTemplateFile, destTemplateFile);
+                        File.Copy(sourceDocFile, destDocFile);
+
+                        ZipFile.CreateFromDirectory(zipDirectory, fileName);
+                    }
+                    finally
+                    {
+                        if (Directory.Exists(zipDirectory))
+                        {
+                            if (File.Exists(destTemplateFile))
+                            {
+                                File.Delete(destTemplateFile);
+                            }
+
+                            if (File.Exists(destDocFile))
+                            {
+                                File.Delete(destDocFile);
+                            }
+                            Directory.Delete(zipDirectory);
+                        }
+                    }
+                });
+
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException($"Failed to share template {document.TemplateDetails.Name}", ex);
             }
         }
     }

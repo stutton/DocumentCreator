@@ -28,4 +28,8 @@
         <dialogs:MaterialOpenFolderDialog/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialogVms:MaterialSaveFileDialogViewModel}">
+        <dialogs:MaterialSaveFileDialog/>
+    </DataTemplate>
+
 </ResourceDictionary>

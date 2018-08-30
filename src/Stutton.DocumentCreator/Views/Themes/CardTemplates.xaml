@@ -15,18 +15,11 @@
 
     <materialConverters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-    <DataTemplate DataType="{x:Type workItems1:WorkItemModel}">
-        <cards:WorkItemCard Title="{Binding Title}"
-                            Description="{Binding Description}"
-                            Id="{Binding Id}"
-                            SelectCommand="{Binding SelectCommand}"
-                            State="{Binding State}" />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type templates:TemplateCardViewModel}">
         <cards:DocumentCard Description="{Binding Model.TemplateDetails.Description}"
                             DocumentName="{Binding Model.TemplateDetails.Name}"
                             EditCommand="{Binding EditCommand}"
+                            ShareCommand="{Binding ShareCommand}"
                             SelectCommand="{Binding SelectCommand}"
                             DeleteCommand="{Binding DeleteCommand}"
                             Type="{Binding Model.TemplateDetails.DocumentType}" />

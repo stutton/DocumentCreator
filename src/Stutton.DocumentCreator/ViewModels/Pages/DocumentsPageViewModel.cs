@@ -112,7 +112,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 Templates = new ObservableCollection<TemplateCardViewModel>(
                     templateResponse.Value.Select(d =>
                     {
-                        var card = new TemplateCardViewModel(d, _navigationService);
+                        var card = new TemplateCardViewModel(d, _navigationService, _templatesService, _telemetryService);
                         card.RequestDeleteMe += CardOnRequestDeleteMe;
                         return card;
                     }));
