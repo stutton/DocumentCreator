@@ -13,7 +13,7 @@
              Width="640"
              Height="600">
     <Grid>
-        <controls:OpenFileControl Filters="Word Document|*.docx|All Files|*.*"
+        <controls:OpenFileControl Filters="{Binding Filter}"
                                   CurrentFile="{Binding SelectedFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   FileSelected="BaseFileControl_OnFileSelected"
                                   Cancel="FileSystemControl_OnCancel" />

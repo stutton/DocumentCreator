@@ -13,11 +13,12 @@ namespace Stutton.DocumentCreator.Services.Templates
 {
     public class TemplatesService : ITemplatesService
     {
-        private readonly IMapper _mapper;
-
-        private readonly string _documentTemplatesDirectoryName =
+        private static readonly string DocumentTemplatesDirectoryName =
             $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Templates";
-        private readonly string _documentTemplateFileExtension = "template";
+        private static readonly string DocumentTemplateFileExtension = "template";
+        private static readonly string TemplateDocsDirectoryName = DocumentTemplatesDirectoryName + "\\Docs";
+
+        private readonly IMapper _mapper;
 
         public TemplatesService(IMapper mapper)
         {
@@ -28,13 +29,13 @@ namespace Stutton.DocumentCreator.Services.Templates
         {
             try
             {
-                if (!Directory.Exists(_documentTemplatesDirectoryName))
+                if (!Directory.Exists(DocumentTemplatesDirectoryName))
                 {
                     return Response<IEnumerable<DocumentTemplateModel>>.FromSuccess(new List<DocumentTemplateModel>());
                 }
 
                 var templateFiles = await Task.Run(() =>
-                    Directory.GetFiles(_documentTemplatesDirectoryName, $"*.{_documentTemplateFileExtension}"));
+                    Directory.GetFiles(DocumentTemplatesDirectoryName, $"*.{DocumentTemplateFileExtension}"));
 
                 if (!templateFiles.Any())
                 {
@@ -44,12 +45,7 @@ namespace Stutton.DocumentCreator.Services.Templates
                 var templates = new List<DocumentTemplateModel>();
                 foreach (var templateFile in templateFiles)
                 {
-                    var templateJson = await Task.Run(() => File.ReadAllText(templateFile));
-                    var templateDto = await Task.Run(() => JsonConvert.DeserializeObject<DocumentTemplateDto>(templateJson, new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Objects
-                    }));
-                    var template = _mapper.Map<DocumentTemplateModel>(templateDto);
+                    var template = await OpenTemplate(templateFile);
                     await template.Initialize();
                     templates.Add(template);
                 }
@@ -66,19 +62,7 @@ namespace Stutton.DocumentCreator.Services.Templates
         {
             try
             {
-                if (!Directory.Exists(_documentTemplatesDirectoryName))
-                {
-                    Directory.CreateDirectory(_documentTemplatesDirectoryName);
-                }
-
-                var templateDto = _mapper.Map<DocumentTemplateDto>(document);
-
-                var documentJson = await Task.Run(() => JsonConvert.SerializeObject(templateDto, Formatting.Indented, new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
-                }));
-                await Task.Run(() => File.WriteAllText($"{_documentTemplatesDirectoryName}\\{document.Id}.{_documentTemplateFileExtension}", documentJson));
+                await SaveTemplate(document);
                 return Response.FromSuccess();
             }
             catch (Exception ex)
@@ -91,7 +75,7 @@ namespace Stutton.DocumentCreator.Services.Templates
         {
             try
             {
-                var filePath = $"{_documentTemplatesDirectoryName}\\{document.Id}.{_documentTemplateFileExtension}";
+                var filePath = $"{DocumentTemplatesDirectoryName}\\{document.Id}.{DocumentTemplateFileExtension}";
                 if (File.Exists(filePath))
                 {
                     await Task.Run(() => File.Delete(filePath));
@@ -121,8 +105,8 @@ namespace Stutton.DocumentCreator.Services.Templates
 
                 var zipDirectory = Path.Combine(rootFolder, "zip");
 
-                var sourceTemplateFile = $"{_documentTemplatesDirectoryName}\\{document.Id}.{_documentTemplateFileExtension}";
-                var destTemplateFile = $"{zipDirectory}\\{document.Id}.{_documentTemplateFileExtension}";
+                var sourceTemplateFile = $"{DocumentTemplatesDirectoryName}\\{document.Id}.{DocumentTemplateFileExtension}";
+                var destTemplateFile = $"{zipDirectory}\\{document.Id}.{DocumentTemplateFileExtension}";
                 var sourceDocFile = document.TemplateDetails.TemplateFilePath;
                 var destDocFile = $"{zipDirectory}\\{document.Id}.docx";
 
@@ -162,5 +146,114 @@ namespace Stutton.DocumentCreator.Services.Templates
                 return Response.FromException($"Failed to share template {document.TemplateDetails.Name}", ex);
             }
         }
+
+        public async Task<IResponse> ImportDocumentTemplate(string fileName)
+        {
+            try
+            {
+                // Add .zip if needed
+                if (!fileName.EndsWith(".zip"))
+                {
+                    fileName += ".zip";
+                }
+
+                // Verify file exists
+                if (!File.Exists(fileName))
+                {
+                    return Response.FromFailure($"File '{fileName}' does not exist.", ResponseCode.FileNotFound);
+                }
+
+                string zipDirectory = null, templateFile = null, docFile = null;
+                try
+                {
+                    // Unzip to temporary location
+                    zipDirectory = $"{DocumentTemplatesDirectoryName}\\zip";
+                    Directory.CreateDirectory($"{DocumentTemplatesDirectoryName}\\zip");
+                    ZipFile.ExtractToDirectory(fileName, zipDirectory);
+
+                    // Try to get the .template and .docx files from the extracted zip
+                    templateFile = Directory.GetFiles(zipDirectory, $"*.{DocumentTemplateFileExtension}").FirstOrDefault();
+                    docFile = Directory.GetFiles(zipDirectory, "*.docx").FirstOrDefault();
+
+                    // Verify the files were found
+                    if (templateFile == null || docFile == null)
+                    {
+                        return Response.FromFailure("Zip archive did not contain the correct files", ResponseCode.FileNotFound);
+                    }
+
+                    // Create the docs folder if needed
+                    if (!Directory.Exists(TemplateDocsDirectoryName))
+                    {
+                        Directory.CreateDirectory(TemplateDocsDirectoryName);
+                    }
+
+                    // Copy the .docx to the docs folder
+                    var docFileDest = Path.Combine(TemplateDocsDirectoryName, Path.GetFileName(docFile));
+                    File.Copy(docFile, docFileDest);
+
+                    // Load the template and update the TemplateFilePath
+                    var template = await OpenTemplate(templateFile);
+                    template.TemplateDetails.TemplateFilePath = docFileDest;
+
+                    // Save the modified template
+                    await SaveTemplate(template);
+                }
+                finally
+                {
+                    // Cleanup
+                    if (!string.IsNullOrEmpty(zipDirectory) && File.Exists(zipDirectory))
+                    {
+                        if (!string.IsNullOrEmpty(templateFile) && File.Exists(templateFile))
+                        {
+                            File.Delete(templateFile);
+                        }
+
+                        if (!string.IsNullOrEmpty(docFile) && File.Exists(docFile))
+                        {
+                            File.Delete(docFile);
+                        }
+
+                        Directory.Delete(zipDirectory);
+                    }
+                }
+
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromException($"Failed to import the template from '{fileName}'", ex);
+            }
+        }
+
+        private Task<DocumentTemplateModel> OpenTemplate(string templateFile) => Task.Run(() =>
+        {
+            var templateJson = File.ReadAllText(templateFile);
+            var templateDto = JsonConvert.DeserializeObject<DocumentTemplateDto>(templateJson,
+                                                                                 new JsonSerializerSettings
+                                                                                 {
+                                                                                     TypeNameHandling = TypeNameHandling.Objects
+                                                                                 });
+            var template = _mapper.Map<DocumentTemplateModel>(templateDto);
+            return template;
+        });
+
+        private Task SaveTemplate(DocumentTemplateModel template) => Task.Run(() =>
+        {
+            if (!Directory.Exists(DocumentTemplatesDirectoryName))
+            {
+                Directory.CreateDirectory(DocumentTemplatesDirectoryName);
+            }
+
+            var templateDto = _mapper.Map<DocumentTemplateDto>(template);
+
+            var documentJson = JsonConvert.SerializeObject(templateDto,
+                                                           Formatting.Indented,
+                                                           new JsonSerializerSettings
+                                                           {
+                                                               TypeNameHandling = TypeNameHandling.Objects,
+                                                               TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+                                                           });
+            File.WriteAllText($"{DocumentTemplatesDirectoryName}\\{template.Id}.{DocumentTemplateFileExtension}", documentJson);
+        });
     }
 }

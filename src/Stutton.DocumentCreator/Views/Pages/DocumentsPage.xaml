@@ -18,6 +18,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
                 <ResourceDictionary Source="../Themes/CardTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -150,15 +151,29 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
 
-                <Button VerticalAlignment="Bottom"
-                        HorizontalAlignment="Right"
-                        Margin="24"
-                        Style="{DynamicResource MaterialDesignFloatingActionButton}"
-                        Command="{Binding CreateDocumentTemplateCommand}">
-                    <materialDesign:PackIcon Kind="Plus"
-                                             Height="24"
-                                             Width="24" />
-                </Button>
+                <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                         PlacementMode="TopAndAlignCentres"
+                                         VerticalAlignment="Bottom"
+                                         HorizontalAlignment="Right"
+                                         ToolTipService.Placement="Right"
+                                         Margin="24">
+                    <StackPanel>
+                        <Button ToolTip="Import Template"
+                                Command="{Binding ImportTemplateCommand}">
+                            <materialDesign:PackIcon Kind="Import"
+                                                     Height="20"
+                                                     Width="20" />
+                        </Button>
+
+                        <Button ToolTip="New Template"
+                                Command="{Binding CreateDocumentTemplateCommand}">
+                            <materialDesign:PackIcon Kind="Asterisk"
+                                                     Height="20"
+                                                     Width="20" />
+                        </Button>
+                    </StackPanel>
+
+                </materialDesign:PopupBox>
 
                 <ProgressBar Width="24"
                              Height="24"

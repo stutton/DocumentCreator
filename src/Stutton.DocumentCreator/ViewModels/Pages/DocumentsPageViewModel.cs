@@ -74,6 +74,35 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         #endregion
 
+        #region ImportTemplate Command
+
+        private ICommand _importTemplateCommand;
+        public ICommand ImportTemplateCommand => _importTemplateCommand ?? (_importTemplateCommand = new RelayCommand(async () => await ImportTemplate()));
+
+        private async Task ImportTemplate()
+        {
+            var openFileDialog = new MaterialOpenFileDialogViewModel("Zip File|*.zip");
+            if ((bool) await DialogHost.Show(openFileDialog, MainWindow.RootDialog))
+            {
+                var importFile = openFileDialog.SelectedFile;
+                var response = await _templatesService.ImportDocumentTemplate(importFile);
+                if (!response.Success)
+                {
+                    _telemetryService.TrackFailedResponse(response);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                    return;
+                }
+
+                IsBusy = true;
+
+                await LoadTemplates();
+
+                IsBusy = false;
+            }
+        }
+
+        #endregion
+
         public override async Task NavigatedTo(object parameter)
         {
             try
@@ -100,22 +129,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                         }));
                 }
 
-                var templateResponse = await _templatesService.GetDocuments();
-
-                if (!templateResponse.Success)
-                {
-                    _telemetryService.TrackFailedResponse(templateResponse);
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(templateResponse.Message));
-                    return;
-                }
-
-                Templates = new ObservableCollection<TemplateCardViewModel>(
-                    templateResponse.Value.Select(d =>
-                    {
-                        var card = new TemplateCardViewModel(d, _navigationService, _templatesService, _telemetryService);
-                        card.RequestDeleteMe += CardOnRequestDeleteMe;
-                        return card;
-                    }));
+                await LoadTemplates();
             }
             finally
             {
@@ -172,6 +186,26 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             {
                 IsBusy = false;
             }
+        }
+
+        private async Task LoadTemplates()
+        {
+            var templateResponse = await _templatesService.GetDocuments();
+
+            if (!templateResponse.Success)
+            {
+                _telemetryService.TrackFailedResponse(templateResponse);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(templateResponse.Message));
+                return;
+            }
+
+            Templates = new ObservableCollection<TemplateCardViewModel>(
+                templateResponse.Value.Select(d =>
+                {
+                    var card = new TemplateCardViewModel(d, _navigationService, _templatesService, _telemetryService);
+                    card.RequestDeleteMe += CardOnRequestDeleteMe;
+                    return card;
+                }));
         }
     }
 }

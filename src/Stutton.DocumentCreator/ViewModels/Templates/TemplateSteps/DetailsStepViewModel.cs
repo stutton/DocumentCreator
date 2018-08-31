@@ -18,7 +18,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         private async Task Browse()
         {
-            var dialogVm = new MaterialOpenFileDialogViewModel();
+            var dialogVm = new MaterialOpenFileDialogViewModel("Word Document|*.docx");
             if ((bool) await DialogHost.Show(dialogVm, MainWindow.RootDialog))
             {
                 Model.TemplateFilePath = dialogVm.SelectedFile;
