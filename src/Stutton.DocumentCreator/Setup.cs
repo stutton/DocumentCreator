@@ -94,8 +94,6 @@ namespace Stutton.DocumentCreator
             var tfsService = _container.Resolve<ITfsService>();
             var telemetryService = _container.Resolve<ITelemetryService>();
 
-            var loadTransform = false;
-
             // Load settings
             var settingsResponse = await settingsService.GetSettings();
             var settings = new SettingsModel();
@@ -106,29 +104,25 @@ namespace Stutton.DocumentCreator
                     await DialogHost.Show(new ErrorMessageDialogViewModel(settingsResponse.Message), MainWindow.RootDialog);
                     return;
                 }
-                loadTransform = true;
             }
             else
             {
                 settings = settingsResponse.Value;
             }
 
-            // Load settings transform
-            if (loadTransform)
+            // Load default settings
+            var defaultSettingsResponse = await settingsService.GetDefaultSettingsAsync();
+            if (!defaultSettingsResponse.Success)
             {
-                var transformResponse = await settingsService.GetSettingsTransformAsync();
-                if (!transformResponse.Success)
+                if (defaultSettingsResponse.Code != ResponseCode.FileNotFound)
                 {
-                    if (transformResponse.Code != ResponseCode.FileNotFound)
-                    {
-                        await DialogHost.Show(new ErrorMessageDialogViewModel(transformResponse.Message), MainWindow.RootDialog);
-                        return;
-                    }
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(defaultSettingsResponse.Message), MainWindow.RootDialog);
+                    return;
                 }
-                else
-                {
-                    settings = transformResponse.Value;
-                }
+            }
+            else
+            {
+                ApplyDefaultSettings(settings, defaultSettingsResponse.Value);
             }
 
             // Check TfsUrl
@@ -181,7 +175,7 @@ namespace Stutton.DocumentCreator
             }
 
             // Check Application Insights key
-            if (string.IsNullOrEmpty(settings.ApplicationInsightsKey))
+            if (settings.SendTelemetryEnabled == null || !settings.SendTelemetryEnabled.Value || string.IsNullOrEmpty(settings.ApplicationInsightsKey))
             {
                 telemetryService.Enabled = false;
             }
@@ -258,6 +252,20 @@ namespace Stutton.DocumentCreator
                     messageQueue.Enqueue($"Update {response.Value.NewVersion} installed. Restart to get new features and fixes.");
                 }
             });
+        }
+
+        private static void ApplyDefaultSettings(SettingsModel currentSettings, SettingsModel defaultSettings)
+        {
+            var properties = typeof(SettingsModel).GetProperties();
+            foreach (var property in properties)
+            {
+                var currentValueObj = property.GetValue(currentSettings);
+                var defaultValueObj = property.GetValue(defaultSettings);
+                if (currentValueObj == null && defaultValueObj != null)
+                {
+                    property.SetValue(currentSettings, defaultValueObj);
+                }
+            }
         }
     }
 }

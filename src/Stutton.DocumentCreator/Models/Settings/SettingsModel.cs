@@ -17,6 +17,7 @@ namespace Stutton.DocumentCreator.Models.Settings
         private string _tfsUserName;
         private WorkItemQueryModel _workItemQuery = new WorkItemQueryModel();
         private string _updateReleasesLocation;
+        private bool? _sendTelemetryEnabled;
 
         [DataMember]
         public string TfsUrl
@@ -39,13 +40,6 @@ namespace Stutton.DocumentCreator.Models.Settings
             set => Set(ref _tfsUserName, value);
         }
 
-        [DataMember]
-        public WorkItemQueryModel WorkItemQuery
-        {
-            get => _workItemQuery;
-            set => Set(ref _workItemQuery, value);
-        }
-
         private string _applicationInsightsKey;
 
         [DataMember]
@@ -60,6 +54,13 @@ namespace Stutton.DocumentCreator.Models.Settings
         {
             get => _updateReleasesLocation;
             set => Set(ref _updateReleasesLocation, value);
+        }
+
+        [DataMember]
+        public bool? SendTelemetryEnabled
+        {
+            get => _sendTelemetryEnabled;
+            set => Set(ref _sendTelemetryEnabled, value);
         }
     }
 }

@@ -63,6 +63,29 @@ namespace Stutton.DocumentCreator.Services.Settings
             }
         }
 
+        public async Task<IResponse<SettingsModel>> GetDefaultSettingsAsync()
+        {
+            try
+            {
+                var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var files = Directory.GetFiles(baseDirectory, "*.settings.defaults");
+                if (!files.Any())
+                {
+                    return Response<SettingsModel>.FromFailure("No default settings file found",
+                                                               ResponseCode.FileNotFound);
+                }
+
+                var defaultsFilePath = files.First();
+                var defaultsJson = await Task.Run(() => File.ReadAllText(defaultsFilePath));
+                var defaultsModel = await Task.Run(() => JsonConvert.DeserializeObject<SettingsModel>(defaultsJson));
+                return Response<SettingsModel>.FromSuccess(defaultsModel);
+            }
+            catch (Exception ex)
+            {
+                return Response<SettingsModel>.FromException($"Failed to load default settings", ex);
+            }
+        }
+
         public async Task<IResponse<SettingsModel>> GetSettingsTransformAsync()
         {
             try

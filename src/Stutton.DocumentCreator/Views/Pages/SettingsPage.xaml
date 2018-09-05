@@ -24,61 +24,46 @@
     <Grid Margin="16">
         <StackPanel Width="640">
 
-            <TextBlock Text="Visual Studio Team Services or Team Foundation Server" />
+            <TextBlock Text="Visual Studio Team Services" 
+                       Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                       Margin="16"
+                       Opacity="0.8"/>
             <materialDesign:Card Margin="0,4,0,0">
                 <StackPanel Margin="16">
                     <TextBox materialDesign:HintAssist.Hint="URL"
                              Text="{Binding Settings.TfsUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBox materialDesign:HintAssist.Hint="Default Collection"
-                             Margin="0,16,0,0"
-                             Text="{Binding Settings.TfsDefaultCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,16,0,0">
+                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                      HorizontalAlignment="Left"
+                                      IsChecked="{Binding Settings.SendTelemetryEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Send Telemetry Data"
+                                   Margin="8,0,0,0"/>
+                        <materialDesign:PackIcon Kind="HelpCircle"
+                                                 Margin="8,0,0,0"
+                                                 Width="16"
+                                                 Height="16"
+                                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                                 ToolTipService.ShowDuration="60000"
+                                                 ToolTip="Document Creator sends information about how the program is used and errors that occur to help develop new features and fix bugs. Your name or other identifiable information is not sent. This data will never be shared with anyone."/>
+                    </StackPanel>
                 </StackPanel>
             </materialDesign:Card>
-            
-            <TextBlock Margin="0,16,0,0"
-                       Text="Work Item Query"/>
 
-            <materialDesign:Card Margin="0,4,0,0">
-                <StackPanel Margin="16">
-                    <ListView ItemsSource="{Binding Settings.WorkItemQuery.Expressions}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Width="225"
-                                                DisplayMemberBinding="{Binding Field}"
-                                                Header="Field"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding Operator}"
-                                                Header="Operator"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding Values, Converter={StaticResource ListOfStringExpanderConverter}}"
-                                                Header="Value"
-                                                Width="225"/>
-                                <GridViewColumn>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <materialDesign:PopupBox DockPanel.Dock="Right"
-                                                                     PlacementMode="BottomAndAlignRightEdges"
-                                                                     StaysOpen="False">
-                                                <StackPanel>
-                                                    <Button Command="{Binding DataContext.DeleteExpressionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SettingsPage}}}"
-                                                            CommandParameter="{Binding}"
-                                                            Content="Delete"/>
-                                                </StackPanel>
-                                            </materialDesign:PopupBox>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-
-                    <Button Margin="0,8,0,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding AddExpressionCommand}"
-                            Content="ADD"
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            ToolTip="Add Criteria" />
-
-                </StackPanel>
-            </materialDesign:Card>
+            <Expander Header="Advanced" Background="Transparent">
+                <materialDesign:Card Margin="0,4,0,0">
+                    <StackPanel Margin="16">
+                        <TextBox materialDesign:HintAssist.Hint="TFVC Default Collection"
+                                 Text="{Binding Settings.TfsDefaultCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox materialDesign:HintAssist.Hint="Application Insights Key"
+                                 Margin="0,16,0,0"
+                                 Text="{Binding Settings.ApplicationInsightsKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox materialDesign:HintAssist.Hint="Update Releases Location"
+                                 Margin="0,16,0,0"
+                                 Text="{Binding Settings.UpdateReleasesLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </Expander>
 
             <StackPanel Margin="0,16,0,0"
                         HorizontalAlignment="Right"
