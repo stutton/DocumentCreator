@@ -62,32 +62,6 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         #endregion
 
-        #region AddExpression Command
-
-        private ICommand _addExpressionCommand;
-        public ICommand AddExpressionCommand => _addExpressionCommand ?? (_addExpressionCommand = new RelayCommand(async () => await AddExpression()));
-
-        private async Task AddExpression()
-        {
-            //TODO: Get work item fields
-            //var workItemFields = _tfsService.GetWorkItemFieldsAsync();
-            var workItemFields = new List<string> {"Field 1", "Field 2", "Field 3"};
-        }
-
-        #endregion
-
-        #region DeleteExpression Command
-
-        private ICommand _deleteExpressionCommand;
-        public ICommand DeleteExpressionCommand => _deleteExpressionCommand ?? (_deleteExpressionCommand = new RelayCommand<WorkItemQueryExpressionModel>(DeleteExpression));
-
-        private void DeleteExpression(WorkItemQueryExpressionModel commandParameter)
-        {
-            Settings.WorkItemQuery.Expressions.Remove(commandParameter);
-        }
-
-        #endregion
-
         public override async Task NavigatedTo(object parameter)
         {
             _telemetryService.TrackPageView(Key);
