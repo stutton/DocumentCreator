@@ -7,14 +7,14 @@ using System.Windows.Input;
 using Stutton.DocumentCreator.Fields.WorkItemField.Document;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 {
     public class WorkItemFieldTemplateModel : FieldTemplateModelBase, IRequiresInitialization
     {
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
         public const string Key = "WorkItemField";
 
         public override Type DtoType => typeof(WorkItemFieldTemplateDto);
@@ -50,14 +50,14 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
             set => Set(ref _name, value);
         }
 
-        public WorkItemFieldTemplateModel(ITfsService tfsService)
+        public WorkItemFieldTemplateModel(IVstsService vstsService)
         {
-            _tfsService = tfsService;
+            _vstsService = vstsService;
         }
 
         public async Task<IResponse> Initialize()
         {
-            var tfsServiceResponse = await _tfsService.GetWorkItemFields();
+            var tfsServiceResponse = await _vstsService.GetWorkItemFields();
             if (!tfsServiceResponse.Success)
             {
                 return tfsServiceResponse;
@@ -69,7 +69,7 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Template
 
         public override FieldDocumentModelBase GetDocumentField()
         {
-            var documentField = new WorkItemFieldDocumentModel(_tfsService)
+            var documentField = new WorkItemFieldDocumentModel(_vstsService)
             {
                 Name = Name,
                 SelectedField = SelectedField,

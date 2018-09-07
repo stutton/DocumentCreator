@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Stutton.DocumentCreator.Fields.UserName.Document;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.UserName.Template
@@ -10,7 +10,7 @@ namespace Stutton.DocumentCreator.Fields.UserName.Template
     [DataContract(Name = "UserNameField")]
     public class UserNameFieldTemplateModel : FieldTemplateModelBase
     {
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
         public const string Key = "UserNameField";
 
         public override Type DtoType => typeof(UserNameFieldTemplateDto);
@@ -38,14 +38,14 @@ namespace Stutton.DocumentCreator.Fields.UserName.Template
             }
         }
 
-        public UserNameFieldTemplateModel(ITfsService tfsService)
+        public UserNameFieldTemplateModel(IVstsService vstsService)
         {
-            _tfsService = tfsService;
+            _vstsService = vstsService;
         }
 
         public override FieldDocumentModelBase GetDocumentField()
         {
-            var documentField = new UserNameDocumentModel(_tfsService)
+            var documentField = new UserNameDocumentModel(_vstsService)
             {
                 Name = Name,
                 TextToReplace = TextToReplace

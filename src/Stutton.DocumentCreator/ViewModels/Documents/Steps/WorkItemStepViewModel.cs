@@ -8,7 +8,7 @@ using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Telemetry;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 
@@ -16,7 +16,7 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
 {
     public class WorkItemStepViewModel : Observable
     {
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
         private readonly WorkItemQueryModel _query;
         private readonly ITelemetryService _telemetryService;
 
@@ -69,9 +69,9 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
 
         #endregion
 
-        public WorkItemStepViewModel(ITfsService tfsService, WorkItemQueryModel query, ITelemetryService telemetryService)
+        public WorkItemStepViewModel(IVstsService vstsService, WorkItemQueryModel query, ITelemetryService telemetryService)
         {
-            _tfsService = tfsService;
+            _vstsService = vstsService;
             _query = query;
             _telemetryService = telemetryService;
         }
@@ -80,7 +80,7 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
         {
             IsBusy = true;
 
-            var response = await _tfsService.GetWorkItemsAsync(_query);
+            var response = await _vstsService.GetWorkItemsAsync(_query);
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);

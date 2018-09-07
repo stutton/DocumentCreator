@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models.WorkItems;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.UserName.Document
@@ -18,7 +18,7 @@ namespace Stutton.DocumentCreator.Fields.UserName.Document
         
         public const string Key = "UserNameField";
 
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
 
         public override string Description => $"Replace '{TextToReplace}' with the current user's name";
         public string TypeDisplayName => "Name";
@@ -32,16 +32,16 @@ namespace Stutton.DocumentCreator.Fields.UserName.Document
             set => Set(ref _textToReplace, value);
         }
 
-        public UserNameDocumentModel(ITfsService tfsService)
+        public UserNameDocumentModel(IVstsService vstsService)
         {
-            _tfsService = tfsService;
+            _vstsService = vstsService;
         }
 
         public override async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
         {
             try
             {
-                var response = await _tfsService.GetUserProfileAsync();
+                var response = await _vstsService.GetUserProfileAsync();
                 if (!response.Success)
                 {
                     return Response.FromFailure(response.Message);

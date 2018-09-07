@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.WorkItems;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 
@@ -12,7 +12,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 {
     public class WorkItemQueryStepViewModel : Observable
     {
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
         public WorkItemQueryModel Model { get; }
 
         private ObservableCollection<WorkItemFieldModel> _workItemFields;
@@ -37,7 +37,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         public async Task Initialize()
         {
-            var workItemFieldsResponse = await _tfsService.GetWorkItemFields();
+            var workItemFieldsResponse = await _vstsService.GetWorkItemFields();
             if (!workItemFieldsResponse.Success)
             {
                 await DialogHost.Show(new ErrorMessageDialogViewModel(workItemFieldsResponse.Message), MainWindow.RootDialog);
@@ -46,9 +46,9 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             WorkItemFields = new ObservableCollection<WorkItemFieldModel>(workItemFieldsResponse.Value);
         }
 
-        public WorkItemQueryStepViewModel(WorkItemQueryModel model, ITfsService tfsService)
+        public WorkItemQueryStepViewModel(WorkItemQueryModel model, IVstsService vstsService)
         {
-            _tfsService = tfsService;
+            _vstsService = vstsService;
             Model = model;
         }
     }

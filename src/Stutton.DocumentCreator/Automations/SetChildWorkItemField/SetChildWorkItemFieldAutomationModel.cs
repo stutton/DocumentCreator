@@ -9,18 +9,18 @@ using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Automations.SetWorkItemField
+namespace Stutton.DocumentCreator.Automations.SetChildWorkItemField
 {
-    public class SetWorkItemFieldAutomationModel : AutomationModelBase, IRequiresInitialization
+    public class SetChildWorkItemFieldAutomationModel : AutomationModelBase, IRequiresInitialization
     {
         private readonly IVstsService _vstsService;
 
-        public SetWorkItemFieldAutomationModel(IVstsService vstsService)
+        public SetChildWorkItemFieldAutomationModel(IVstsService vstsService)
         {
             _vstsService = vstsService ?? throw new ArgumentNullException(nameof(vstsService));
         }
 
-        public override string TypeDisplayName => "Set work item field";
+        public override string TypeDisplayName => "Set child work item field";
 
         private string _name;
         public override string Name
@@ -29,7 +29,7 @@ namespace Stutton.DocumentCreator.Automations.SetWorkItemField
             set => Set(ref _name, value);
         }
 
-        public override string Description => "Set the value of a work item field to the given value";
+        public override string Description => "Set the value of a field on all of the specified work item's children";
 
         private ObservableCollection<WorkItemFieldModel> _workItemFields;
         public ObservableCollection<WorkItemFieldModel> WorkItemFields
@@ -51,7 +51,7 @@ namespace Stutton.DocumentCreator.Automations.SetWorkItemField
             get => _newFieldValue;
             set => Set(ref _newFieldValue, value);
         }
-
+        
         public async Task<IResponse> Initialize()
         {
             var response = await _vstsService.GetWorkItemFields();
@@ -64,9 +64,9 @@ namespace Stutton.DocumentCreator.Automations.SetWorkItemField
             return Response.FromSuccess();
         }
 
-        public override async Task<IResponse> Execute(DocumentModel document, IWorkItem workItem, string documentPath)
+        public override Task<IResponse> Execute(DocumentModel document, IWorkItem workItem, string documentPath)
         {
-            return await _vstsService.UpdateWorkItemAsync(workItem.Id, SelectedField, NewFieldValue);
+            return _vstsService.UpdateWorkItemAsync(workItem.ChildWorkItems, SelectedField, NewFieldValue);
         }
     }
 }

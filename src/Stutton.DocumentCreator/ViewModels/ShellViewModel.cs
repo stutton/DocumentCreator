@@ -9,7 +9,6 @@ using Stutton.DocumentCreator.Models.Settings;
 using Stutton.DocumentCreator.Properties;
 using Stutton.DocumentCreator.Services;
 using Stutton.DocumentCreator.Services.Settings;
-using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Navigation;

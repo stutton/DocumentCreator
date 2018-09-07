@@ -1,4 +1,6 @@
-﻿namespace Stutton.DocumentCreator.Models.WorkItems
+﻿using System.Collections.Generic;
+
+namespace Stutton.DocumentCreator.Models.WorkItems
 {
     public interface IWorkItem
     {
@@ -11,5 +13,6 @@
         string AssignedTo { get; }
         string State { get; }
         bool Selected { get; set; }
+        int[] ChildWorkItems { get; }
     }
 }

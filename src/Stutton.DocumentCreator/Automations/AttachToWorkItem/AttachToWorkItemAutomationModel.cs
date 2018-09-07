@@ -5,18 +5,18 @@ using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Automations.AttachToWorkItem
 {
     public class AttachToWorkItemAutomationModel : AutomationModelBase
     {
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
 
-        public AttachToWorkItemAutomationModel(ITfsService tfsService)
+        public AttachToWorkItemAutomationModel(IVstsService vstsService)
         {
-            _tfsService = tfsService ?? throw new ArgumentNullException(nameof(tfsService));
+            _vstsService = vstsService ?? throw new ArgumentNullException(nameof(vstsService));
         }
 
         public override string TypeDisplayName => "Attach to work item";
@@ -31,7 +31,7 @@ namespace Stutton.DocumentCreator.Automations.AttachToWorkItem
 
         public override async Task<IResponse> Execute(DocumentModel document, IWorkItem workItem, string documentPath)
         {
-            var response = await _tfsService.AttachFileToWorkItemAsync(documentPath, workItem.Id);
+            var response = await _vstsService.AttachFileToWorkItemAsync(documentPath, workItem.Id);
             return !response.Success ? Response.FromFailure(response.Message) : Response.FromSuccess();
         }
     }

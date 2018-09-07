@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using AutoMapper;
 using Flurl;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.Client;
-using Microsoft.VisualStudio.Services.Identity.Client;
 using Microsoft.VisualStudio.Services.Profile;
 using Microsoft.VisualStudio.Services.Profile.Client;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -21,22 +21,24 @@ using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Settings;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Services.Tfs
+namespace Stutton.DocumentCreator.Services.Vsts
 {
-    public class TfsService : ITfsService
+    public class VstsService : IVstsService
     {
         private const string GlobalProfileUrl = "https://app.vssps.visualstudio.com/";
 
         private readonly ISettingsService _settingsService;
+        private readonly IMapper _mapper;
 
         private VssConnection _connection;
         private VssConnection _profileConnection;
 
         private IEnumerable<WorkItemFieldModel> _workItemFieldsCache;
 
-        public TfsService(ISettingsService settingsService)
+        public VstsService(ISettingsService settingsService, IMapper mapper)
         {
             _settingsService = settingsService;
+            _mapper = mapper;
         }
 
         public async Task<IResponse<IWorkItem>> GetWorkItemAsync(int id)
@@ -54,14 +56,13 @@ namespace Stutton.DocumentCreator.Services.Tfs
 
                 var workItemClient =
                     await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
-                var workItem = await workItemClient.GetWorkItemAsync(id).ConfigureAwait(false);
+                var workItem = await workItemClient.GetWorkItemAsync(id, expand: WorkItemExpand.Relations).ConfigureAwait(false);
                 if (workItem?.Id == null)
                 {
-                    //_logger.Warn($"Getting work item '{_workItemId}' returned null");
                     return Response<IWorkItem>.FromFailure($"No work item with ID '{id}' returned");
                 }
 
-                var model = TfsWorkItemMapper.MapToModel(workItem);
+                var model = _mapper.Map<WorkItemModel>(workItem);
 
                 return Response<IWorkItem>.FromSuccess(model);
             }
@@ -138,12 +139,12 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 }
 
                 var workItems = await workItemClient.GetWorkItemsAsync(queryResult.WorkItems.Select(w => w.Id),
-                    cancellationToken: cancellationToken).ConfigureAwait(false);
+                    cancellationToken: cancellationToken, expand: WorkItemExpand.Relations).ConfigureAwait(false);
 
                 var result = new List<IWorkItem>();
                 foreach (var workItem in workItems)
                 {
-                    result.Add(TfsWorkItemMapper.MapToModel(workItem));
+                    result.Add(_mapper.Map<WorkItemModel>(workItem));
                 }
 
                 return Response<IEnumerable<IWorkItem>>.FromSuccess(result);
@@ -154,7 +155,12 @@ namespace Stutton.DocumentCreator.Services.Tfs
             }
         }
 
-        public async Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue)
+        public Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue)
+        {
+            return UpdateWorkItemAsync(new[] {id}, fieldToUpdate, newValue);
+        }
+
+        public async Task<IResponse> UpdateWorkItemAsync(int[] ids, string fieldToUpdate, string newValue)
         {
             try
             {
@@ -166,6 +172,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 var connection = connectionResponse.Value;
                 var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
 
+
                 var patchDocument = new JsonPatchDocument
                 {
                     new JsonPatchOperation
@@ -176,12 +183,23 @@ namespace Stutton.DocumentCreator.Services.Tfs
                     }
                 };
 
-                await workItemClient.UpdateWorkItemAsync(patchDocument, id).ConfigureAwait(false);
+                foreach (var id in ids)
+                {
+                    try
+                    {
+                        await workItemClient.UpdateWorkItemAsync(patchDocument, id).ConfigureAwait(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new WorkItemUpdateException($"Failed to update field '{fieldToUpdate}' on work item '{id}'", ex);
+                    }
+                }
+
                 return Response.FromSuccess();
             }
             catch (Exception ex)
             {
-                return Response.FromException($"Failed to update field '{fieldToUpdate}' to work item '{id}'", ex);
+                return Response.FromException($"Failed to update work item", ex);
             }
         }
 
@@ -321,6 +339,12 @@ namespace Stutton.DocumentCreator.Services.Tfs
             }
         }
 
+        public Task<IResponse<IEnumerable<IWorkItem>>> GetChildWorkItems(IWorkItem parent)
+        {
+            throw new NotImplementedException();
+            
+        }
+
         private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)
         {
             switch (op)
@@ -369,6 +393,17 @@ namespace Stutton.DocumentCreator.Services.Tfs
             {
                 return Response<VssConnection>.FromFailure(ex.Message);
             }
+        }
+
+        private sealed class WorkItemUpdateException : Exception
+        {
+            public WorkItemUpdateException(string message)
+            :base(message)
+            { }
+
+            public WorkItemUpdateException(string message, Exception innerException)
+            :base(message, innerException)
+            { }
         }
     }
 }
