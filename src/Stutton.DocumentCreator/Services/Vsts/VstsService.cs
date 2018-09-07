@@ -62,7 +62,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
                     return Response<IWorkItem>.FromFailure($"No work item with ID '{id}' returned");
                 }
 
-                var model = VstsWorkItemMapper.MapToModel(workItem);
+                var model = _mapper.Map<WorkItemModel>(workItem);
 
                 return Response<IWorkItem>.FromSuccess(model);
             }
@@ -155,7 +155,12 @@ namespace Stutton.DocumentCreator.Services.Vsts
             }
         }
 
-        public async Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue)
+        public Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue)
+        {
+            return UpdateWorkItemAsync(new[] {id}, fieldToUpdate, newValue);
+        }
+
+        public async Task<IResponse> UpdateWorkItemAsync(int[] ids, string fieldToUpdate, string newValue)
         {
             try
             {
@@ -167,6 +172,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 var connection = connectionResponse.Value;
                 var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
 
+
                 var patchDocument = new JsonPatchDocument
                 {
                     new JsonPatchOperation
@@ -177,12 +183,23 @@ namespace Stutton.DocumentCreator.Services.Vsts
                     }
                 };
 
-                await workItemClient.UpdateWorkItemAsync(patchDocument, id).ConfigureAwait(false);
+                foreach (var id in ids)
+                {
+                    try
+                    {
+                        await workItemClient.UpdateWorkItemAsync(patchDocument, id).ConfigureAwait(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new WorkItemUpdateException($"Failed to update field '{fieldToUpdate}' on work item '{id}'", ex);
+                    }
+                }
+
                 return Response.FromSuccess();
             }
             catch (Exception ex)
             {
-                return Response.FromException($"Failed to update field '{fieldToUpdate}' to work item '{id}'", ex);
+                return Response.FromException($"Failed to update work item", ex);
             }
         }
 
@@ -376,6 +393,17 @@ namespace Stutton.DocumentCreator.Services.Vsts
             {
                 return Response<VssConnection>.FromFailure(ex.Message);
             }
+        }
+
+        private sealed class WorkItemUpdateException : Exception
+        {
+            public WorkItemUpdateException(string message)
+            :base(message)
+            { }
+
+            public WorkItemUpdateException(string message, Exception innerException)
+            :base(message, innerException)
+            { }
         }
     }
 }

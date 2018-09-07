@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
@@ -55,7 +52,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
             return string.Empty;
         }
 
-        private static List<int> MapChildWorkItems(WorkItem src)
+        private static int[] MapChildWorkItems(WorkItem src)
         {
             var children = new List<int>();
             foreach (var relation in src.Relations)
@@ -63,14 +60,14 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 if (relation.Rel == "System.LinkTypes.Hierarchy-Forward")
                 {
                     var idStr = relation.Url.Split('/').Last();
-                    if (int.TryParse(idStr, out int id))
+                    if (int.TryParse(idStr, out var id))
                     {
                         children.Add(id);
                     }
                 }
             }
 
-            return children;
+            return children.ToArray();
         }
 
         private static class VstsFields

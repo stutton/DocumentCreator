@@ -30,7 +30,8 @@
                 <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Text="{Binding Description}"
-                           TextTrimming="CharacterEllipsis" />
+                           TextTrimming="CharacterEllipsis"
+                           ToolTip="{Binding Description}"/>
             </Grid>
         </Expander.Header>
         <controls:EditorExpander.ToolBarItems>
@@ -52,7 +53,7 @@
                      Grid.Column="0"
                      materialDesign:HintAssist.Hint="Name"
                      Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Name}" />
+                     Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <ComboBox Margin="0,16,16,16"
                       Grid.Column="1"

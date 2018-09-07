@@ -13,5 +13,6 @@ namespace Stutton.DocumentCreator.Models.WorkItems
         string AssignedTo { get; }
         string State { get; }
         bool Selected { get; set; }
+        int[] ChildWorkItems { get; }
     }
 }

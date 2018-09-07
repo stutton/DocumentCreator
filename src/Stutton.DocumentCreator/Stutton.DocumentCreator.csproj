@@ -212,7 +212,6 @@
     <Compile Include="Services\Vsts\IVstsService.cs" />
     <Compile Include="Shared\Response.cs" />
     <Compile Include="Services\Vsts\VstsService.cs" />
-    <Compile Include="Services\Vsts\VstsWorkItemMapper.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Shared\WpfContext.cs" />
     <Compile Include="ViewModels\Dialogs\AddImageDialogResult.cs" />

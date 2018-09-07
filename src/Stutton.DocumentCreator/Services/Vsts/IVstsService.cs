@@ -11,6 +11,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
         Task<IResponse<IWorkItem>> GetWorkItemAsync(int id);
         Task<IResponse<IEnumerable<IWorkItem>>> GetWorkItemsAsync(WorkItemQueryModel query);
         Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue);
+        Task<IResponse> UpdateWorkItemAsync(int[] id, string fieldToUpdate, string newValue);
         Task<IResponse> AttachFileToWorkItemAsync(string filePath, int workItemId);
         Task<IResponse<ProfileModel>> GetUserProfileAsync();
         Task<IResponse<IEnumerable<WorkItemFieldModel>>> GetWorkItemFields();
