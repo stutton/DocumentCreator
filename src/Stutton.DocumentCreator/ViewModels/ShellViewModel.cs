@@ -36,6 +36,11 @@ namespace Stutton.DocumentCreator.ViewModels
         private ICommand _toggleMenuCommand;
         public ICommand ToggleMenuCommand => _toggleMenuCommand ?? (_toggleMenuCommand = new RelayCommand(() => IsSideBarShown = !IsSideBarShown));
 
+        private ICommand _showAboutCommand;
+        public ICommand ShowAboutCommand => _showAboutCommand ?? (_showAboutCommand = new RelayCommand(async () => await ShowAbout()));
+
+        private static async Task ShowAbout() => await DialogHost.Show(new AboutDialogViewModel(), MainWindow.RootDialog);
+
         public async Task LoadAsync()
         {
             await Navigator.NavigateTo(DocumentsPageViewModel.Key);

@@ -214,6 +214,7 @@
     <Compile Include="Services\Vsts\VstsService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Shared\WpfContext.cs" />
+    <Compile Include="ViewModels\Dialogs\AboutDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\AddImageDialogResult.cs" />
     <Compile Include="ViewModels\Dialogs\AddImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ErrorMessageDialogViewModel.cs" />
@@ -260,6 +261,9 @@
     <Compile Include="Views\Controls\SideBarHost.cs" />
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Views\Converters\NullToDefaultValueConverter.cs" />
+    <Compile Include="Views\Dialogs\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\AddImageDialog.xaml.cs">
       <DependentUpon>AddImageDialog.xaml</DependentUpon>
     </Compile>
@@ -417,6 +421,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\Cards\WorkItemCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\AboutDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="Stutton.DocumentCreator.Views.Dialogs.AboutDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dialogs="clr-namespace:Stutton.DocumentCreator.ViewModels.Dialogs"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance dialogs:AboutDialogViewModel}">
+    <StackPanel Margin="32"
+                HorizontalAlignment="Stretch">
+        <TextBlock Text="Document Creator"
+                   Style="{DynamicResource MaterialDesignTitleTextBlock}" />
+        <TextBlock>
+            <Hyperlink NavigateUri="https://github.com/stutton/DocumentCreator"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{DynamicResource MaterialDesignBody1Hyperlink}">Stutton.DocumentCreator on GitHub</Hyperlink>
+        </TextBlock>
+
+        <TextBlock Text="By: Stephen Tutton"
+                   Margin="0,16,0,0"
+                   Style="{DynamicResource MaterialDesignBody1TextBlock}"/>
+
+        <TextBlock Margin="0,24,0,0"
+                   Style="{DynamicResource MaterialDesignBody1TextBlock}">
+            <Run Text="Version:"/>
+            <Run Text="{Binding Version, Mode=OneWay}" FontWeight="Bold"/>
+        </TextBlock>
+
+        <TextBlock Margin="0,24,0,0"
+                   Style="{DynamicResource MaterialDesignBody1TextBlock}">
+            <TextBlock Text="Icon made by"/>
+            <Hyperlink NavigateUri="https://www.freepik.com/"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{DynamicResource MaterialDesignBody1Hyperlink}">Freepik</Hyperlink>
+            <TextBlock Text="from"/>
+            <Hyperlink NavigateUri="https://www.flaticon.com"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{DynamicResource MaterialDesignBody1Hyperlink}">www.flaticon.com</Hyperlink>
+        </TextBlock>
+
+        <TextBlock Text="This program uses the following libraries:"
+                   Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                   Margin="0,24,0,0"/>
+
+        <TextBlock Margin="8,0,24,0">
+            <Hyperlink NavigateUri="https://automapper.org"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{DynamicResource MaterialDesignBody1Hyperlink}">AutoMapper by Jimmy Bogard</Hyperlink><LineBreak />
+            <Hyperlink NavigateUri="http://tmenier.github.io/Flurl"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{DynamicResource MaterialDesignBody1Hyperlink}">Flurl by Todd Menier</Hyperlink><LineBreak />
+            <Hyperlink NavigateUri="http://materialdesigninxaml.net"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{StaticResource MaterialDesignBody1Hyperlink}">Material Design In XAML by ButchersBoy</Hyperlink><LineBreak />
+            <Hyperlink NavigateUri="https://www.newtonsoft.com/json"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{StaticResource MaterialDesignBody1Hyperlink}">Newtonsoft.Json by James Newton-King</Hyperlink><LineBreak />
+            <Hyperlink NavigateUri="https://github.com/OfficeDev/Open-Xml-PowerTools"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{StaticResource MaterialDesignBody1Hyperlink}">OpenXmlPowerTools by Eric White</Hyperlink><LineBreak />
+            <Hyperlink NavigateUri="https://github.com/Squirrel/Squirrel.Windows"
+                       RequestNavigate="Hyperlink_OnRequestNavigate"
+                       Style="{StaticResource MaterialDesignBody1Hyperlink}">Squirrel.Windows by Paul Betts</Hyperlink>
+        </TextBlock>
+
+        <Button HorizontalAlignment="Right"
+                Margin="0,24,0,0"
+                Content="Done"
+                Width="100"
+                Style="{StaticResource MaterialDesignFlatButton}"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+    </StackPanel>
+</UserControl>
