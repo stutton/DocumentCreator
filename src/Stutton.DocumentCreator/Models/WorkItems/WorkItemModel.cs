@@ -76,5 +76,13 @@ namespace Stutton.DocumentCreator.Models.WorkItems
             get => _selected;
             set => Set(ref _selected, value);
         }
+
+        private IEnumerable<int> _childWorkItems;
+
+        public IEnumerable<int> ChildWorkItems
+        {
+            get => _childWorkItems;
+            set => Set(ref _childWorkItems, value);
+        }
     }
 }

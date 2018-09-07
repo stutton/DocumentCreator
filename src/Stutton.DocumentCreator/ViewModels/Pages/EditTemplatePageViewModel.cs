@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignExtensions.Model;
 using MaterialDesignThemes.Wpf;
-using Microsoft.VisualStudio.Services.Profile;
-using Stutton.DocumentCreator.Models.Documents;
 using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Services.Automations;
 using Stutton.DocumentCreator.Services.Fields;
 using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Services.Templates;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Navigation;
@@ -33,7 +31,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         private readonly IAutomationFactoryService _automationFactoryService;
         private readonly ITemplatesService _templatesService;
         private readonly ITelemetryService _telemetryService;
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
         private DocumentTemplateModel _model;
         private List<IStep> _steps;
 
@@ -48,7 +46,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             IAutomationFactoryService automationFactoryService, 
             ITemplatesService templatesService,
             ITelemetryService telemetryService,
-            ITfsService tfsService)
+            IVstsService vstsService)
         :base(navigationService)
         {
             _navigationService = navigationService;
@@ -56,7 +54,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             _automationFactoryService = automationFactoryService;
             _templatesService = templatesService;
             _telemetryService = telemetryService;
-            _tfsService = tfsService;
+            _vstsService = vstsService;
             IsInEditMode = true;
         }
 
@@ -111,7 +109,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             var fieldsVm = new FieldsStepViewModel(Model.Fields, _fieldFactoryService);
             await fieldsVm.InitializeAsync();
 
-            var queryVm = new WorkItemQueryStepViewModel(Model.TemplateDetails.WorkItemQuery, _tfsService);
+            var queryVm = new WorkItemQueryStepViewModel(Model.TemplateDetails.WorkItemQuery, _vstsService);
             await queryVm.Initialize();
 
             var automationsVm = new AutomationsStepViewModel(Model.Automations, _automationFactoryService, _telemetryService);

@@ -6,18 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Stutton.DocumentCreator.Models.Document;
 using Stutton.DocumentCreator.Models.WorkItems;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Automations.SetWorkItemField
 {
     public class SetWorkItemFieldAutomationModel : AutomationModelBase, IRequiresInitialization
     {
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
 
-        public SetWorkItemFieldAutomationModel(ITfsService tfsService)
+        public SetWorkItemFieldAutomationModel(IVstsService vstsService)
         {
-            _tfsService = tfsService ?? throw new ArgumentNullException(nameof(tfsService));
+            _vstsService = vstsService ?? throw new ArgumentNullException(nameof(vstsService));
         }
 
         public override string TypeDisplayName => "Set work item field";
@@ -54,7 +54,7 @@ namespace Stutton.DocumentCreator.Automations.SetWorkItemField
 
         public async Task<IResponse> Initialize()
         {
-            var response = await _tfsService.GetWorkItemFields();
+            var response = await _vstsService.GetWorkItemFields();
             if (!response.Success)
             {
                 return response;
@@ -66,7 +66,7 @@ namespace Stutton.DocumentCreator.Automations.SetWorkItemField
 
         public override async Task<IResponse> Execute(DocumentModel document, IWorkItem workItem, string documentPath)
         {
-            return await _tfsService.UpdateWorkItemAsync(workItem.Id, SelectedField, NewFieldValue);
+            return await _vstsService.UpdateWorkItemAsync(workItem.Id, SelectedField, NewFieldValue);
         }
     }
 }

@@ -77,6 +77,12 @@
     <Compile Include="Automations\SaveAs\SaveAsAutomationView.xaml.cs">
       <DependentUpon>SaveAsAutomationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Automations\SetChildWorkItemField\SetChildWorkItemFieldAutomationDto.cs" />
+    <Compile Include="Automations\SetChildWorkItemField\SetChildWorkItemFieldAutomationMapperProfile.cs" />
+    <Compile Include="Automations\SetChildWorkItemField\SetChildWorkItemFieldAutomationModel.cs" />
+    <Compile Include="Automations\SetChildWorkItemField\SetChildWorkItemFieldAutomationView.xaml.cs">
+      <DependentUpon>SetChildWorkItemFieldAutomationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Automations\SetWorkItemField\SetWorkItemFieldAutomationDto.cs" />
     <Compile Include="Automations\SetWorkItemField\SetWorkItemFieldAutomationMapperProfile.cs" />
     <Compile Include="Automations\SetWorkItemField\SetWorkItemFieldAutomationModel.cs" />
@@ -101,6 +107,7 @@
     <Compile Include="Fields\FieldTemplateMapperProfile.cs" />
     <Compile Include="Fields\FieldTemplateModelBase.cs" />
     <Compile Include="Fields\FieldTemplateDtoBase.cs" />
+    <Compile Include="Services\Vsts\VstsWorkItemMapperProfile.cs" />
     <Compile Include="Shared\IContext.cs" />
     <Compile Include="Shared\IRequiresInitialization.cs" />
     <Compile Include="Fields\List\Document\BitmapSourceToBytesTypeConverter.cs" />
@@ -202,11 +209,10 @@
     <Compile Include="Shared\ResponseCode.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
-    <Compile Include="Services\Tfs\ITfsService.cs" />
+    <Compile Include="Services\Vsts\IVstsService.cs" />
     <Compile Include="Shared\Response.cs" />
-    <Compile Include="Services\Tfs\TfsFieldKeys.cs" />
-    <Compile Include="Services\Tfs\TfsService.cs" />
-    <Compile Include="Services\Tfs\TfsWorkItemMapper.cs" />
+    <Compile Include="Services\Vsts\VstsService.cs" />
+    <Compile Include="Services\Vsts\VstsWorkItemMapper.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Shared\WpfContext.cs" />
     <Compile Include="ViewModels\Dialogs\AddImageDialogResult.cs" />
@@ -332,6 +338,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Automations\SaveAs\SaveAsAutomationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Automations\SetChildWorkItemField\SetChildWorkItemFieldAutomationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

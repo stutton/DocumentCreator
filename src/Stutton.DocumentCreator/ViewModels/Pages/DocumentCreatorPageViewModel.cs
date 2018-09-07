@@ -13,7 +13,7 @@ using Stutton.DocumentCreator.Models.Template;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Document;
 using Stutton.DocumentCreator.Services.Telemetry;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Documents.Steps;
@@ -24,7 +24,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
     public class DocumentCreatorPageViewModel : PageBase
     {
         private readonly INavigationService _navigationService;
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
         private readonly ITelemetryService _telemetryService;
         private readonly IDocumentService _documentService;
         private readonly ISnackbarMessageQueue _messageQueue;
@@ -145,14 +145,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         #endregion
 
         public DocumentCreatorPageViewModel(INavigationService navigationService, 
-                                            ITfsService tfsService, 
+                                            IVstsService vstsService, 
                                             ITelemetryService telemetryService, 
                                             IDocumentService documentService, 
                                             ISnackbarMessageQueue messageQueue)
         :base(navigationService)
         {
             _navigationService = navigationService;
-            _tfsService = tfsService;
+            _vstsService = vstsService;
             _telemetryService = telemetryService;
             _documentService = documentService;
             _messageQueue = messageQueue;
@@ -189,7 +189,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 return;
             }
 
-            WorkItemStepVm = new WorkItemStepViewModel(_tfsService, Document.Details.WorkItemQuery, _telemetryService);
+            WorkItemStepVm = new WorkItemStepViewModel(_vstsService, Document.Details.WorkItemQuery, _telemetryService);
             await WorkItemStepVm.InitializeAsync();
             WorkItemStepVm.SelectedWorkItem =
                 WorkItemStepVm.WorkItems.FirstOrDefault(w => w.Id == Document.SelectedWorkItemId);

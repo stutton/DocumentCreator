@@ -1,4 +1,6 @@
-﻿namespace Stutton.DocumentCreator.Models.WorkItems
+﻿using System.Collections.Generic;
+
+namespace Stutton.DocumentCreator.Models.WorkItems
 {
     public interface IWorkItem
     {

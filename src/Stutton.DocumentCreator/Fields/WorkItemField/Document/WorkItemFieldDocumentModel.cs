@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models.WorkItems;
-using Stutton.DocumentCreator.Services.Tfs;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.WorkItemField.Document
 {
     public sealed class WorkItemFieldDocumentModel : FieldDocumentModelBase
     {
-        private readonly ITfsService _tfsService;
+        private readonly IVstsService _vstsService;
         public const string Key = "WorkItemField";
         public override string Description =>
             $"Replace '{TextToReplace}' with the value of '{SelectedField}' from the selected work item";
@@ -30,16 +30,16 @@ namespace Stutton.DocumentCreator.Fields.WorkItemField.Document
             set => Set(ref _selectedField, value);
         }
 
-        public WorkItemFieldDocumentModel(ITfsService tfsService)
+        public WorkItemFieldDocumentModel(IVstsService vstsService)
         {
-            _tfsService = tfsService;
+            _vstsService = vstsService;
         }
 
         public override async Task<IResponse> ModifyDocument(WordprocessingDocument document, IWorkItem workItem)
         {
             try
             {
-                var tfsServiceResponse = await _tfsService.GetWorkItemFieldValue(workItem.Id, SelectedField);
+                var tfsServiceResponse = await _vstsService.GetWorkItemFieldValue(workItem.Id, SelectedField);
                 if (!tfsServiceResponse.Success)
                 {
                     return tfsServiceResponse;

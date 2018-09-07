@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
 
-namespace Stutton.DocumentCreator.Services.Tfs
+namespace Stutton.DocumentCreator.Services.Vsts
 {
-    static class TfsWorkItemMapper
+    static class VstsWorkItemMapper
     {
-        private static Dictionary<string, string> TfsNameToModelProperty = new Dictionary<string, string>
+        private static Dictionary<string, string> VstsNameToModelProperty = new Dictionary<string, string>
         {
             {"System.WorkItemType", nameof(WorkItemModel.Type)},
             {"System.AssignedTo", nameof(WorkItemModel.AssignedTo)},
@@ -24,7 +20,7 @@ namespace Stutton.DocumentCreator.Services.Tfs
         {
             var model = new WorkItemModel();
             model.Id = workItem.Id.Value;
-            foreach (var kv in TfsNameToModelProperty)
+            foreach (var kv in VstsNameToModelProperty)
             {
                 if (workItem.Fields.ContainsKey(kv.Key))
                 {

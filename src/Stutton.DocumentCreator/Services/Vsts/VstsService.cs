@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using AutoMapper;
 using Flurl;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.Client;
-using Microsoft.VisualStudio.Services.Identity.Client;
 using Microsoft.VisualStudio.Services.Profile;
 using Microsoft.VisualStudio.Services.Profile.Client;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -21,22 +21,24 @@ using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Settings;
 using Stutton.DocumentCreator.Shared;
 
-namespace Stutton.DocumentCreator.Services.Tfs
+namespace Stutton.DocumentCreator.Services.Vsts
 {
-    public class TfsService : ITfsService
+    public class VstsService : IVstsService
     {
         private const string GlobalProfileUrl = "https://app.vssps.visualstudio.com/";
 
         private readonly ISettingsService _settingsService;
+        private readonly IMapper _mapper;
 
         private VssConnection _connection;
         private VssConnection _profileConnection;
 
         private IEnumerable<WorkItemFieldModel> _workItemFieldsCache;
 
-        public TfsService(ISettingsService settingsService)
+        public VstsService(ISettingsService settingsService, IMapper mapper)
         {
             _settingsService = settingsService;
+            _mapper = mapper;
         }
 
         public async Task<IResponse<IWorkItem>> GetWorkItemAsync(int id)
@@ -54,14 +56,13 @@ namespace Stutton.DocumentCreator.Services.Tfs
 
                 var workItemClient =
                     await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
-                var workItem = await workItemClient.GetWorkItemAsync(id).ConfigureAwait(false);
+                var workItem = await workItemClient.GetWorkItemAsync(id, expand: WorkItemExpand.Relations).ConfigureAwait(false);
                 if (workItem?.Id == null)
                 {
-                    //_logger.Warn($"Getting work item '{_workItemId}' returned null");
                     return Response<IWorkItem>.FromFailure($"No work item with ID '{id}' returned");
                 }
 
-                var model = TfsWorkItemMapper.MapToModel(workItem);
+                var model = VstsWorkItemMapper.MapToModel(workItem);
 
                 return Response<IWorkItem>.FromSuccess(model);
             }
@@ -138,12 +139,12 @@ namespace Stutton.DocumentCreator.Services.Tfs
                 }
 
                 var workItems = await workItemClient.GetWorkItemsAsync(queryResult.WorkItems.Select(w => w.Id),
-                    cancellationToken: cancellationToken).ConfigureAwait(false);
+                    cancellationToken: cancellationToken, expand: WorkItemExpand.Relations).ConfigureAwait(false);
 
                 var result = new List<IWorkItem>();
                 foreach (var workItem in workItems)
                 {
-                    result.Add(TfsWorkItemMapper.MapToModel(workItem));
+                    result.Add(_mapper.Map<WorkItemModel>(workItem));
                 }
 
                 return Response<IEnumerable<IWorkItem>>.FromSuccess(result);
@@ -319,6 +320,12 @@ namespace Stutton.DocumentCreator.Services.Tfs
             {
                 return Response<string>.FromException($"Failure while attempting to retrieve field '{field}' from work item '{id}'", ex);
             }
+        }
+
+        public Task<IResponse<IEnumerable<IWorkItem>>> GetChildWorkItems(IWorkItem parent)
+        {
+            throw new NotImplementedException();
+            
         }
 
         private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)

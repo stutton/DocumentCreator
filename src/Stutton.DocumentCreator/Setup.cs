@@ -18,8 +18,8 @@ using Stutton.DocumentCreator.Services.Image.BuiltIn;
 using Stutton.DocumentCreator.Services.Settings;
 using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Services.Templates;
-using Stutton.DocumentCreator.Services.Tfs;
 using Stutton.DocumentCreator.Services.Updating;
+using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
@@ -61,7 +61,7 @@ namespace Stutton.DocumentCreator
             _container.RegisterInstance<IContext>(new WpfContext(), new ContainerControlledLifetimeManager());
             _container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISettingsService, SettingsService>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ITfsService, TfsService>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IVstsService, VstsService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IImageService, ImageService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITemplatesService, TemplatesService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITelemetryService, TelemetryService>(new ContainerControlledLifetimeManager());
@@ -91,7 +91,7 @@ namespace Stutton.DocumentCreator
         private static async Task LoadInitialSettings()
         {
             var settingsService = _container.Resolve<ISettingsService>();
-            var tfsService = _container.Resolve<ITfsService>();
+            var tfsService = _container.Resolve<IVstsService>();
             var telemetryService = _container.Resolve<ITelemetryService>();
 
             // Load settings
