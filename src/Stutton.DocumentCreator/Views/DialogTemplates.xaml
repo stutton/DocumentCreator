@@ -32,4 +32,8 @@
         <dialogs:MaterialSaveFileDialog/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialogVms:AboutDialogViewModel}">
+        <dialogs:AboutDialog/>
+    </DataTemplate>
+
 </ResourceDictionary>
