@@ -18,7 +18,6 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-steps:
 - task: Assembly-Info-Task@1
   inputs:
     product: 'DocumentCreator'
