@@ -12,10 +12,9 @@ variables:
   buildConfiguration: 'Release'
   majorVersion: '1'
   minorVersion: '0'
-  fullVersion: '$(majorVersion).$(minorVersion).$(Build.BuildId)'
   squirrelVersion: '1.8.0'
 
-name: '$(BuildDefinitionName)_$(fullVersion)'
+name: '$(BuildDefinitionName)_$(majorVersion).$(minorVersion).$(Build.BuildId)'
 
 steps:
 - task: NuGetToolInstaller@0
@@ -33,8 +32,8 @@ steps:
     product: 'DocumentCreator'
     company: 'Stephen Tutton'
     copyright: 'Stephen Tutton'
-    versionNumber: '$(fullVersion).0'
-    fileVersionNumber: '$(fullVersion).0'
+    versionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
+    fileVersionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
 
 - task: VSBuild@1
   displayName: 'Build Solution $(solution)'
