@@ -69,7 +69,7 @@ steps:
       src\ReleaseScripts\*.ps1
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: PublishSymbols@2
+- task: CopyFiles@2
   displayName: 'Copy Binaries to Staging'
   inputs:
     sourceFolder: '$(system.defaultworkingdirectory)'
