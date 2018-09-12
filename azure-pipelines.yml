@@ -12,15 +12,19 @@ variables:
   buildConfiguration: 'Release'
   majorVersion: '1'
   minorVersion: '0'
+  squirrelVersion: '1.8.0'
 
 steps:
 - task: NuGetToolInstaller@0
+  displayName: 'Use NuGet'
 
 - task: NuGetCommand@2
+  displayName: 'NuGet Restore'
   inputs:
     restoreSolution: '$(solution)'
 
 - task: Assembly-Info-Task@1
+  displayName: 'Set Assembly Manifest Data'
   inputs:
     product: 'DocumentCreator'
     company: 'Stephen Tutton'
@@ -29,12 +33,50 @@ steps:
     fileVersionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
 
 - task: VSBuild@1
+  displayName: 'Build Solution $(solution)'
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
+  displayName: 'Run Tests'
+  enabled: false
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: PublishSymbols@2
+  displayName: 'Publish Symbols'
+  inputs:
+    searchPattern: '**\bin\**\*.pdb'
+    publishSymbols: false
+    continueOnError: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Squirrel.Windows to Staging'
+  inputs:
+    sourceFolder: '$(Agent.BuildDirectory)'
+    contents: 'pakages\squirrel.windows\$(squirrelVersion)\tools\*'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: CopyFiles@2
+  displayName: 'Copy Release Scripts and NuSpec File to Staging'
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: |
+      src\Stutton.DocumentCreator\DocumentCreator.nuspec
+      src\ReleaseScripts\*.ps1
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishSymbols@2
+  displayName: 'Copy Binaries to Staging'
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)'
+    contents: '**\bin\$(BuildConfiguration)\**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
