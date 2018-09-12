@@ -18,6 +18,15 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+steps:
+- task: Assembly-Info-Task@1
+  inputs:
+    product: 'DocumentCreator'
+    company: 'Stephen Tutton'
+    copyright: 'Stephen Tutton'
+    versionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
+    fileVersionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
