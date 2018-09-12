@@ -56,11 +56,15 @@ steps:
     publishSymbols: false
     continueOnError: true
 
+- powershell: |
+    Get-ChildItem -Path $(Agent.BuildDirectory)\packages
+    Get-ChildItem -Path $(Agent.BuildDirectory)\packages\squirrel.windows
+
 - task: CopyFiles@2
   displayName: 'Copy Squirrel.Windows to Staging'
   inputs:
-    sourceFolder: '$(Agent.BuildDirectory)'
-    contents: 'pakages\squirrel.windows\$(squirrelVersion)\tools\*'
+    sourceFolder: '$(Agent.BuildDirectory)\packages'
+    contents: 'squirrel.windows\1.8.0\tools\*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: CopyFiles@2
