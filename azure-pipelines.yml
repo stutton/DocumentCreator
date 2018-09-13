@@ -26,8 +26,14 @@ steps:
     restoreSolution: '$(solution)'
     restoreDirectory: '$(Agent.BuildDirectory)\packages'
 
+- task: GitVersion@3
+  displayName: 'Git Version'
+  inputs:
+    updateAssemblyInfo: true
+
 - task: Assembly-Info-Task@1
   displayName: 'Set Assembly Manifest Data'
+  enabled: false
   inputs:
     product: 'DocumentCreator'
     company: 'Stephen Tutton'
