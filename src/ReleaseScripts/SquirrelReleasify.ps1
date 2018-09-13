@@ -18,6 +18,11 @@ param(
 
 Set-Alias Squirrel "$SquirrelPackageFolder\squirrel.windows\1.8.0\tools\Squirrel.exe"
 
+If ($Version.Contains('+')) {
+	$Version = $Version.Substring(0, $Version.IndexOf('+'))
+}
+Write-Host "Begin SquirrelReleasify for version $Version"
+
 Write-Host "Contents of package directory:"
 Get-ChildItem "$SquirrelPackageFolder" | Write-Output
 
