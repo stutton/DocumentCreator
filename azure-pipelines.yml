@@ -14,8 +14,6 @@ variables:
   minorVersion: '0'
   squirrelVersion: '1.8.0'
 
-name: '$(BuildDefinitionName)_$(majorVersion).$(minorVersion).$(Build.BuildId)'
-
 steps:
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet'
@@ -61,10 +59,6 @@ steps:
     searchPattern: '**\bin\**\*.pdb'
     publishSymbols: false
     continueOnError: true
-
-- powershell: |
-    Get-ChildItem -Path $(Agent.BuildDirectory)\packages
-    Get-ChildItem -Path $(Agent.BuildDirectory)\packages\squirrel.windows
 
 - task: CopyFiles@2
   displayName: 'Copy Squirrel.Windows to Staging'
