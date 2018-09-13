@@ -10,9 +10,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  majorVersion: '1'
-  minorVersion: '0'
-  squirrelVersion: '1.8.0'
 
 steps:
 - task: NuGetToolInstaller@0
@@ -28,16 +25,6 @@ steps:
   displayName: 'Git Version'
   inputs:
     updateAssemblyInfo: true
-
-- task: Assembly-Info-Task@1
-  displayName: 'Set Assembly Manifest Data'
-  enabled: false
-  inputs:
-    product: 'DocumentCreator'
-    company: 'Stephen Tutton'
-    copyright: 'Stephen Tutton'
-    versionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
-    fileVersionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
 
 - task: VSBuild@1
   displayName: 'Build Solution $(solution)'
