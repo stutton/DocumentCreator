@@ -13,27 +13,64 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@0
+  displayName: 'Use NuGet'
 
 - task: NuGetCommand@2
+  displayName: 'NuGet Restore'
   inputs:
     restoreSolution: '$(solution)'
+    restoreDirectory: '$(Agent.BuildDirectory)\packages'
 
-steps:
-- task: Assembly-Info-Task@1
+- task: GitVersion@3
+  displayName: 'Git Version'
   inputs:
-    product: 'DocumentCreator'
-    company: 'Stephen Tutton'
-    copyright: 'Stephen Tutton'
-    versionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
-    fileVersionNumber: '$(majorVersion).$(minorVersion).$(Build.BuildId).0'
+    updateAssemblyInfo: true
 
 - task: VSBuild@1
+  displayName: 'Build Solution $(solution)'
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
+  displayName: 'Run Tests'
+  enabled: false
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: PublishSymbols@2
+  displayName: 'Publish Symbols'
+  inputs:
+    searchPattern: '**\bin\**\*.pdb'
+    publishSymbols: false
+    continueOnError: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Squirrel.Windows to Staging'
+  inputs:
+    sourceFolder: '$(Agent.BuildDirectory)\packages'
+    contents: 'squirrel.windows\1.8.0\tools\*'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: CopyFiles@2
+  displayName: 'Copy Release Scripts and NuSpec File to Staging'
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: |
+      src\Stutton.DocumentCreator\DocumentCreator.nuspec
+      src\ReleaseScripts\*.ps1
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: CopyFiles@2
+  displayName: 'Copy Binaries to Staging'
+  inputs:
+    sourceFolder: '$(system.defaultworkingdirectory)'
+    contents: '**\bin\$(BuildConfiguration)\**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
