@@ -12,5 +12,6 @@ namespace Stutton.DocumentCreator.Services.Templates
         Task<IResponse> DeleteDocumentTemplate(DocumentTemplateModel document);
         Task<IResponse> ShareDocumentTemplate(DocumentTemplateModel document, string fileName);
         Task<IResponse> ImportDocumentTemplate(string fileName);
+        Task<IResponse> ImportFirstRunTemplates();
     }
 }

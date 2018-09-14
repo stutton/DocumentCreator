@@ -267,5 +267,13 @@ namespace Stutton.DocumentCreator
                 }
             }
         }
+
+        private static Task LoadFirstRunTemplates()
+        {
+           return Task.Run(() =>
+           {
+               if()
+           })
+        }
     }
 }
