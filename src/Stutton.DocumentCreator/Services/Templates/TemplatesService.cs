@@ -202,7 +202,7 @@ namespace Stutton.DocumentCreator.Services.Templates
                 finally
                 {
                     // Cleanup
-                    if (!string.IsNullOrEmpty(zipDirectory) && File.Exists(zipDirectory))
+                    if (!string.IsNullOrEmpty(zipDirectory) && Directory.Exists(zipDirectory))
                     {
                         if (!string.IsNullOrEmpty(templateFile) && File.Exists(templateFile))
                         {
