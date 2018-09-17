@@ -38,6 +38,7 @@ namespace Stutton.DocumentCreator
             Configure(messageQueue);
             await LoadInitialSettings();
             await InitializeTelemetryService();
+            await LoadFirstRunTemplates();
             if (!debugging)
             {
                 CheckForUpdate();
@@ -265,6 +266,26 @@ namespace Stutton.DocumentCreator
                 {
                     property.SetValue(currentSettings, defaultValueObj);
                 }
+            }
+        }
+
+        private static async Task LoadFirstRunTemplates()
+        {
+            var telemetryService = _container.Resolve<ITelemetryService>();
+            try
+            {
+                var templateService = _container.Resolve<ITemplatesService>();
+                var response = await templateService.ImportFirstRunTemplates();
+                if (!response.Success)
+                {
+                    telemetryService.TrackFailedResponse(response);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel($"Error loading first run templates: {response.Message}"), MainWindow.RootDialog);
+                }
+            }
+            catch (Exception ex)
+            {
+                telemetryService?.TrackException(ex);
+                await DialogHost.Show(new ErrorMessageDialogViewModel("Error loading first run templates"), MainWindow.RootDialog);
             }
         }
     }

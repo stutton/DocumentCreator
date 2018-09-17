@@ -17,6 +17,7 @@ namespace Stutton.DocumentCreator.Services.Templates
             $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Templates";
         private static readonly string DocumentTemplateFileExtension = "template";
         private static readonly string TemplateDocsDirectoryName = DocumentTemplatesDirectoryName + "\\Docs";
+        private static readonly string FirstRunTemplatesDirectory = DocumentTemplatesDirectoryName + "\\FirstRun";
 
         private readonly IMapper _mapper;
 
@@ -201,7 +202,7 @@ namespace Stutton.DocumentCreator.Services.Templates
                 finally
                 {
                     // Cleanup
-                    if (!string.IsNullOrEmpty(zipDirectory) && File.Exists(zipDirectory))
+                    if (!string.IsNullOrEmpty(zipDirectory) && Directory.Exists(zipDirectory))
                     {
                         if (!string.IsNullOrEmpty(templateFile) && File.Exists(templateFile))
                         {
@@ -223,6 +224,38 @@ namespace Stutton.DocumentCreator.Services.Templates
             {
                 return Response.FromException($"Failed to import the template from '{fileName}'", ex);
             }
+        }
+
+        public Task<IResponse> ImportFirstRunTemplates()
+        {
+            return Task.Run<IResponse>(async () =>
+            {
+                // Check for first run templates
+                if (!Directory.Exists(FirstRunTemplatesDirectory))
+                {
+                    return Response.FromSuccess();
+                }
+
+                var files = Directory.GetFiles(FirstRunTemplatesDirectory);
+                if (!files.Any())
+                {
+                    return Response.FromSuccess();
+                }
+
+                foreach (var file in files)
+                {
+                    var response = await ImportDocumentTemplate(file);
+                    if (!response.Success)
+                    {
+                        return response;
+                    }
+                    File.Delete(file);
+                }
+
+                Directory.Delete(FirstRunTemplatesDirectory);
+
+                return Response.FromSuccess();
+            });
         }
 
         private Task<DocumentTemplateModel> OpenTemplate(string templateFile) => Task.Run(() =>
