@@ -57,7 +57,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);
-                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                 return;
             }
 
@@ -85,7 +85,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);
-                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                 return;
             }
             AvailableAutomationTypes = new ObservableDictionary<string, Type>(response.Value);

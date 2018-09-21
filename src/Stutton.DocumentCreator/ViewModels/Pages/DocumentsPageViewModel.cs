@@ -89,7 +89,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 if (!response.Success)
                 {
                     _telemetryService.TrackFailedResponse(response);
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                     return;
                 }
 
@@ -116,7 +116,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 if (!documentResponse.Success)
                 {
                     _telemetryService.TrackFailedResponse(documentResponse);
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(documentResponse.Message));
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(documentResponse.Message, _telemetryService.SessionId));
                 }
                 else
                 {
@@ -149,7 +149,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 if (!response.Success)
                 {
                     _telemetryService.TrackFailedResponse(response);
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                     return;
                 }
 
@@ -173,7 +173,8 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 var response = await _documentService.DeleteSavedDocumentAsync(toDelete.Model);
                 if (!response.Success)
                 {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                    _telemetryService.TrackFailedResponse(response);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                     return;
                 }
 
@@ -195,7 +196,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             if (!templateResponse.Success)
             {
                 _telemetryService.TrackFailedResponse(templateResponse);
-                await DialogHost.Show(new ErrorMessageDialogViewModel(templateResponse.Message));
+                await DialogHost.Show(new ErrorMessageDialogViewModel(templateResponse.Message, _telemetryService.SessionId));
                 return;
             }
 

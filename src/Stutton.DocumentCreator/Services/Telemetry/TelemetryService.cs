@@ -20,6 +20,8 @@ namespace Stutton.DocumentCreator.Services.Telemetry
 
         public bool Enabled { get; set; } = true;
 
+        public Guid SessionId { get; } = Guid.NewGuid();
+
         public TelemetryService(ISettingsService settingsService)
         {
             _settingsService = settingsService;
@@ -49,7 +51,7 @@ namespace Stutton.DocumentCreator.Services.Telemetry
             _telemetryClient = new TelemetryClient();
 
             _telemetryClient.Context.User.Id = (Environment.UserName + Environment.MachineName).GetHashCode().ToString();
-            _telemetryClient.Context.Session.Id = Guid.NewGuid().ToString();
+            _telemetryClient.Context.Session.Id = SessionId.ToString();
             _telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
             _telemetryClient.Context.Component.Version = Assembly.GetEntryAssembly().GetName().Version.ToString();
 
@@ -121,8 +123,7 @@ namespace Stutton.DocumentCreator.Services.Telemetry
 
         private string FormatResponseMessage(IResponse response)
         {
-            return
-                $"FAILED RESPONSE at {response.CallerMemberName}:{response.LineNumber}|Code:{response.Code}|{response.Message}|Id:{response.Id.ToString()}";
+            return $"FAILED RESPONSE at {response.CallerMemberName}:{response.LineNumber}|Code:{response.Code}|{response.Message}|Id:{response.Id.ToString()}";
         }
 
         private class TelemetryException : Exception

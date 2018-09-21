@@ -87,7 +87,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);
-                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId), MainWindow.RootDialog);
             }
             await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
         }
@@ -106,10 +106,10 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
             Model = model;
 
-            var fieldsVm = new FieldsStepViewModel(Model.Fields, _fieldFactoryService);
+            var fieldsVm = new FieldsStepViewModel(Model.Fields, _fieldFactoryService, _telemetryService);
             await fieldsVm.InitializeAsync();
 
-            var queryVm = new WorkItemQueryStepViewModel(Model.TemplateDetails.WorkItemQuery, _vstsService);
+            var queryVm = new WorkItemQueryStepViewModel(Model.TemplateDetails.WorkItemQuery, _vstsService, _telemetryService);
             await queryVm.Initialize();
 
             var automationsVm = new AutomationsStepViewModel(Model.Automations, _automationFactoryService, _telemetryService);

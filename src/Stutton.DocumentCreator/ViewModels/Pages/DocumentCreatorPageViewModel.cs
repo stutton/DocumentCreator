@@ -83,7 +83,8 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 var result = await _documentService.CreateDocumentAsync(Document, WorkItemStepVm.SelectedWorkItem);
                 if (!result.Success)
                 {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
+                    _telemetryService.TrackFailedResponse(result);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                     return;
                 }
 
@@ -94,7 +95,8 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
                 if (!automationResponse.Success)
                 {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message), MainWindow.RootDialog);
+                    _telemetryService.TrackFailedResponse(automationResponse);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                     return;
                 }
 
@@ -136,7 +138,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);
-                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message));
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId));
                 return;
             }
             _messageQueue.Enqueue("Document saved");
@@ -184,7 +186,8 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             }
             else
             {
-                await DialogHost.Show(new ErrorMessageDialogViewModel("Unexpected document type"), MainWindow.RootDialog);
+                _telemetryService.TrackException(new InvalidOperationException($"Unexpected document type: {parameter.GetType().FullName}"));
+                await DialogHost.Show(new ErrorMessageDialogViewModel("Unexpected document type", _telemetryService.SessionId), MainWindow.RootDialog);
                 await _navigationService.NavigateTo(DocumentsPageViewModel.Key);
                 return;
             }

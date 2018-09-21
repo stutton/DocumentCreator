@@ -14,5 +14,6 @@ namespace Stutton.DocumentCreator.Services.Telemetry
         IResponse TrackFailedResponse(IResponse response);
         IResponse TrackException(Exception ex);
         bool Enabled { get; set; }
+        Guid SessionId { get; }
     }
 }

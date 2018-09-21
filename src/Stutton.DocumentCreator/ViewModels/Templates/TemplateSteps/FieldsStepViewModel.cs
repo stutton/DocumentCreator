@@ -6,6 +6,7 @@ using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Fields;
 using Stutton.DocumentCreator.Services.Fields;
+using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 
@@ -14,11 +15,13 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
     public class FieldsStepViewModel : Observable
     {
         private readonly IFieldTemplateFactoryService _fieldFactoryService;
+        private readonly ITelemetryService _telemetryService;
 
-        public FieldsStepViewModel(ObservableCollection<FieldTemplateModelBase> fields, IFieldTemplateFactoryService fieldFactoryService)
+        public FieldsStepViewModel(ObservableCollection<FieldTemplateModelBase> fields, IFieldTemplateFactoryService fieldFactoryService, ITelemetryService telemetryService)
         {
-            _fieldFactoryService = fieldFactoryService;
-            Fields = fields;
+            _fieldFactoryService = fieldFactoryService ?? throw new ArgumentNullException(nameof(fieldFactoryService));
+            _telemetryService = telemetryService ?? throw new ArgumentNullException(nameof(telemetryService));
+            Fields = fields ?? throw new ArgumentNullException(nameof(fields));
             foreach (var field in Fields)
             {
                 field.RequestDeleteMe += HandleFieldRequestDeleteMe;
@@ -82,7 +85,8 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             var response = _fieldFactoryService.GetAllFieldKeys();
             if (!response.Success)
             {
-                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                _telemetryService.TrackFailedResponse(response);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                 return;
             }
             AvailableFieldTypes = new ObservableDictionary<string, Type>(response.Value);
