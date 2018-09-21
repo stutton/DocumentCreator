@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.Models.WorkItems;
+using Stutton.DocumentCreator.Services.Telemetry;
 using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
@@ -13,6 +15,15 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
     public class WorkItemQueryStepViewModel : Observable
     {
         private readonly IVstsService _vstsService;
+        private readonly ITelemetryService _telemetryService;
+
+        public WorkItemQueryStepViewModel(WorkItemQueryModel model, IVstsService vstsService, ITelemetryService telemetryService)
+        {
+            _vstsService = vstsService ?? throw new ArgumentNullException(nameof(vstsService));
+            _telemetryService = telemetryService ?? throw new ArgumentNullException(nameof(telemetryService));
+            Model = model ?? throw new ArgumentNullException(nameof(model));
+        }
+
         public WorkItemQueryModel Model { get; }
 
         private ObservableCollection<WorkItemFieldModel> _workItemFields;
@@ -40,16 +51,11 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             var workItemFieldsResponse = await _vstsService.GetWorkItemFields();
             if (!workItemFieldsResponse.Success)
             {
-                await DialogHost.Show(new ErrorMessageDialogViewModel(workItemFieldsResponse.Message), MainWindow.RootDialog);
+                _telemetryService.TrackFailedResponse(workItemFieldsResponse);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(workItemFieldsResponse.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                 return;
             }
             WorkItemFields = new ObservableCollection<WorkItemFieldModel>(workItemFieldsResponse.Value);
-        }
-
-        public WorkItemQueryStepViewModel(WorkItemQueryModel model, IVstsService vstsService)
-        {
-            _vstsService = vstsService;
-            Model = model;
         }
     }
 }

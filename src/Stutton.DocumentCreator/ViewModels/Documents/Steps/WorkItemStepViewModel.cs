@@ -84,7 +84,8 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);
-                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message), MainWindow.RootDialog);
+                var sessionId = _telemetryService.SessionId;
+                await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, sessionId), MainWindow.RootDialog);
                 IsBusy = false;
                 return;
             }

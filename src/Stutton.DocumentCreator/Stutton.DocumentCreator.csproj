@@ -261,6 +261,7 @@
     <Compile Include="Views\Controls\SideBarHost.cs" />
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Views\Converters\NullToDefaultValueConverter.cs" />
+    <Compile Include="Views\Converters\StringNullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Views\Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>

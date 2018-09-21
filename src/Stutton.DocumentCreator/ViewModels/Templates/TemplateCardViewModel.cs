@@ -68,7 +68,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates
                 if (!response.Success)
                 {
                     _telemetryService.TrackFailedResponse(response);
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message));
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(response.Message, _telemetryService.SessionId));
                 }
             }
         }

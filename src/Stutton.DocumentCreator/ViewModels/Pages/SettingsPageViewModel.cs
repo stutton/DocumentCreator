@@ -54,7 +54,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             if (!response.Success)
             {
                 _telemetryService.TrackFailedResponse(response);
-                await DialogHost.Show(new ErrorMessageDialogViewModel($"Failed to save settings: {response.Message}"), MainWindow.RootDialog);
+                await DialogHost.Show(new ErrorMessageDialogViewModel($"Failed to save settings: {response.Message}", _telemetryService.SessionId), MainWindow.RootDialog);
                 return;
             }
             _messageQueue.Enqueue("Settings saved");
@@ -70,7 +70,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             if (!settingsResponse.Success)
             {
                 _telemetryService.TrackFailedResponse(settingsResponse);
-                await DialogHost.Show(new ErrorMessageDialogViewModel(settingsResponse.Message), MainWindow.RootDialog);
+                await DialogHost.Show(new ErrorMessageDialogViewModel(settingsResponse.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                 return;
             }
 
