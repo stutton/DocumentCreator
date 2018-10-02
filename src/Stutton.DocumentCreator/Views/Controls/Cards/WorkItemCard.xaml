@@ -67,6 +67,7 @@
                             <Button Margin="0,0,0,0"
                                     HorizontalAlignment="Right"
                                     Command="{Binding OpenUrlCommand, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}"
+                                    CommandParameter="{Binding OpenUrlCommandParameter, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}"
                                     DockPanel.Dock="Right"
                                     Style="{StaticResource MaterialDesignFlatButton}">
                                 <materialDesign:PackIcon Foreground="Black"

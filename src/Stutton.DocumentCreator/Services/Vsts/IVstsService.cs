@@ -16,6 +16,5 @@ namespace Stutton.DocumentCreator.Services.Vsts
         Task<IResponse<ProfileModel>> GetUserProfileAsync();
         Task<IResponse<IEnumerable<WorkItemFieldModel>>> GetWorkItemFields();
         Task<IResponse<string>> GetWorkItemFieldValue(int id, string field);
-        Task<IResponse<IEnumerable<IWorkItem>>> GetChildWorkItems(IWorkItem parent);
     }
 }

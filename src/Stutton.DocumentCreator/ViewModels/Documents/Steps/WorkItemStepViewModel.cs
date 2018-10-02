@@ -69,6 +69,18 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
 
         #endregion
 
+        #region OpenWorkItemUrl Command
+
+        private ICommand _openWorkItemUrlCommand;
+        public ICommand OpenWorkItemUrlCommand => _openWorkItemUrlCommand ?? (_openWorkItemUrlCommand = new RelayCommand<IWorkItem>(OpenWorkItemUrl));
+
+        private void OpenWorkItemUrl(IWorkItem workItem)
+        {
+            
+        }
+
+        #endregion
+
         public WorkItemStepViewModel(IVstsService vstsService, WorkItemQueryModel query, ITelemetryService telemetryService)
         {
             _vstsService = vstsService;
