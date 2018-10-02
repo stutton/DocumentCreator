@@ -46,6 +46,7 @@
             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                           VerticalScrollBarVisibility="Auto">
                 <mdxControls:Stepper x:Name="DocumentStepper"
+                                     BlockNavigationOnValidationErrors="True"
                                      CancelNavigationCommand="{Binding CancelCommand}"
                                      ContinueNavigation="DocumentStepper_OnContinueNavigation"
                                      IsLinear="True"

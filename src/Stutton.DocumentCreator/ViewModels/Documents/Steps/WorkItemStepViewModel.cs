@@ -14,7 +14,7 @@ using Stutton.DocumentCreator.ViewModels.Dialogs;
 
 namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
 {
-    public class WorkItemStepViewModel : Observable
+    public class WorkItemStepViewModel : Observable, IValidatable
     {
         private readonly IVstsService _vstsService;
         private readonly WorkItemQueryModel _query;
@@ -93,6 +93,20 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
             WorkItems = new ObservableCollection<IWorkItem>(response.Value);
 
             IsBusy = false;
+        }
+
+        public bool HasValidationErrors => _validationErrors.Any();
+        private readonly List<ValidationError> _validationErrors = new List<ValidationError>();
+        public IEnumerable<ValidationError> ValidationErrors => _validationErrors;
+        public bool Validate()
+        {
+            if (SelectedWorkItem == null)
+            {
+                _validationErrors.Add(new ValidationError("No work item selected"));
+                return false;
+            }
+
+            return true;
         }
     }
 }

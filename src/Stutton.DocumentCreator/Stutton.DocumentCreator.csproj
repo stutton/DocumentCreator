@@ -205,6 +205,7 @@
     <Compile Include="Shared\DocumentHelpers.cs" />
     <Compile Include="Shared\Extensions.cs" />
     <Compile Include="Shared\IResponse.cs" />
+    <Compile Include="Shared\IValidatable.cs" />
     <Compile Include="Shared\ObservableDictionary.cs" />
     <Compile Include="Shared\ResponseCode.cs" />
     <Compile Include="Services\Settings\ISettingsService.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Shared\Response.cs" />
     <Compile Include="Services\Vsts\VstsService.cs" />
     <Compile Include="Setup.cs" />
+    <Compile Include="Shared\ValidationError.cs" />
     <Compile Include="Shared\WpfContext.cs" />
     <Compile Include="ViewModels\Dialogs\AboutDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\AddImageDialogResult.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="ViewModels\Dialogs\SuccessMessageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentCardViewModel.cs" />
+    <Compile Include="ViewModels\Documents\Steps\ValidatableStep.cs" />
     <Compile Include="ViewModels\Templates\TemplateCardViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\FieldsStepViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\SummaryStepViewModel.cs" />

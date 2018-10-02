@@ -202,7 +202,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
             Steps = new List<IStep>
             {
-                new Step{Header = new StepTitleHeader{FirstLevelTitle = "Work Item"}, Content = WorkItemStepVm},
+                new ValidatableStep{Header = new StepTitleHeader{FirstLevelTitle = "Work Item"}, Content = WorkItemStepVm},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Fields"}, Content = fieldsStep},
                 new Step{Header = new StepTitleHeader{FirstLevelTitle = "Finish"}, Content = summaryStep}
             };
