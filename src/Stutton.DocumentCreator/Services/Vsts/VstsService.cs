@@ -63,7 +63,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 }
 
                 var model = _mapper.Map<WorkItemModel>(workItem);
-
+                
                 return Response<IWorkItem>.FromSuccess(model);
             }
             catch(Exception ex)
@@ -337,12 +337,6 @@ namespace Stutton.DocumentCreator.Services.Vsts
             {
                 return Response<string>.FromException($"Failure while attempting to retrieve field '{field}' from work item '{id}'", ex);
             }
-        }
-
-        public Task<IResponse<IEnumerable<IWorkItem>>> GetChildWorkItems(IWorkItem parent)
-        {
-            throw new NotImplementedException();
-            
         }
 
         private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)

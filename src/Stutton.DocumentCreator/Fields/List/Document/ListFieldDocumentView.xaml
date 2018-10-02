@@ -95,7 +95,8 @@
                                              materialDesign:HintAssist.Hint="Text"
                                              Margin="0,8"
                                              VerticalAlignment="Top"
-                                             AcceptsReturn="True" />
+                                             AcceptsReturn="True"
+                                             SpellCheck.IsEnabled="True"/>
                                 </DockPanel>
 
                                 <Border Grid.Row="1"

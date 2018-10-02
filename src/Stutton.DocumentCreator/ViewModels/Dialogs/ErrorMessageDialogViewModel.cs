@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.ViewModels.Dialogs
 {
@@ -24,5 +27,17 @@ namespace Stutton.DocumentCreator.ViewModels.Dialogs
             get => _sessionId;
             set => Set(ref _sessionId, value);
         }
+
+        #region CopySessionId Command
+
+        private ICommand _copySessionIdCommand;
+        public ICommand CopySessionIdCommand => _copySessionIdCommand ?? (_copySessionIdCommand = new RelayCommand(CopySessionId));
+
+        private void CopySessionId()
+        {
+            Clipboard.SetText(SessionId.ToString());
+        }
+
+        #endregion
     }
 }

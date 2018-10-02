@@ -107,7 +107,7 @@ namespace Stutton.DocumentCreator.Views.Controls
         }
 
         /// <summary> A utility class used to tile blocks into a vertical stack of blocks. </summary>
-        private class SpaceManager
+        private sealed class SpaceManager
         {
             /// <summary> The left stack position. </summary>
             private readonly double _areaLimit1;
@@ -347,7 +347,7 @@ namespace Stutton.DocumentCreator.Views.Controls
             }
 
             /// <summary> Edge item - an item that defines a level at which a new item can be added. </summary>
-            private class EdgeItem
+            private sealed class EdgeItem
             {
                 /// <summary> Constructor. </summary>
                 /// <param name="edgePosition1">  The left body (or top body if transposed). </param>
