@@ -96,16 +96,17 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
         }
 
         public bool HasValidationErrors => _validationErrors.Any();
-        private readonly List<ValidationError> _validationErrors = new List<ValidationError>();
+        private readonly ObservableCollection<ValidationError> _validationErrors = new ObservableCollection<ValidationError>();
         public IEnumerable<ValidationError> ValidationErrors => _validationErrors;
         public bool Validate()
         {
+            _validationErrors.Clear();
+
             if (SelectedWorkItem == null)
             {
                 _validationErrors.Add(new ValidationError("No work item selected"));
                 return false;
             }
-
             return true;
         }
     }

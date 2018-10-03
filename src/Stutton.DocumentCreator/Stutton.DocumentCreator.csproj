@@ -262,6 +262,10 @@
     </Compile>
     <Compile Include="Views\Controls\EditorExpander.cs" />
     <Compile Include="Views\Controls\SideBarHost.cs" />
+    <Compile Include="Views\Controls\TilePanel.cs" />
+    <Compile Include="Views\Controls\ValidationErrorBanner.xaml.cs">
+      <DependentUpon>ValidationErrorBanner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Views\Converters\NullToDefaultValueConverter.cs" />
     <Compile Include="Views\Converters\StringNullOrEmptyToVisibilityConverter.cs" />
@@ -307,7 +311,6 @@
     <Compile Include="Views\Templates\TemplateSteps\WorkItemQueryStep.xaml.cs">
       <DependentUpon>WorkItemQueryStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\TilePanel.cs" />
     <Compile Include="Views\Converters\FlattenListConverter.cs" />
     <Compile Include="Views\Converters\SideBarOffsetConverter.cs" />
     <Compile Include="Views\Converters\ValueCompareConverterBase.cs" />
@@ -425,6 +428,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\Cards\WorkItemCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ValidationErrorBanner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
