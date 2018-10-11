@@ -24,5 +24,10 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         {
             InitializeComponent();
         }
+
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Keyboard.Focus((FrameworkElement) sender);
+        }
     }
 }

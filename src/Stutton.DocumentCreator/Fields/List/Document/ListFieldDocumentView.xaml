@@ -96,7 +96,8 @@
                                              Margin="0,8"
                                              VerticalAlignment="Top"
                                              AcceptsReturn="True"
-                                             SpellCheck.IsEnabled="True"/>
+                                             SpellCheck.IsEnabled="True"
+                                             Loaded="FrameworkElement_OnLoaded"/>
                                 </DockPanel>
 
                                 <Border Grid.Row="1"
