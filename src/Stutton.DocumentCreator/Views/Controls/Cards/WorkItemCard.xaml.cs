@@ -51,6 +51,31 @@ namespace Stutton.DocumentCreator.Views.Controls.Cards
 
         #endregion
 
+        #region ICommand OpenUrlCommand
+
+        public static readonly DependencyProperty OpenUrlCommandProperty = 
+            DependencyProperty.Register(nameof(OpenUrlCommand), typeof(ICommand), typeof(WorkItemCard), new PropertyMetadata(default(ICommand)));
+
+        public ICommand OpenUrlCommand
+        {
+            get => (ICommand) GetValue(OpenUrlCommandProperty);
+            set => SetValue(OpenUrlCommandProperty, value);
+        }
+
+        #endregion
+
+        #region object OpenUrlCommandParameter
+
+        public static readonly DependencyProperty OpenUrlCommandParameterProperty = DependencyProperty.Register(nameof(OpenUrlCommandParameter), typeof(object), typeof(WorkItemCard), new PropertyMetadata(default(object)));
+
+        public object OpenUrlCommandParameter
+        {
+            get => (object) GetValue(OpenUrlCommandParameterProperty);
+            set => SetValue(OpenUrlCommandParameterProperty, value);
+        }
+
+        #endregion
+
         
 
         #region string Title

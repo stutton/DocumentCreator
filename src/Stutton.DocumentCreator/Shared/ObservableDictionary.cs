@@ -54,15 +54,15 @@ namespace Stutton.DocumentCreator.Shared
 
         #region KeyedDictionaryEntryCollection<TKey>
 
-        protected class KeyedDictionaryEntryCollection<TKey> : KeyedCollection<TKey, DictionaryEntry>
+        protected class KeyedDictionaryEntryCollection<TKey1> : KeyedCollection<TKey1, DictionaryEntry>
         {
             #region methods
 
             #region protected
 
-            protected override TKey GetKeyForItem(DictionaryEntry entry)
+            protected override TKey1 GetKeyForItem(DictionaryEntry entry)
             {
-                return (TKey) entry.Key;
+                return (TKey1) entry.Key;
             }
 
             #endregion protected
@@ -77,7 +77,7 @@ namespace Stutton.DocumentCreator.Shared
             {
             }
 
-            public KeyedDictionaryEntryCollection(IEqualityComparer<TKey> comparer) : base(comparer)
+            public KeyedDictionaryEntryCollection(IEqualityComparer<TKey1> comparer) : base(comparer)
             {
             }
 
@@ -96,18 +96,18 @@ namespace Stutton.DocumentCreator.Shared
 
         [Serializable]
         [StructLayout(LayoutKind.Sequential)]
-        public struct Enumerator<TKey, TValue> : IEnumerator<KeyValuePair<TKey, TValue>>, IDisposable,
+        public struct Enumerator<TKey1, TValue1> : IEnumerator<KeyValuePair<TKey1, TValue1>>, IDisposable,
             IDictionaryEnumerator, IEnumerator
         {
             #region constructors
 
-            internal Enumerator(ObservableDictionary<TKey, TValue> dictionary, bool isDictionaryEntryEnumerator)
+            internal Enumerator(ObservableDictionary<TKey1, TValue1> dictionary, bool isDictionaryEntryEnumerator)
             {
                 _dictionary = dictionary;
                 _version = dictionary._version;
                 _index = -1;
                 _isDictionaryEntryEnumerator = isDictionaryEntryEnumerator;
-                _current = new KeyValuePair<TKey, TValue>();
+                _current = new KeyValuePair<TKey1, TValue1>();
             }
 
             #endregion constructors
@@ -116,7 +116,7 @@ namespace Stutton.DocumentCreator.Shared
 
             #region public
 
-            public KeyValuePair<TKey, TValue> Current
+            public KeyValuePair<TKey1, TValue1> Current
             {
                 get
                 {
@@ -143,13 +143,13 @@ namespace Stutton.DocumentCreator.Shared
                 _index++;
                 if (_index < _dictionary._keyedEntryCollection.Count)
                 {
-                    _current = new KeyValuePair<TKey, TValue>((TKey) _dictionary._keyedEntryCollection[_index].Key,
-                        (TValue) _dictionary._keyedEntryCollection[_index].Value);
+                    _current = new KeyValuePair<TKey1, TValue1>((TKey1) _dictionary._keyedEntryCollection[_index].Key,
+                        (TValue1) _dictionary._keyedEntryCollection[_index].Value);
                     return true;
                 }
 
                 _index = -2;
-                _current = new KeyValuePair<TKey, TValue>();
+                _current = new KeyValuePair<TKey1, TValue1>();
                 return false;
             }
 
@@ -183,7 +183,7 @@ namespace Stutton.DocumentCreator.Shared
                 {
                     ValidateCurrent();
                     if (_isDictionaryEntryEnumerator) return new DictionaryEntry(_current.Key, _current.Value);
-                    return new KeyValuePair<TKey, TValue>(_current.Key, _current.Value);
+                    return new KeyValuePair<TKey1, TValue1>(_current.Key, _current.Value);
                 }
             }
 
@@ -191,7 +191,7 @@ namespace Stutton.DocumentCreator.Shared
             {
                 ValidateVersion();
                 _index = -1;
-                _current = new KeyValuePair<TKey, TValue>();
+                _current = new KeyValuePair<TKey1, TValue1>();
             }
 
             #endregion IEnumerator implemenation
@@ -229,10 +229,10 @@ namespace Stutton.DocumentCreator.Shared
 
             #region fields
 
-            private readonly ObservableDictionary<TKey, TValue> _dictionary;
+            private readonly ObservableDictionary<TKey1, TValue1> _dictionary;
             private readonly int _version;
             private int _index;
-            private KeyValuePair<TKey, TValue> _current;
+            private KeyValuePair<TKey1, TValue1> _current;
             private readonly bool _isDictionaryEntryEnumerator;
 
             #endregion fields

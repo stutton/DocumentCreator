@@ -22,7 +22,8 @@
                             ShareCommand="{Binding ShareCommand}"
                             SelectCommand="{Binding SelectCommand}"
                             DeleteCommand="{Binding DeleteCommand}"
-                            Type="{Binding Model.TemplateDetails.DocumentType}" />
+                            Type="{Binding Model.TemplateDetails.DocumentType}"
+                            Margin="8"/>
     </DataTemplate>
 
 </ResourceDictionary>

@@ -10,6 +10,8 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:documents="clr-namespace:Stutton.DocumentCreator.ViewModels.Documents"
+             xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
@@ -21,6 +23,14 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
                 <ResourceDictionary Source="../Themes/CardTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <converters:ValueCompareToVisibilityConverter x:Key="IsZeroToVisibilityConverter"
+                                                          TrueValue="Collapsed"
+                                                          FalseValue="Visible">
+                <converters:ValueCompareToVisibilityConverter.CompareToValue>
+                    <system:Int32>0</system:Int32>
+                </converters:ValueCompareToVisibilityConverter.CompareToValue>
+            </converters:ValueCompareToVisibilityConverter>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -30,14 +40,17 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
+        <!-- Saved Documents -->
         <Grid Grid.Row="0"
               Grid.RowSpan="2"
               Grid.Column="0"
-              Background="{DynamicResource MaterialDesignLightBackground}">
+              Background="{DynamicResource MaterialDesignLightBackground}"
+              Width="350"
+              Visibility="{Binding SavedDocuments.Count, Converter={StaticResource IsZeroToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
@@ -116,6 +129,7 @@
             </ScrollViewer>
         </Grid>
 
+        <!-- Templates -->
         <TextBlock Grid.Row="0"
                    Grid.Column="1"
                    Text="Document Templates"
