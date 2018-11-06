@@ -296,7 +296,8 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 var connection = connectionResponse.Value;
                 var workItemClient = await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false);
                 
-                var result = await workItemClient.GetFieldsAsync().ConfigureAwait(false);
+                // Wrap the GetFieldsAsync call in a task since it is doing some long running synchronous work
+                var result = await Task.Run(async () => await workItemClient.GetFieldsAsync().ConfigureAwait(false)).ConfigureAwait(false);
                 _workItemFieldsCache = result.Select(f => new WorkItemFieldModel {Name = f.Name, ReferenceName = f.ReferenceName});
                 return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(_workItemFieldsCache);
             }
