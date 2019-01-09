@@ -17,7 +17,6 @@ namespace Stutton.DocumentCreator.Fields.Text.Document
         public const string Key = "TextField";
         
         public override string Description => $"Prompt to replace '{TextToReplace}'";
-        public string TypeDisplayName => "Text";
         public override string FieldKey => Key;
 
         private string _textToReplace;

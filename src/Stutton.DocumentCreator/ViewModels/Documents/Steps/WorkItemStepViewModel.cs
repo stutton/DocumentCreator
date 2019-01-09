@@ -27,6 +27,13 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
             set => Set(ref _workItems, value);
         }
 
+        private string _workItemSearchId;
+        public string WorkItemSearchId
+        {
+            get => _workItemSearchId;
+            set => Set(ref _workItemSearchId, value);
+        }
+
         private IWorkItem _selectedWorkItem;
         public IWorkItem SelectedWorkItem
         {
@@ -50,7 +57,6 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
         }
 
         private bool _isBusy;
-
         public bool IsBusy
         {
             get => _isBusy;
@@ -76,7 +82,39 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
 
         private void OpenWorkItemUrl(IWorkItem workItem)
         {
-            
+
+        }
+
+        #endregion
+
+        #region Search Command
+
+        private ICommand _searchCommand;
+        public ICommand SearchCommand => _searchCommand ?? (_searchCommand = new RelayCommand(async () => await Search()));
+
+        private async Task Search()
+        {
+            if (!int.TryParse(WorkItemSearchId, out var workItemId))
+            {
+                await DialogHost.Show(new ErrorMessageDialogViewModel("Please enter a valid Work Item ID"));
+                return;
+            }
+
+            var existingWorkItem = WorkItems.FirstOrDefault(p => p.Id == workItemId);
+            if (existingWorkItem != null)
+            {
+                SelectedWorkItem = existingWorkItem;
+                return;
+            }
+
+            var response = await _vstsService.GetWorkItemAsync(workItemId);
+            if (!response.Success)
+            {
+                return;
+            }
+
+            WorkItems.Add(response.Value);
+            SelectedWorkItem = response.Value;
         }
 
         #endregion

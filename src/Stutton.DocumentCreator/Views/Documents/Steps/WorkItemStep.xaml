@@ -23,6 +23,26 @@
     </UserControl.Resources>
     <Grid>
         <StackPanel>
+            <DockPanel HorizontalAlignment="Left">
+                <Button DockPanel.Dock="Right"
+                        Style="{DynamicResource MaterialDesignToolButton}" 
+                        Command="{Binding SearchCommand}"
+                        VerticalAlignment="Top">
+                    <materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
+                </Button>
+                <TextBox Margin="8,0,0,8"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Center"
+                         materialDesign:HintAssist.Hint="Work Item ID"
+                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                         MinWidth="200"
+                         Text="{Binding WorkItemSearchId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding SearchCommand}" Key="Return"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+            </DockPanel>
+
             <ItemsControl ItemsSource="{Binding WorkItems}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type workItems:IWorkItem}">
@@ -56,6 +76,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
+
             <controls:ValidationErrorBanner Margin="0,16,0,0" ValidationErrors="{Binding ValidationErrors}"/>
         </StackPanel>
     </Grid>
