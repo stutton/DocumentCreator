@@ -41,7 +41,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         private void AddExpression()
         {
-            Model.Expressions.Add(new WorkItemQueryExpressionModel());
+            Model.AddExpression(new WorkItemQueryExpressionModel());
         }
 
         #endregion

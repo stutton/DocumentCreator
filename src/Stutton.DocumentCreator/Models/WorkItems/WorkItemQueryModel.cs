@@ -13,5 +13,11 @@ namespace Stutton.DocumentCreator.Models.WorkItems
     {
         [DataMember]
         public ObservableCollection<WorkItemQueryExpressionModel> Expressions { get; } = new ObservableCollection<WorkItemQueryExpressionModel>();
+
+        public void AddExpression(WorkItemQueryExpressionModel expression)
+        {
+            expression.RequestDeleteMe += (s, e) => Expressions.Remove(expression);
+            Expressions.Add(expression);
+        }
     }
 }

@@ -58,6 +58,14 @@
                                        Text="{Binding Values, Converter={StaticResource ListOfStringExpanderConverter}}" />
                         </Grid>
                     </Expander.Header>
+                    <controls:EditorExpander.ToolBarItems>
+                        <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                Command="{Binding DeleteCommand}">
+                            <materialDesign:PackIcon Kind="Delete"
+                                                     Width="24"
+                                                     Height="24"/>
+                        </Button>
+                    </controls:EditorExpander.ToolBarItems>
                     <Grid Margin="0,24">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
