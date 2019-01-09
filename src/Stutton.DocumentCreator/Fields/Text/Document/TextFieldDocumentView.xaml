@@ -26,7 +26,7 @@
                                          Kind="FormatText" />
                 <TextBlock Grid.Column="1"
                            VerticalAlignment="Center"
-                           Text="{Binding TypeDisplayName}" />
+                           Text="{Binding Name}" />
                 <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Text="{Binding Description}" />

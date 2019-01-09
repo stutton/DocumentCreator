@@ -28,7 +28,6 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         }
         
         public override string Description => "List of text and images";
-        public string TypeDisplayName => "Field";
         public override string FieldKey => Key;
         
         public ObservableCollection<ListFieldStepModel> Steps { get; set; } = new ObservableCollection<ListFieldStepModel>();
