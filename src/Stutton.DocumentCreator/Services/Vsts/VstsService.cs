@@ -87,7 +87,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
 
                 var sb = new StringBuilder();
                 sb.Append($"SELECT * FROM workitems WHERE [System.AssignedTo] contains '{settings.TfsUserName}'");
-                foreach (var expression in query.Expressions)
+                foreach (var expression in query.Expressions.Where(p => p.Field != null))
                 {
                     sb.Append(" AND ");
 
