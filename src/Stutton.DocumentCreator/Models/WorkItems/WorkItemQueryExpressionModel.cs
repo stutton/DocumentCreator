@@ -15,6 +15,8 @@ namespace Stutton.DocumentCreator.Models.WorkItems
     [DataContract(Name = "QueryExpression")]
     public class WorkItemQueryExpressionModel : Observable
     {
+        public event EventHandler<EventArgs> RequestDeleteMe;
+
         private string _field;
         private WorkItemQueryExpressionOperator _operator;
         private string _value;
@@ -70,7 +72,22 @@ namespace Stutton.DocumentCreator.Models.WorkItems
                 }
             }
         }
-        
+
+
+
+        #region Delete Command
+
+        private ICommand _deleteCommand;
+        [IgnoreDataMember]
+        public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(DeleteAsync));
+
+        private void DeleteAsync()
+        {
+            RequestDeleteMe?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
         #region AddInValue Command
 
         private ICommand _addInValueCommand;
