@@ -7,7 +7,7 @@ param(
 	[Parameter(Mandatory=$True)]
 	[string]$ReleaseFolder,
 	[Parameter(Mandatory=$True)]
-	[stirng]$Version,
+	[string]$Version,
 	[Parameter(Mandatory=$False)]
 	[string]$GitHubReleaseFolder
 )
