@@ -26,6 +26,9 @@
 
             <converters:ValueCompareToVisibilityConverter x:Key="NullToVisibilityConverter" IsInverted="True" />
 
+            <converters:BooleanAndMultiConverter x:Key="BooleanAndMultiConverter" />
+
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -209,7 +212,16 @@
                 </DockPanel>
             </materialDesign:ColorZone>
 
-            <controls:SideBarHost IsDrawerOpen="{Binding IsSideBarShown}">
+            <controls:SideBarHost>
+                <controls:SideBarHost.IsDrawerOpen>
+                    <MultiBinding Converter="{StaticResource BooleanAndMultiConverter}">
+                        <Binding Path="IsSideBarShown"
+                                 Mode="OneWay" />
+                        <Binding Path="Navigator.CurrentPage.IsInEditMode"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource InverseBooleanConverter}" />
+                    </MultiBinding>
+                </controls:SideBarHost.IsDrawerOpen>
                 <controls:SideBarHost.DrawerContent>
                     <ListBox x:Name="PagesListBox"
                                  Margin="0,16,0,16"

@@ -266,6 +266,7 @@
     <Compile Include="Views\Controls\ValidationErrorBanner.xaml.cs">
       <DependentUpon>ValidationErrorBanner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Converters\BooleanAndMultiConverter.cs" />
     <Compile Include="Views\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Views\Converters\NullToDefaultValueConverter.cs" />
     <Compile Include="Views\Converters\StringNullOrEmptyToVisibilityConverter.cs" />
