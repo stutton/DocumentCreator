@@ -27,6 +27,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CopyAzureBlob.ps1" />
+    <Compile Include="CopyGitHubReleaseFiles.ps1" />
     <Compile Include="SquirrelReleasify.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
