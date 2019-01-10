@@ -12,6 +12,10 @@ param(
 	[string]$GitHubReleaseFolder
 )
 
+If ($Version.Contains('+')) {
+	$Version = $Version.Substring(0, $Version.IndexOf('+'))
+}
+
 Write-Host "Creating GitHubReleaseFolder..."
 if([string]::IsNullOrEmpty($GitHubReleaseFolder)) {
 	$GitHubReleaseFolder = Join-Path -Path $ReleaseFolder -ChildPath "github"
