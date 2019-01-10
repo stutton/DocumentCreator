@@ -76,6 +76,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
             response.Value.RequestDeleteMe += HandleFieldRequestDeleteMe;
             Fields.Add(response.Value);
+            response.Value.IsExpanded = true;
         }
 
         #endregion

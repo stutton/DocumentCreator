@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -41,7 +40,9 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
 
         private void AddExpression()
         {
-            Model.Expressions.Add(new WorkItemQueryExpressionModel());
+            var wiqModel = new WorkItemQueryExpressionModel();
+            Model.Expressions.Add(wiqModel);
+            wiqModel.IsExpanded = true;
         }
 
         #endregion

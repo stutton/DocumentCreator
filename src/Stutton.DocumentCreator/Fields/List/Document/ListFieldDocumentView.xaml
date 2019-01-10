@@ -20,7 +20,7 @@
                                                           FalseValue="Visible"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <controls:EditorExpander>
+    <controls:EditorExpander IsExpanded="{Binding IsExpanded}">
         <Expander.Header>
             <Grid Height="32">
                 <Grid.ColumnDefinitions>

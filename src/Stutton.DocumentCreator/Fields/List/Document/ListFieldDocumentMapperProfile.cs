@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using System.Windows.Media.Imaging;
-using AutoMapper;
 
 namespace Stutton.DocumentCreator.Fields.List.Document
 {
@@ -26,6 +21,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
                 .ConstructUsingServiceLocator();
 
             CreateMap<ListFieldDocumentDto, ListFieldDocumentModel>()
+                .ForMember(p => p.IsExpanded, opt => opt.Ignore())
                 .IncludeBase<FieldDocumentDtoBase, FieldDocumentModelBase>()
                 .ConstructUsingServiceLocator();
         }

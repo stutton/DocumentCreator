@@ -64,6 +64,7 @@ namespace Stutton.DocumentCreator.ViewModels.Templates.TemplateSteps
             var newAutomation = response.Value;
             newAutomation.RequestDeleteMe += AutomationOnRequestDeleteMe;
             Automations.Add(response.Value);
+            response.Value.IsExpanded = true;
         }
 
         #endregion

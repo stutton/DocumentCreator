@@ -34,7 +34,7 @@
             </ObjectDataProvider>
 
             <DataTemplate DataType="{x:Type workItems:WorkItemQueryExpressionModel}">
-                <controls:EditorExpander>
+                <controls:EditorExpander IsExpanded="{Binding IsExpanded}">
                     <Expander.Header>
                         <Grid Height="32">
                             <Grid.ColumnDefinitions>

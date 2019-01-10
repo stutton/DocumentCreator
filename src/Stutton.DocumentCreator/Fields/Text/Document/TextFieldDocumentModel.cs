@@ -12,12 +12,20 @@ using Stutton.DocumentCreator.Shared;
 namespace Stutton.DocumentCreator.Fields.Text.Document
 {
     [DataContract(Name = "TextField")]
-    public class TextFieldDocumentModel : FieldDocumentModelBase
+    public class TextFieldDocumentModel : FieldDocumentModelBase, IExpandable
     {
         public const string Key = "TextField";
-        
+
         public override string Description => $"Prompt to replace '{TextToReplace}'";
         public override string FieldKey => Key;
+
+        private bool _isExpanded;
+        [IgnoreDataMember]
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => Set(ref _isExpanded, value);
+        }
 
         private string _textToReplace;
         [DataMember]
