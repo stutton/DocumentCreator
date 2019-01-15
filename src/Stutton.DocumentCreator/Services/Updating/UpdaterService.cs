@@ -12,23 +12,11 @@ namespace Stutton.DocumentCreator.Services.Updating
 {
     internal class UpdaterService : IUpdaterService
     {
-        private readonly ISettingsService _settingsService;
-
-        public UpdaterService(ISettingsService settingsService)
-        {
-            _settingsService = settingsService;
-        }
+        private const string UpdateUrl = "https://sctutton.blob.core.windows.net/documentcreator";
 
         public async Task<IResponse<CheckForUpdateResult>> Update()
         {
-            var response = await _settingsService.GetSettings();
-            if (!response.Success)
-            {
-                return Response<CheckForUpdateResult>.FromFailure(response.Message, response.Code);
-            }
-
-            var updateReleasesLocation = response.Value.UpdateReleasesLocation;
-            using (var mgr = await GetUpdateManager(updateReleasesLocation))
+            using (var mgr = await GetUpdateManager(UpdateUrl))
             {
                 var oldVersion = mgr.CurrentlyInstalledVersion();
                 var newVersion = await mgr.UpdateApp();
