@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Stutton.DocumentCreator.Shared;
-using Unity.Interception.Utilities;
 
 namespace Stutton.DocumentCreator.Models.WorkItems
 {
     [DataContract(Name = "QueryExpression")]
-    public class WorkItemQueryExpressionModel : Observable
+    public class WorkItemQueryExpressionModel : Observable, IExpandable
     {
         public event EventHandler<EventArgs> RequestDeleteMe;
 
         private string _field;
+        private bool _isExpanded;
         private WorkItemQueryExpressionOperator _operator;
         private string _value;
         private ObservableCollection<WorkItemQueryInValue> _values = new ObservableCollection<WorkItemQueryInValue>();
@@ -32,6 +28,13 @@ namespace Stutton.DocumentCreator.Models.WorkItems
         {
             get => _field;
             set => Set(ref _field, value);
+        }
+
+        [IgnoreDataMember]
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => Set(ref _isExpanded, value);
         }
 
         [DataMember]
@@ -72,8 +75,6 @@ namespace Stutton.DocumentCreator.Models.WorkItems
                 }
             }
         }
-
-
 
         #region Delete Command
 

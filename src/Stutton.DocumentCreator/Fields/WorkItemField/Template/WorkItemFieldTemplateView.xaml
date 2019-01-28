@@ -12,7 +12,7 @@
              d:DesignHeight="450" 
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance template:WorkItemFieldTemplateModel}">
-    <controls:EditorExpander>
+    <controls:EditorExpander IsExpanded="{Binding IsExpanded}">
         <Expander.Header>
             <Grid>
                 <Grid.ColumnDefinitions>

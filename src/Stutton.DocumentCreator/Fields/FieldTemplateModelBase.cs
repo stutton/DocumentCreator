@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields
 {
-    public abstract class FieldTemplateModelBase : Observable
+    public abstract class FieldTemplateModelBase : Observable, IExpandable
     {
         public event EventHandler<FieldTemplateModelBase> RequestDeleteMe;
 
@@ -19,12 +15,20 @@ namespace Stutton.DocumentCreator.Fields
         public abstract string FieldKey { get; }
         public abstract string Name { get; set; }
 
+        private bool _isExpanded;
+        [IgnoreDataMember]
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => Set(ref _isExpanded, value);
+        }
+
         #region Delete Command
 
         private ICommand _deleteCommand;
         [IgnoreDataMember]
         public ICommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(Delete));
-        
+
         private void Delete()
         {
             RequestDeleteMe?.Invoke(this, this);

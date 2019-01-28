@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Stutton.DocumentCreator.Fields;
 using Stutton.DocumentCreator.Shared;
 
@@ -22,6 +19,11 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
         public FieldsStepViewModel(IEnumerable<FieldDocumentModelBase> fields)
         {
             _fields = new ObservableCollection<FieldDocumentModelBase>(fields);
+            var firstExpandable = _fields.OfType<IExpandable>().FirstOrDefault();
+            if (firstExpandable != null)
+            {
+                firstExpandable.IsExpanded = true;
+            }
         }
     }
 }

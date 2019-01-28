@@ -109,6 +109,7 @@
     <Compile Include="Fields\FieldTemplateDtoBase.cs" />
     <Compile Include="Services\Vsts\VstsWorkItemMapperProfile.cs" />
     <Compile Include="Shared\IContext.cs" />
+    <Compile Include="Shared\IExpandable.cs" />
     <Compile Include="Shared\IRequiresInitialization.cs" />
     <Compile Include="Fields\List\Document\BitmapSourceToBytesTypeConverter.cs" />
     <Compile Include="Fields\List\Document\ListFieldDocumentDto.cs" />

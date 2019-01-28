@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using DocumentFormat.OpenXml.Packaging;
-using Microsoft.VisualStudio.Services.Common;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Image;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Fields.List.Document
 {
-    public class ListFieldDocumentModel : FieldDocumentModelBase
+    public class ListFieldDocumentModel : FieldDocumentModelBase, IExpandable
     {
         private readonly IImageService _imageService;
         private readonly IContext _context;
@@ -29,7 +25,15 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         
         public override string Description => "List of text and images";
         public override string FieldKey => Key;
-        
+
+        private bool _isExpanded;
+        [IgnoreDataMember]
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => Set(ref _isExpanded, value);
+        }
+
         public ObservableCollection<ListFieldStepModel> Steps { get; set; } = new ObservableCollection<ListFieldStepModel>();
 
         #region AddStep Command
