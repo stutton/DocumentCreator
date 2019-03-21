@@ -54,6 +54,10 @@ namespace Stutton.DocumentCreator.Services.Vsts
 
         private static int[] MapChildWorkItems(WorkItem src)
         {
+            if(src.Relations == null || src.Relations.Count == 0)
+            {
+                return null;
+            }
             var children = new List<int>();
             foreach (var relation in src.Relations)
             {

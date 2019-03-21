@@ -32,12 +32,19 @@ namespace Stutton.DocumentCreator.Shared
 
         public static OpenXmlElement ReplaceParagraphWithText(this WordprocessingDocument wordDoc, OpenXmlElement paragraphToReplace, string text)
         {
-            return wordDoc.MainDocumentPart.Document.Body.ReplaceChild(paragraphToReplace, new Paragraph(new Run(new Text(text))));
+            var newParagraph = new Paragraph(new Run(new Text(text)));
+            wordDoc.MainDocumentPart.Document.Body.ReplaceChild(newParagraph, paragraphToReplace);
+            return newParagraph;
         }
 
         public static OpenXmlElement InsertTextAfter(this WordprocessingDocument wordDoc, OpenXmlElement appendAfter, string text)
         {
             return wordDoc.MainDocumentPart.Document.Body.InsertAfter(new Paragraph(new Run(new Text(text))), appendAfter);
+        }
+
+        public static OpenXmlElement ReplaceParagraphWithNumberedText(this WordprocessingDocument wordDoc, OpenXmlElement paragraphToReplace, string text, int number)
+        {
+            return wordDoc.ReplaceParagraphWithText(paragraphToReplace, $"{number}.\t{text}");
         }
 
         public static OpenXmlElement InsertNumberedTextAfter(this WordprocessingDocument wordDoc, OpenXmlElement appendAfter, string text, int number)

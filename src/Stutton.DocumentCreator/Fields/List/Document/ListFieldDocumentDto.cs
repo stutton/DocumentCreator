@@ -9,6 +9,8 @@ namespace Stutton.DocumentCreator.Fields.List.Document
     public sealed class ListFieldDocumentDto : FieldDocumentDtoBase
     {
         public override string Name { get; set; }
+        public bool UsePlaceholder { get; set; }
+        public string PlaceholderText { get; set; }
         public List<ListFieldStepDto> Steps { get; set; }
     }
 }

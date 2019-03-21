@@ -25,6 +25,22 @@ namespace Stutton.DocumentCreator.Fields.List.Template
             set => Set(ref _name, value);
         }
 
+
+        private bool _usePlaceholder;
+        public bool UsePlaceholder
+        {
+            get => _usePlaceholder;
+            set => Set(ref _usePlaceholder, value);
+        }
+
+
+        private string _placeholderText;
+        public string PlaceholderText
+        {
+            get => _placeholderText;
+            set => Set(ref _placeholderText, value);
+        }
+
         public ListFieldTemplateModel(IImageService imageService, IContext context)
         {
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
@@ -36,6 +52,8 @@ namespace Stutton.DocumentCreator.Fields.List.Template
             var documentField = new ListFieldDocumentModel(_imageService, _context)
             {
                 Name = Name,
+                UsePlaceholder = UsePlaceholder,
+                PlaceholderText = PlaceholderText
             };
             return documentField;
         }

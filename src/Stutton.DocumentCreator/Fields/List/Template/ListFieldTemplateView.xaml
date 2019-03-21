@@ -47,11 +47,25 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBox Margin="0,0,16,0"
                      materialDesign:HintAssist.Hint="Name"
                      Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding Name}" />
+
+            <CheckBox Grid.Column="1"
+                      Content="Use Placeholder"
+                      IsChecked="{Binding UsePlaceholder}"
+                      Margin="0,0,16,0"
+                      HorizontalAlignment="Right"/>
+
+            <TextBox Grid.Column="2"
+                     Margin="0,0,16,0"
+                     materialDesign:HintAssist.Hint="Placeholder"
+                     Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding PlaceholderText}"
+                     IsEnabled="{Binding UsePlaceholder}" />
         </Grid>
     </controls:EditorExpander>
 </UserControl>

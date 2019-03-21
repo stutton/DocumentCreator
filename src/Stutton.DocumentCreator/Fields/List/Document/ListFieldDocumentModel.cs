@@ -21,6 +21,9 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         {
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             _context = context ?? throw new ArgumentNullException(nameof(context));
+
+            _usePlaceholder = false;
+            _placeholderText = string.Empty;
         }
         
         public override string Description => "List of text and images";
@@ -32,6 +35,21 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         {
             get => _isExpanded;
             set => Set(ref _isExpanded, value);
+        }
+
+        private bool _usePlaceholder;
+        public bool UsePlaceholder
+        {
+            get => _usePlaceholder;
+            set => Set(ref _usePlaceholder, value);
+        }
+
+
+        private string _placeholderText;
+        public string PlaceholderText
+        {
+            get => _placeholderText;
+            set => Set(ref _placeholderText, value);
         }
 
         public ObservableCollection<ListFieldStepModel> Steps { get; set; } = new ObservableCollection<ListFieldStepModel>();
@@ -55,7 +73,7 @@ namespace Stutton.DocumentCreator.Fields.List.Document
             {
                 await Task.Run(() =>
                 {
-                    AddImageToDocument(document);
+                    AddListToDocument(document);
                 });
                 return Response.FromSuccess();
             }
@@ -65,13 +83,45 @@ namespace Stutton.DocumentCreator.Fields.List.Document
             }
         }
 
-        private void AddImageToDocument(WordprocessingDocument document)
+        private void AddListToDocument(WordprocessingDocument document)
         {
             if (_context.IsInvokeRequired)
             {
-                _context.Invoke(() => AddImageToDocument(document));
+                _context.Invoke(() => AddListToDocument(document));
                 return;
             }
+            
+            if(_usePlaceholder && !string.IsNullOrEmpty(_placeholderText))
+            {
+                ReplacePlaceholderWithList(document);
+            }
+            else
+            {
+                AppendListToDocument(document);
+            }
+        }
+
+        private void ReplacePlaceholderWithList(WordprocessingDocument document)
+        {
+            var posElement = document.FindParagraphByText(_placeholderText);
+            posElement = document.ReplaceParagraphWithNumberedText(posElement, Steps[0].Text, Steps[0].Index);
+            if (Steps[0].HasImage)
+            {
+                posElement = document.InsertImageAfter(posElement, Steps[0].Image);
+            }
+
+            for (var i = 1; i < Steps.Count; i++)
+            {
+                posElement = document.InsertNumberedTextAfter(posElement, Steps[i].Text, Steps[i].Index);
+                if (Steps[i].HasImage)
+                {
+                    posElement = document.InsertImageAfter(posElement, Steps[i].Image);
+                }
+            }
+        }
+
+        private void AppendListToDocument(WordprocessingDocument document)
+        {
             foreach (var step in Steps)
             {
                 document.AddNumberedTextToBody(step.Text, step.Index);
