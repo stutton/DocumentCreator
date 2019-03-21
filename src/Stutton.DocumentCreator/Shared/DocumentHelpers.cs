@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using System.Windows.Media.Imaging;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
@@ -24,6 +25,39 @@ namespace Stutton.DocumentCreator.Shared
 
         private static uint _nextId = 0;
 
+        public static OpenXmlElement FindParagraphByText(this WordprocessingDocument wordDoc, string text)
+        {
+            return wordDoc.MainDocumentPart.Document.Body.FirstOrDefault(c => c.InnerText.Equals(text, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public static OpenXmlElement ReplaceParagraphWithText(this WordprocessingDocument wordDoc, OpenXmlElement paragraphToReplace, string text)
+        {
+            var newParagraph = new Paragraph(new Run(new Text(text)));
+            wordDoc.MainDocumentPart.Document.Body.ReplaceChild(newParagraph, paragraphToReplace);
+            return newParagraph;
+        }
+
+        public static OpenXmlElement InsertTextAfter(this WordprocessingDocument wordDoc, OpenXmlElement appendAfter, string text)
+        {
+            return wordDoc.MainDocumentPart.Document.Body.InsertAfter(new Paragraph(new Run(new Text(text))), appendAfter);
+        }
+
+        public static OpenXmlElement ReplaceParagraphWithNumberedText(this WordprocessingDocument wordDoc, OpenXmlElement paragraphToReplace, string text, int number)
+        {
+            return wordDoc.ReplaceParagraphWithText(paragraphToReplace, $"{number}.\t{text}");
+        }
+
+        public static OpenXmlElement InsertNumberedTextAfter(this WordprocessingDocument wordDoc, OpenXmlElement appendAfter, string text, int number)
+        {
+            return wordDoc.InsertTextAfter(appendAfter, $"{number}.\t{text}");
+        }
+
+        public static OpenXmlElement InsertImageAfter(this WordprocessingDocument wordDoc, OpenXmlElement appendAfter, BitmapSource image)
+        {
+            var drawing = wordDoc.GetDrawingFromImage(image);
+            return wordDoc.MainDocumentPart.Document.Body.InsertAfter(new Paragraph(new Run(drawing)), appendAfter);
+        }
+
         public static void AddNumberedTextToBody(this WordprocessingDocument wordDoc, string text, int number)
         {
             wordDoc.AddTextToBody($"{number}.\t{text}");
@@ -36,8 +70,13 @@ namespace Stutton.DocumentCreator.Shared
 
         public static void AddImageToBody(this WordprocessingDocument wordDoc, BitmapSource image)
         {
-            var mainPart = wordDoc.MainDocumentPart;
-            var imagePart = mainPart.AddImagePart(ImagePartType.Png);
+            var drawing = wordDoc.GetDrawingFromImage(image);
+            wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(drawing)));
+        }
+
+        private static ImagePart AddImagePart(this WordprocessingDocument wordDoc, BitmapSource image)
+        {
+            var imagePart = wordDoc.MainDocumentPart.AddImagePart(ImagePartType.Png);
             using (var memStream = new MemoryStream())
             {
                 var encoder = new PngBitmapEncoder();
@@ -46,11 +85,14 @@ namespace Stutton.DocumentCreator.Shared
                 memStream.Seek(0, SeekOrigin.Begin);
                 imagePart.FeedData(memStream);
             }
-            wordDoc.AddImageToBody(mainPart.GetIdOfPart(imagePart), image);
+            return imagePart;
         }
 
-        private static void AddImageToBody(this WordprocessingDocument wordDoc, string relationshipId, BitmapSource image)
+        private static Drawing GetDrawingFromImage(this WordprocessingDocument wordDoc, BitmapSource image)
         {
+            var imagePart = wordDoc.AddImagePart(image);
+            var relationshipId = wordDoc.MainDocumentPart.GetIdOfPart(imagePart);
+
             var imageCx = CalculateImageCx(image);
             var imageCy = CalculateImageCy(image);
 
@@ -111,7 +153,7 @@ namespace Stutton.DocumentCreator.Shared
                     EditId = "50D07946"
                 }
             );
-            wordDoc.MainDocumentPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
+            return element;
         }
 
         private static long CalculateImageCx(BitmapSource image)

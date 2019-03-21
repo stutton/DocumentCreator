@@ -52,7 +52,7 @@ namespace Stutton.DocumentCreator.Automations.SaveAs
         {
             try
             {
-                await Task.Run(() => File.Copy(documentPath, Path.Combine(SavePath, Path.GetFileName(SavePath))));
+                await Task.Run(() => File.Copy(documentPath, Path.Combine(SavePath, Path.GetFileName(documentPath))));
                 return Response.FromSuccess();
             }
             catch (Exception ex)

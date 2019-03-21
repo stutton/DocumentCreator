@@ -164,6 +164,11 @@ namespace Stutton.DocumentCreator.Services.Vsts
         {
             try
             {
+                if(ids == null || ids.Length == 0)
+                {
+                    return Response.FromSuccess();
+                }
+
                 var connectionResponse = await GetUpdatedVssConnection();
                 if (!connectionResponse.Success)
                 {

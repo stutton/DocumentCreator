@@ -12,5 +12,11 @@ namespace Stutton.DocumentCreator.Fields.List.Template
     {
         [DataMember]
         public override string Name { get; set; }
+
+        [DataMember]
+        public bool UsePlaceholder { get; set; }
+
+        [DataMember]
+        public string PlaceholderText { get; set; }
     }
 }
