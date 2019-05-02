@@ -104,6 +104,12 @@ namespace Stutton.DocumentCreator.Fields.List.Document
         private void ReplacePlaceholderWithList(WordprocessingDocument document)
         {
             var posElement = document.FindParagraphByText(_placeholderText);
+            if (Steps.Count == 0)
+            {
+                document.ReplaceParagraphWithText(posElement, string.Empty);
+                return;
+            }
+
             posElement = document.ReplaceParagraphWithNumberedText(posElement, Steps[0].Text, Steps[0].Index);
             if (Steps[0].HasImage)
             {
