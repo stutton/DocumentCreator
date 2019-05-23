@@ -35,8 +35,9 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 .ForMember(
                     dest => dest.Selected,
                     opt => opt.UseValue(false))
-                .ForMember(dest => dest.Url,
-                           opt => opt.UseValue(default(string)))
+                .ForMember(
+                    dest => dest.Team,
+                    opt => opt.MapFrom(src => GetFieldOrDefault(src, VstsFields.TeamProject)))
                 .ForMember(
                     dest => dest.ChildWorkItems,
                     opt => opt.MapFrom(src => MapChildWorkItems(src)));
@@ -82,6 +83,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
             public static string Description => "System.Description";
             public static string State => "System.State";
             public static string Area => "System.AreaPath";
+            public static string TeamProject => "System.TeamProject";
         }
     }
 }

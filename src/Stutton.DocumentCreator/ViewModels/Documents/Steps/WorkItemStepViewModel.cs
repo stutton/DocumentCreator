@@ -78,11 +78,11 @@ namespace Stutton.DocumentCreator.ViewModels.Documents.Steps
         #region OpenWorkItemUrl Command
 
         private ICommand _openWorkItemUrlCommand;
-        public ICommand OpenWorkItemUrlCommand => _openWorkItemUrlCommand ?? (_openWorkItemUrlCommand = new RelayCommand<IWorkItem>(OpenWorkItemUrl));
+        public ICommand OpenWorkItemUrlCommand => _openWorkItemUrlCommand ?? (_openWorkItemUrlCommand = new RelayCommand<IWorkItem>(async w => await OpenWorkItemUrl(w)));
 
-        private void OpenWorkItemUrl(IWorkItem workItem)
+        private async Task OpenWorkItemUrl(IWorkItem workItem)
         {
-
+            await _vstsService.OpenWorkItemInBrowser(workItem);
         }
 
         #endregion
