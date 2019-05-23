@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -345,6 +346,21 @@ namespace Stutton.DocumentCreator.Services.Vsts
             }
         }
 
+        public async Task OpenWorkItemInBrowser(IWorkItem workItem)
+        {
+            var settingsResponse = await _settingsService.GetSettings();
+
+            if (!settingsResponse.Success)
+            {
+                return;
+            }
+            var settings = settingsResponse.Value;
+            var tfsUrl = settings.TfsUrl;
+
+            var workItemUrl = Url.Combine(tfsUrl, workItem.Team, "_workitems/edit", workItem.Id.ToString());
+            Process.Start(workItemUrl);
+        }
+
         private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)
         {
             switch (op)
@@ -382,9 +398,11 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 var defaultCollection = settingsResponse.Value.TfsDefaultCollection;
                 var defaultCollectionUrl = Url.Combine(tfsUrl, defaultCollection);
 
+                var tfsUri = tfsUrl.Contains("dev.azure.com") ? new Uri(tfsUrl) : new Uri(defaultCollectionUrl);
+
                 if (_connection == null || _connection.Uri.AbsoluteUri != defaultCollectionUrl)
                 {
-                    _connection = new VssConnection(new Uri(defaultCollectionUrl), new VssClientCredentials());
+                    _connection = new VssConnection(tfsUri, new VssClientCredentials());
                 }
 
                 return Response<VssConnection>.FromSuccess(_connection);

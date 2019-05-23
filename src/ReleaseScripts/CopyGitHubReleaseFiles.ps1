@@ -20,14 +20,14 @@ Write-Host "Creating GitHubReleaseFolder..."
 if([string]::IsNullOrEmpty($GitHubReleaseFolder)) {
 	$GitHubReleaseFolder = Join-Path -Path $ReleaseFolder -ChildPath "github"
 }
-New-Item -ItemType Directory -Path $GitHubReleaseFolder
+New-Item -ItemType Directory -Path $GitHubReleaseFolder | Out-Null
 
 Write-Host "Looking for full and delta NuGet files..."
 $fullNuGet = Get-ChildItem -Path $ReleaseFolder | Where-Object { $_.Name -eq "DocumentCreator-$Version-full.nupkg" }
-Write-Host "Found '" + $fullNuGet.Name + "'"
+Write-Host "Found '$($fullNuGet.Name)'"
 
 $deltaNuGet = Get-ChildItem -Path $ReleaseFolder | Where-Object { $_.Name -eq "DocumentCreator-$Version-delta.nupkg" }
-Write-Host "Found '" + $deltaNuGet.Name + "'"
+Write-Host "Found '$($deltaNuGet.Name)'"
 
 $fileToCopy = @()
 $fileToCopy += Join-Path -Path $ReleaseFolder -ChildPath "Setup.exe"
@@ -36,13 +36,13 @@ $fileToCopy += Join-Path -Path $ReleaseFolder -ChildPath "RELEASES"
 $fileToCopy += $fullNuGet.FullName
 $fileToCopy += $deltaNuGet.FullName
 
-Write-Host "Copying files..."
-Write-Host "GitHub release folder path:"
+Write-Host "GitHub release folder path: " -NoNewline 
 Write-Host $GitHubReleaseFolder
 Write-Host
 Write-Host "Files:"
-Write-Host $fileToCopy
+$fileToCopy -join '`n' | Out-Host
 
+Write-Host "Copying files..."
 foreach ($file in $fileToCopy) {
 	Copy-Item -Path $file -Destination $GitHubReleaseFolder
 }

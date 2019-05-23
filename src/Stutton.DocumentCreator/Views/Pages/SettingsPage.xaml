@@ -30,7 +30,7 @@
                        Opacity="0.8"/>
             <materialDesign:Card Margin="0,4,0,0">
                 <StackPanel Margin="16">
-                    <TextBox materialDesign:HintAssist.Hint="URL"
+                    <TextBox materialDesign:HintAssist.Hint="Azure DevOps/TFS URL"
                              Text="{Binding Settings.TfsUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <StackPanel Orientation="Horizontal"
                                 Margin="0,16,0,0">
@@ -53,14 +53,11 @@
             <Expander Header="Advanced" Background="Transparent">
                 <materialDesign:Card Margin="0,4,0,0">
                     <StackPanel Margin="16">
-                        <TextBox materialDesign:HintAssist.Hint="TFVC Default Collection"
+                        <TextBox materialDesign:HintAssist.Hint="Azure DevOps/TFS Default Collection"
                                  Text="{Binding Settings.TfsDefaultCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBox materialDesign:HintAssist.Hint="Application Insights Key"
                                  Margin="0,16,0,0"
                                  Text="{Binding Settings.ApplicationInsightsKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox materialDesign:HintAssist.Hint="Update Releases Location"
-                                 Margin="0,16,0,0"
-                                 Text="{Binding Settings.UpdateReleasesLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </materialDesign:Card>
             </Expander>
@@ -68,8 +65,6 @@
             <StackPanel Margin="0,16,0,0"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
-                <Button Content="CANCEL"
-                        Style="{StaticResource MaterialDesignFlatButton}" />
                 <Button Margin="8,0,0,0"
                         Command="{Binding SaveCommand}"
                         Content="SAVE"

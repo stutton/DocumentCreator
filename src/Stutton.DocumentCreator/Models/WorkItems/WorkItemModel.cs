@@ -12,7 +12,6 @@ namespace Stutton.DocumentCreator.Models.WorkItems
         private int _id;
         private string _name;
         private string _description;
-        private string _url;
         private string _area;
 
         public int Id
@@ -31,12 +30,6 @@ namespace Stutton.DocumentCreator.Models.WorkItems
         {
             get => _description;
             set => Set(ref _description, value);
-        }
-
-        public string Url
-        {
-            get => _url;
-            set => Set(ref _url, value);
         }
 
         public string Area
@@ -75,6 +68,14 @@ namespace Stutton.DocumentCreator.Models.WorkItems
         {
             get => _selected;
             set => Set(ref _selected, value);
+        }
+
+        private string _team;
+
+        public string Team
+        {
+            get => _team;
+            set => Set(ref _team, value);
         }
 
         private int[] _childWorkItems;

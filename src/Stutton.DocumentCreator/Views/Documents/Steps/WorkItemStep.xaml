@@ -47,13 +47,14 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type workItems:IWorkItem}">
                         <cards:WorkItemCard Title="{Binding Title}"
-                                        Description="{Binding Description}"
-                                        State="{Binding State}"
-                                        Id="{Binding Id}"
-                                        IsSelected="{Binding Selected}"
-                                        SelectCommand="{Binding DataContext.WorkItemSelectedCommand, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemStep}}}"
-                                        SelectCommandParameter="{Binding}"
-                                        OpenUrlCommand="{Binding DataContext.OpenWorkItemUrlCommand, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemStep}}}"/>
+                                            Description="{Binding Description}"
+                                            State="{Binding State}"
+                                            Id="{Binding Id}"
+                                            IsSelected="{Binding Selected}"
+                                            SelectCommand="{Binding DataContext.WorkItemSelectedCommand, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemStep}}}"
+                                            SelectCommandParameter="{Binding}"
+                                            OpenUrlCommand="{Binding DataContext.OpenWorkItemUrlCommand, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemStep}}}"
+                                            OpenUrlCommandParameter="{Binding}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>

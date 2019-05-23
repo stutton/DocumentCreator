@@ -12,7 +12,12 @@ namespace Stutton.DocumentCreator.ViewModels.Dialogs
         {
             var assembly = Assembly.GetExecutingAssembly();
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return fileVersionInfo.ProductVersion;
+            var productVersion = fileVersionInfo.ProductVersion;
+            if (productVersion.Contains("+"))
+            {
+                productVersion = productVersion.Substring(0, productVersion.IndexOf("+"));
+            }
+            return productVersion;
         }
     }
 }
