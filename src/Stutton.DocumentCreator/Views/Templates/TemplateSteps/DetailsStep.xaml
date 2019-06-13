@@ -39,5 +39,9 @@
         <TextBox Text="{Binding Model.GeneratedFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  materialDesign:HintAssist.Hint="File Name"
                  Margin="0,8,0,0"/>
+
+        <TextBlock Text="{}Note: {ID} is the only replaceable field in the file name"
+                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                   Opacity="0.5"/>
     </StackPanel>
 </UserControl>
