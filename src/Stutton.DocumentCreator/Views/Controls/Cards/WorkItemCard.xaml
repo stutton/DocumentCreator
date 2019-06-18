@@ -15,7 +15,9 @@
                 views:ShadowAnimationAssist.AnimateToShadow="Depth3"
                 Background="Transparent"
                 Effect="{Binding RelativeSource={RelativeSource Self}, Path=(materialDesign:ShadowAssist.ShadowDepth), Converter={x:Static materialConverters:ShadowConverter.Instance}}">
-            <materialDesign:Card Margin="4,4,0,0" materialDesign:ShadowAssist.ShadowDepth="Depth0">
+            <materialDesign:Card Margin="4,4,0,0" 
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                                 x:Name="ThisCard">
                 <Button Command="{Binding SelectCommand, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}" CommandParameter="{Binding SelectCommandParameter, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -32,12 +34,14 @@
                     </Button.Style>
                     <StackPanel Width="250" Margin="16,16,16,16">
                         <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                   Foreground="{Binding Foreground, ElementName=ThisCard}"
                                    Text="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}"
                                    TextWrapping="Wrap" />
                         <TextBlock MaxHeight="60"
                                    Margin="0,8,0,0"
                                    Opacity=".68"
                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                   Foreground="{Binding Foreground, ElementName=ThisCard}"
                                    Text="{Binding Description, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}"
                                    TextTrimming="WordEllipsis"
                                    TextWrapping="Wrap" />
@@ -58,10 +62,12 @@
                             <StackPanel Margin="16,0,0,0" DockPanel.Dock="Left">
                                 <TextBlock FontWeight="Bold"
                                            Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                           Foreground="{Binding Foreground, ElementName=ThisCard}"
                                            Text="{Binding Id, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}" />
 
                                 <TextBlock Margin="0,0,0,0"
                                            Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                           Foreground="{Binding Foreground, ElementName=ThisCard}"
                                            Text="{Binding State, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}" />
                             </StackPanel>
                             <Button Margin="0,0,0,0"
@@ -70,7 +76,7 @@
                                     CommandParameter="{Binding OpenUrlCommandParameter, RelativeSource={RelativeSource AncestorType={x:Type local:WorkItemCard}}}"
                                     DockPanel.Dock="Right"
                                     Style="{StaticResource MaterialDesignFlatButton}">
-                                <materialDesign:PackIcon Foreground="Black"
+                                <materialDesign:PackIcon Foreground="{Binding Foreground, ElementName=ThisCard}"
                                                          Kind="LinkVariant"
                                                          Opacity="0.7" />
                             </Button>
@@ -79,9 +85,11 @@
                 </Button>
                 <materialDesign:Card.Style>
                     <Style TargetType="materialDesign:Card">
+                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WorkItemCard}}}" Value="True">
                                 <Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                <Setter Property="Foreground" Value="Black"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

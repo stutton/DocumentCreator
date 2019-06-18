@@ -55,7 +55,8 @@
                                      ContinueNavigation="DocumentStepper_OnContinueNavigation"
                                      IsLinear="True"
                                      Layout="Vertical"
-                                     Steps="{Binding Steps}" />
+                                     Steps="{Binding Steps}"
+                                     Foreground="{DynamicResource MaterialDesignBody}"/>
             </ScrollViewer>
         </DockPanel>
 

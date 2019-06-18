@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Stutton.DocumentCreator.ViewModels.Toolbar;
 
 namespace Stutton.DocumentCreator.ViewModels.Pages
 {
-    public interface IPage
+    public interface IPage : INotifyPropertyChanged
     {
         string PageKey { get; }
         int PageOrder { get; }

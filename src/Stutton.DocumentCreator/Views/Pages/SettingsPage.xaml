@@ -1,62 +1,84 @@
 ﻿<UserControl x:Class="Stutton.DocumentCreator.Views.Pages.SettingsPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Stutton.DocumentCreator.Views.Pages"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pageVms="clr-namespace:Stutton.DocumentCreator.ViewModels.Pages"
-             xmlns:converters="clr-namespace:Stutton.DocumentCreator.Views.Converters"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" 
+             d:DataContext="{d:DesignInstance pageVms:SettingsPageViewModel}"
+             d:DesignHeight="450"
              d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance pageVms:SettingsPageViewModel}">
+             mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:FlattenListConverter x:Key="ListOfStringExpanderConverter"
-                                             Separator=","
-                                             PropertyName="Value"/>
-
-            <Style BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}"
-                   TargetType="TextBox" />
+                                             PropertyName="Value"
+                                             Separator="," />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="16">
         <StackPanel Width="640">
 
-            <TextBlock Text="Visual Studio Team Services" 
-                       Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                       Margin="16"
-                       Opacity="0.8"/>
+            <TextBlock Margin="16"
+                       Opacity="0.8"
+                       Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                       Text="Appearance" />
             <materialDesign:Card Margin="0,4,0,0">
                 <StackPanel Margin="16">
-                    <TextBox materialDesign:HintAssist.Hint="Azure DevOps/TFS URL"
-                             Text="{Binding Settings.TfsUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <StackPanel Orientation="Horizontal"
-                                Margin="0,16,0,0">
-                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                                      HorizontalAlignment="Left"
-                                      IsChecked="{Binding Settings.SendTelemetryEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock Text="Send Telemetry Data"
-                                   Margin="8,0,0,0"/>
-                        <materialDesign:PackIcon Kind="HelpCircle"
-                                                 Margin="8,0,0,0"
-                                                 Width="16"
-                                                 Height="16"
-                                                 Foreground="{DynamicResource SecondaryAccentBrush}"
-                                                 ToolTipService.ShowDuration="60000"
-                                                 ToolTip="Document Creator sends information about how the program is used and errors that occur to help develop new features and fix bugs. Your name or other identifiable information is not sent. This data will never be shared with anyone."/>
+                    <TextBlock Text="Theme"
+                               Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                               Margin="0,0,0,4"
+                               Opacity="0.6"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Text="Light" />
+                        <ToggleButton Margin="10,0,10,0"
+                                      Command="{Binding ToggleDarkThemeCommand}"
+                                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                                      IsChecked="{Binding DarkThemeEnabled, Mode=TwoWay}"
+                                      Style="{DynamicResource MaterialDesignSwitchToggleButton}" />
+                        <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Text="Dark" />
                     </StackPanel>
                 </StackPanel>
             </materialDesign:Card>
 
-            <Expander Header="Advanced" Background="Transparent">
+            <TextBlock Margin="16"
+                       Opacity="0.8"
+                       Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                       Text="Visual Studio Team Services" />
+            <materialDesign:Card Margin="0,4,0,0">
+                <StackPanel Margin="16">
+                    <TextBox materialDesign:HintAssist.Hint="Azure DevOps/TFS URL"
+                             Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                             Text="{Binding Settings.TfsUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel Margin="0,16,0,0" Orientation="Horizontal">
+                        <ToggleButton HorizontalAlignment="Left"
+                                      IsChecked="{Binding Settings.SendTelemetryEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                        <TextBlock Margin="8,0,0,0"
+                                   Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                   Text="Send Telemetry Data" />
+                        <materialDesign:PackIcon Width="16"
+                                                 Height="16"
+                                                 Margin="8,0,0,0"
+                                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                                 Kind="HelpCircle"
+                                                 ToolTip="Document Creator sends information about how the program is used and errors that occur to help develop new features and fix bugs. Your name or other identifiable information is not sent. This data will never be shared with anyone."
+                                                 ToolTipService.ShowDuration="60000" />
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <Expander Background="Transparent" Header="Advanced">
                 <materialDesign:Card Margin="0,4,0,0">
                     <StackPanel Margin="16">
                         <TextBox materialDesign:HintAssist.Hint="Azure DevOps/TFS Default Collection"
+                                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding Settings.TfsDefaultCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox materialDesign:HintAssist.Hint="Application Insights Key"
-                                 Margin="0,16,0,0"
+                        <TextBox Margin="0,16,0,0"
+                                 materialDesign:HintAssist.Hint="Application Insights Key"
+                                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding Settings.ApplicationInsightsKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </materialDesign:Card>

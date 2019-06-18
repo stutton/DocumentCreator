@@ -230,6 +230,7 @@
     <Compile Include="ViewModels\Dialogs\TfsUrlDialogViewModel.cs" />
     <Compile Include="ViewModels\Documents\DocumentCardViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\ValidatableStep.cs" />
+    <Compile Include="ViewModels\Pages\NavigatingToPageEventArgs.cs" />
     <Compile Include="ViewModels\Templates\TemplateCardViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\FieldsStepViewModel.cs" />
     <Compile Include="ViewModels\Documents\Steps\SummaryStepViewModel.cs" />
