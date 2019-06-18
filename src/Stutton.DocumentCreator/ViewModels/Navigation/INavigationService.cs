@@ -7,6 +7,7 @@ namespace Stutton.DocumentCreator.ViewModels.Navigation
 {
     public interface INavigationService
     {
+        event EventHandler<NavigatingToPageEventArgs> NavigatingToPage;
         IPage CurrentPage { get; }
         IEnumerable<IPage> Pages { get; }
         void AddSidebarPage(string pageKey, IPage page);

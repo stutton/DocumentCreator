@@ -83,7 +83,7 @@ namespace Stutton.DocumentCreator
                 cfg.ConstructServicesUsing(t => _container.Resolve(t));
                 cfg.AddMaps(typeof(Setup).Assembly);
                 cfg.CreateMap<DocumentTemplateModel, DocumentTemplateDto>().ReverseMap();
-                cfg.CreateMap<DocumentModel, DocumentDto>();
+                cfg.CreateMap<DocumentModel, DocumentDto>().ReverseMap();
             });
             mapperConfig.AssertConfigurationIsValid();
             return new Mapper(mapperConfig, t => _container.Resolve(t));

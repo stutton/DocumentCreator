@@ -15,8 +15,10 @@
                 views:ShadowAnimationAssist.AnimateToShadow="Depth3"
                 Background="Transparent"
                 Effect="{Binding RelativeSource={RelativeSource Self}, Path=(materialDesign:ShadowAssist.ShadowDepth), Converter={x:Static materialConverters:ShadowConverter.Instance}}">
-            <materialDesign:Card Margin="4,4,0,0" materialDesign:ShadowAssist.ShadowDepth="Depth0">
-                <Button Command="{Binding SelectCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}">
+            <materialDesign:Card Margin="4,4,0,0" 
+                                 materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                <Button Command="{Binding SelectCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}"
+                        Background="Transparent">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Template">
@@ -46,10 +48,12 @@
                             </Grid>
                             <StackPanel Margin="16,0,0,0" DockPanel.Dock="Left">
                                 <TextBlock FontWeight="Bold"
-                                           Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                           Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                                           Foreground="{DynamicResource MaterialDesignBody}"
                                            Text="{Binding DocumentName, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}" />
 
                                 <TextBlock Margin="0,0,0,0"
+                                           Foreground="{DynamicResource MaterialDesignBody}"
                                            Style="{StaticResource MaterialDesignCaptionTextBlock}"
                                            Text="{Binding Type, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}" />
                             </StackPanel>
@@ -58,6 +62,7 @@
                         <TextBlock MaxHeight="60"
                                    Margin="0,8,0,0"
                                    Opacity=".68"
+                                   Foreground="{DynamicResource MaterialDesignBody}"
                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
                                    Text="{Binding Description, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}"
                                    TextTrimming="WordEllipsis"
@@ -70,7 +75,7 @@
                                     HorizontalAlignment="Right"
                                     Command="{Binding ShareCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}"
                                     Style="{DynamicResource MaterialDesignFlatButton}">
-                                <materialDesign:PackIcon Foreground="Black"
+                                <materialDesign:PackIcon Foreground="{DynamicResource MaterialDesignBody}"
                                                          Kind="ShareVariant"
                                                          Opacity="0.7" />
                             </Button>
@@ -79,7 +84,7 @@
                                     HorizontalAlignment="Right"
                                     Command="{Binding EditCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}"
                                     Style="{DynamicResource MaterialDesignFlatButton}">
-                                <materialDesign:PackIcon Foreground="Black"
+                                <materialDesign:PackIcon Foreground="{DynamicResource MaterialDesignBody}"
                                                          Kind="Pencil"
                                                          Opacity="0.7" />
                             </Button>
@@ -88,7 +93,7 @@
                                     HorizontalAlignment="Right"
                                     Command="{Binding DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DocumentCard}}}"
                                     Style="{DynamicResource MaterialDesignFlatButton}">
-                                <materialDesign:PackIcon Foreground="Black"
+                                <materialDesign:PackIcon Foreground="{DynamicResource MaterialDesignBody}"
                                                          Kind="Delete"
                                                          Opacity="0.7"/>
                             </Button>

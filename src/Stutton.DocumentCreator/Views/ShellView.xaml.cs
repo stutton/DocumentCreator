@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -30,6 +31,7 @@ namespace Stutton.DocumentCreator.Views
         public ShellView()
         {
             InitializeComponent();
+            DataContextChanged += ShellView_DataContextChanged;
         }
 
         public void EnableNavigation()
@@ -53,6 +55,77 @@ namespace Stutton.DocumentCreator.Views
             {
                 await _vm.Navigator.NavigateTo(pageToNavigate.PageKey).ConfigureAwait(true);
             }
+        }
+
+        private void ShellView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_vm == null)
+            {
+                _vm = DataContext as ShellViewModel;
+            }
+
+            if (_vm == null)
+            {
+                return;
+            }
+
+            if (TryFindResource("PrimaryHueMidBrush") is SolidColorBrush primaryMid)
+            {
+                var unfrozenBrush = new SolidColorBrush(primaryMid.Color);
+                TitleColorZone.Background = unfrozenBrush;
+            }
+            _vm.Navigator.NavigatingToPage += Navigator_NavigatingToPage;
+        }
+
+        private void Navigator_NavigatingToPage(object sender, NavigatingToPageEventArgs args)
+        {
+            if(args.OldPage != null)
+            {
+                args.OldPage.PropertyChanged -= CurrentPage_PropertyChanged;
+            }
+            if (args.NewPage != null)
+            {
+                args.NewPage.PropertyChanged += CurrentPage_PropertyChanged;
+            }
+            if(args.OldPage != null && args.NewPage != null && args.OldPage.IsInEditMode != args.NewPage.IsInEditMode)
+            {
+                AnimateTitleColorZoneBackground();
+            }
+        }
+
+        private void CurrentPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName != nameof(IPage.IsInEditMode))
+            {
+                return;
+            }
+
+            AnimateTitleColorZoneBackground();
+        }
+
+        private void AnimateTitleColorZoneBackground()
+        {
+            if (_vm == null)
+            {
+                _vm = DataContext as ShellViewModel;
+            }
+
+            if (_vm == null)
+            {
+                return;
+            }
+
+            var isInEditMode = _vm.Navigator.CurrentPage.IsInEditMode;
+            var toColor = isInEditMode ? TryFindResource("MaterialDesignPaper") as SolidColorBrush
+                                       : TryFindResource("PrimaryHueMidBrush") as SolidColorBrush;
+            var animation = new ColorAnimation
+            {
+                FillBehavior = FillBehavior.HoldEnd,
+                Duration = new Duration(TimeSpan.FromSeconds(0.5)),
+                To = toColor.Color
+            };
+
+            TitleColorZone.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
         }
     }
 }

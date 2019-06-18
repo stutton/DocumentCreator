@@ -10,7 +10,14 @@
         Title="MainWindow" 
         Height="450" 
         Width="800"
-        UseLayoutRounding="True">
+        UseLayoutRounding="True"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}" 
+        FontFamily="{StaticResource MaterialDesignFont}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,7 +25,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <materialDesign:DialogHost Loaded="DialogHost_OnLoaded" Identifier="RootDialog">
+    <materialDesign:DialogHost Loaded="DialogHost_OnLoaded" 
+                               Identifier="RootDialog"
+                               DialogTheme="Inherit">
         <Grid>
             <views:ShellView x:Name="ShellView"/>
             <materialDesign:Snackbar x:Name="MainSnackbar" MessageQueue="{materialDesign:MessageQueue}"/>

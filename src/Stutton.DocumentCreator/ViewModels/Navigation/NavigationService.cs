@@ -11,6 +11,8 @@ namespace Stutton.DocumentCreator.ViewModels.Navigation
 {
     public class NavigationService : Observable, INavigationService
     {
+        public event EventHandler<NavigatingToPageEventArgs> NavigatingToPage;
+
         private readonly Stack<IPage> _history = new Stack<IPage>();
         private readonly Dictionary<string, IPage> _singletonPages = new Dictionary<string, IPage>();
         private readonly Dictionary<string, Func<IPage>> _onDemandPages = new Dictionary<string, Func<IPage>>();
@@ -37,7 +39,9 @@ namespace Stutton.DocumentCreator.ViewModels.Navigation
         public async Task GoBack(object parameter = null)
         {
             var page = _history.Pop();
+            var oldPage = CurrentPage;
             CurrentPage = page;
+            NavigatingToPage?.Invoke(this, new NavigatingToPageEventArgs(oldPage, page));
             await CurrentPage.NavigatedTo(parameter);
         }
 
@@ -68,7 +72,9 @@ namespace Stutton.DocumentCreator.ViewModels.Navigation
                 }
             }
 
+            var oldPage = CurrentPage;
             CurrentPage = page;
+            NavigatingToPage?.Invoke(this, new NavigatingToPageEventArgs(oldPage, page));
             await CurrentPage.NavigatedTo(parameter);
         }
     }

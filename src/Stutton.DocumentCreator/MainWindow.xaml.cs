@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
 using Stutton.DocumentCreator.ViewModels;
 using Unity;
+using Mdx = MaterialDesignExtensions.Themes;
 
 namespace Stutton.DocumentCreator
 {
@@ -26,10 +27,15 @@ namespace Stutton.DocumentCreator
         public const string RootDialog = "RootDialog";
         
         private ShellViewModel _shellViewModel;
+        private Mdx.PaletteHelper _paletteHelper;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _paletteHelper = new Mdx.PaletteHelper();
+            var darkThemeEnabled = Properties.Settings.Default.DarkThemeEnabled;
+            _paletteHelper.SetLightDark(darkThemeEnabled);
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)

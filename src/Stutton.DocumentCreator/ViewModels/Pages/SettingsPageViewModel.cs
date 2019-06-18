@@ -14,6 +14,7 @@ using Stutton.DocumentCreator.Services.Vsts;
 using Stutton.DocumentCreator.Shared;
 using Stutton.DocumentCreator.ViewModels.Dialogs;
 using Stutton.DocumentCreator.ViewModels.Navigation;
+using Mdx = MaterialDesignExtensions.Themes;
 
 namespace Stutton.DocumentCreator.ViewModels.Pages
 {
@@ -29,6 +30,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
         public override int PageOrder => Order;
         public override string Title => Resources.SettingsPage_Settings;
         public override bool IsOnDemandPage => false;
+        private Mdx.PaletteHelper _paletteHelper;
 
         public SettingsPageViewModel(ISettingsService settingsService, 
                                      IVstsService vstsService, 
@@ -41,6 +43,14 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             _vstsService = vstsService;
             _messageQueue = messageQueue;
             _telemetryService = telemetryService;
+            _paletteHelper = new Mdx.PaletteHelper();
+        }
+
+        private bool _darkThemeEnabled;
+        public bool DarkThemeEnabled
+        {
+            get => _darkThemeEnabled;
+            set => Set(ref _darkThemeEnabled, value);
         }
 
         #region Save Command
@@ -62,6 +72,21 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
 
         #endregion
 
+
+        #region ToggleDarkTheme Command
+
+        private ICommand _toggleDarkThemeCommand;
+        public ICommand ToggleDarkThemeCommand => _toggleDarkThemeCommand ?? (_toggleDarkThemeCommand = new RelayCommand<bool>(ToggleDarkTheme));
+
+        private void ToggleDarkTheme(bool enabled)
+        {
+            _paletteHelper.SetLightDark(enabled);
+            Properties.Settings.Default.DarkThemeEnabled = enabled;
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion
+
         public override async Task NavigatedTo(object parameter)
         {
             _telemetryService.TrackPageView(Key);
@@ -75,6 +100,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
             }
 
             Settings = settingsResponse.Value;
+            DarkThemeEnabled = Properties.Settings.Default.DarkThemeEnabled;
         }
 
         private SettingsModel _settings;
