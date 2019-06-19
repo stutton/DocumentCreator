@@ -84,7 +84,7 @@
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                <Setter Property="Foreground" Value="White" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type Button}">
@@ -99,6 +99,9 @@
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="#FFE6002B"/>
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding Navigator.CurrentPage.IsInEditMode, Mode=OneWay}" Value="True">
+                                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
@@ -115,7 +118,7 @@
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                <Setter Property="Foreground" Value="White" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type Button}">
@@ -131,6 +134,9 @@
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="#33000000"/>
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding Navigator.CurrentPage.IsInEditMode, Mode=OneWay}" Value="True">
+                                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
@@ -147,7 +153,7 @@
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                <Setter Property="Foreground" Value="White" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type Button}">
@@ -163,6 +169,9 @@
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="#33000000"/>
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding Navigator.CurrentPage.IsInEditMode, Mode=OneWay}" Value="True">
+                                        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
@@ -260,7 +269,7 @@
                                               materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                               CornerRadius="2"
                                               Mode="Standard"
-                                              Visibility="{Binding Navigator.CurrentPage.ToolBar.SearchBar.IsShown, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                              Visibility="Collapsed">
                         <DockPanel>
                             <Button Command="{Binding Navigator.CurrentPage.ToolBar.SearchBar.Command}"
                                     DockPanel.Dock="Left"
