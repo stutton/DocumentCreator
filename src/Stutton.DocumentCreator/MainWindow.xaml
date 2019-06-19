@@ -17,7 +17,8 @@
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}" 
-        FontFamily="{StaticResource MaterialDesignFont}">
+        FontFamily="{StaticResource MaterialDesignFont}"
+        Style="{StaticResource CustomWindowStyle}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

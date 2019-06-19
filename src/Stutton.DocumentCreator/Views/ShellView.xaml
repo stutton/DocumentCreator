@@ -33,14 +33,14 @@
     <Grid>
         <DockPanel>
             <materialDesign:ColorZone x:Name="TitleColorZone"
-                                      Height="64"
-                                      Padding="8"
+                                      Height="48"
                                       materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                       DockPanel.Dock="Top"
                                       Mode="PrimaryMid">
-                <DockPanel>
+                <DockPanel Margin="8,0,0,0">
                     <Grid>
                         <ToggleButton Width="32"
+                                      WindowChrome.IsHitTestVisibleInChrome="True"
                                       IsChecked="{Binding Navigator.CurrentPage.IsInEditMode, Mode=OneWay}"
                                       Visibility="{Binding Navigator.CurrentPage.IsInEditMode, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <i:Interaction.Triggers>
@@ -62,6 +62,7 @@
                         <Button VerticalAlignment="Center"
                                 Command="{Binding ToggleMenuCommand}"
                                 DockPanel.Dock="Left"
+                                WindowChrome.IsHitTestVisibleInChrome="True"
                                 Style="{DynamicResource MaterialDesignToolForegroundButton}"
                                 Visibility="{Binding Navigator.CurrentPage.IsInEditMode, Mode=OneWay, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                             <materialDesign:PackIcon Width="32"
@@ -72,18 +73,105 @@
 
                     </Grid>
 
-                    <Ellipse Width="32"
-                             Height="32"
-                             DockPanel.Dock="Right"
-                             Visibility="{Binding ProfilePicture, Converter={StaticResource NullToVisibilityConverter}}">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding ProfilePicture}" Stretch="UniformToFill" />
-                        </Ellipse.Fill>
-                    </Ellipse>
+                    <Button Width="44"
+                            Height="48"
+                            DockPanel.Dock="Right"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Command="{Binding CloseCommand}">
+                        <materialDesign:PackIcon Kind="Close"
+                                                 Width="24"
+                                                 Height="24"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center"
+                                                                  HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FFE6002B"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Width="44"
+                            Height="48"
+                            DockPanel.Dock="Right"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Command="{Binding ToggleMaxMinCommand}">
+                        <materialDesign:PackIcon Kind="WindowMaximize"
+                                                 Width="24"
+                                                 Height="24"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid>
+                                                <Border Background="{TemplateBinding Background}"/>
+                                                <ContentPresenter VerticalAlignment="Center"
+                                                                  HorizontalAlignment="Center"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#33000000"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Width="44"
+                            Height="48"
+                            DockPanel.Dock="Right"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Command="{Binding MinimizeCommand}">
+                        <materialDesign:PackIcon Kind="WindowMinimize"
+                                                 Width="24"
+                                                 Height="24"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid>
+                                                <Border Background="{TemplateBinding Background}"/>
+                                                <ContentPresenter VerticalAlignment="Center"
+                                                                  HorizontalAlignment="Center"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#33000000"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
 
                     <materialDesign:PopupBox DockPanel.Dock="Right"
                                              PlacementMode="BottomAndAlignRightEdges"
-                                             StaysOpen="False">
+                                             StaysOpen="False"
+                                             WindowChrome.IsHitTestVisibleInChrome="True">
                         <materialDesign:PopupBox.Style>
                             <Style BasedOn="{StaticResource {x:Type materialDesign:PopupBox}}" TargetType="{x:Type materialDesign:PopupBox}">
                                 <Style.Triggers>
@@ -99,7 +187,17 @@
                         </StackPanel>
                     </materialDesign:PopupBox>
 
+                    <Ellipse Width="32"
+                             Height="32"
+                             DockPanel.Dock="Right"
+                             Visibility="{Binding ProfilePicture, Converter={StaticResource NullToVisibilityConverter}}">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{Binding ProfilePicture}" Stretch="UniformToFill" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
                     <Button VerticalAlignment="Center"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
                             Command="{Binding Navigator.CurrentPage.ToolBar.Refresh.Command}"
                             DockPanel.Dock="Right"
                             Style="{DynamicResource MaterialDesignToolForegroundButton}"
@@ -110,6 +208,7 @@
                     </Button>
 
                     <Button VerticalAlignment="Center"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
                             Command="{Binding Navigator.CurrentPage.ToolBar.Save.Command}"
                             DockPanel.Dock="Right"
                             Style="{DynamicResource MaterialDesignToolForegroundButton}"
@@ -122,6 +221,7 @@
                     </Button>
 
                     <Button VerticalAlignment="Center"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
                             Command="{Binding Navigator.CurrentPage.ToolBar.Export.Command}"
                             DockPanel.Dock="Right"
                             Style="{DynamicResource MaterialDesignToolForegroundButton}"
@@ -150,6 +250,7 @@
                     </TextBlock>
 
                     <materialDesign:ColorZone Height="40"
+                                              WindowChrome.IsHitTestVisibleInChrome="True"
                                               MaxWidth="400"
                                               Margin="24,0,0,0"
                                               Padding="8,0,8,0"

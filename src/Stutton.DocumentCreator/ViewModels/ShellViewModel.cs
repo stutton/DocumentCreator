@@ -18,9 +18,12 @@ namespace Stutton.DocumentCreator.ViewModels
 {
     public class ShellViewModel : Observable
     {
-        public ShellViewModel(INavigationService navigationService)
+        private readonly IWindow _mainWindow;
+
+        public ShellViewModel(INavigationService navigationService, IWindow mainWindow)
         {
             Navigator = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _mainWindow = mainWindow;
         }
 
         public INavigationService Navigator { get; }
@@ -40,6 +43,47 @@ namespace Stutton.DocumentCreator.ViewModels
         public ICommand ShowAboutCommand => _showAboutCommand ?? (_showAboutCommand = new RelayCommand(async () => await ShowAbout()));
 
         private static async Task ShowAbout() => await DialogHost.Show(new AboutDialogViewModel(), MainWindow.RootDialog);
+
+        #region Close Command
+
+        private ICommand _closeCommand;
+        public ICommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(Close));
+
+        private void Close()
+        {
+            _mainWindow.Close();
+        }
+
+        #endregion
+
+        #region ToggleMaxMin Command
+
+        private ICommand _toggleMaxMinCommand;
+        public ICommand ToggleMaxMinCommand => _toggleMaxMinCommand ?? (_toggleMaxMinCommand = new RelayCommand(ToggleMaxMin));
+
+        private void ToggleMaxMin()
+        {
+            if (_mainWindow.IsMaximized)
+            {
+                _mainWindow.Restore();
+                return;
+            }
+            _mainWindow.Maximize();
+        }
+
+        #endregion
+
+        #region Minimize Command
+
+        private ICommand _MinimizeCommand;
+        public ICommand MinimizeCommand => _MinimizeCommand ?? (_MinimizeCommand = new RelayCommand(Minimize));
+
+        private void Minimize()
+        {
+            _mainWindow.Minimize();
+        }
+
+        #endregion
 
         public async Task LoadAsync()
         {
