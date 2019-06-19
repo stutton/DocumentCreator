@@ -107,6 +107,7 @@
     <Compile Include="Fields\FieldTemplateMapperProfile.cs" />
     <Compile Include="Fields\FieldTemplateModelBase.cs" />
     <Compile Include="Fields\FieldTemplateDtoBase.cs" />
+    <Compile Include="IWindow.cs" />
     <Compile Include="Services\Vsts\VstsWorkItemMapperProfile.cs" />
     <Compile Include="Shared\IContext.cs" />
     <Compile Include="Shared\IExpandable.cs" />

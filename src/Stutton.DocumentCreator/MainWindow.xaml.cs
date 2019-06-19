@@ -22,7 +22,7 @@ namespace Stutton.DocumentCreator
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IWindow
     {
         public const string RootDialog = "RootDialog";
         
@@ -49,7 +49,7 @@ namespace Stutton.DocumentCreator
 #if DEBUG
             debugging = true;
 #endif
-            await Setup.DoSetup(MainSnackbar.MessageQueue, debugging);
+            await Setup.DoSetup(MainSnackbar.MessageQueue, debugging, this);
 
             _shellViewModel = Setup.GetShellViewModel();
             ShellView.DataContext = _shellViewModel;
@@ -57,5 +57,11 @@ namespace Stutton.DocumentCreator
             ShellView.EnableNavigation();
             await _shellViewModel.LoadAsync();
         }
+
+        bool IWindow.IsMaximized => WindowState == WindowState.Maximized;
+        void IWindow.Close() => Close();
+        void IWindow.Maximize() => WindowState = WindowState.Maximized;
+        void IWindow.Restore() => WindowState = WindowState.Normal;
+        void IWindow.Minimize() => WindowState = WindowState.Minimized;
     }
 }

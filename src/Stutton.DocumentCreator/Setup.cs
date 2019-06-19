@@ -33,9 +33,9 @@ namespace Stutton.DocumentCreator
     public static class Setup
     {
         private static IUnityContainer _container;
-        public static async Task DoSetup(ISnackbarMessageQueue messageQueue, bool debugging)
+        public static async Task DoSetup(ISnackbarMessageQueue messageQueue, bool debugging, IWindow mainWindow)
         {
-            Configure(messageQueue);
+            Configure(messageQueue, mainWindow);
             await LoadInitialSettings();
             await InitializeTelemetryService();
             await LoadFirstRunTemplates();
@@ -56,9 +56,10 @@ namespace Stutton.DocumentCreator
             _container.Dispose();
         }
 
-        private static void Configure(ISnackbarMessageQueue messageQueue)
+        private static void Configure(ISnackbarMessageQueue messageQueue, IWindow mainWindow)
         {
             _container = new UnityContainer();
+            _container.RegisterInstance(mainWindow, new ExternallyControlledLifetimeManager());
             _container.RegisterInstance<IContext>(new WpfContext(), new ContainerControlledLifetimeManager());
             _container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISettingsService, SettingsService>(new ContainerControlledLifetimeManager());

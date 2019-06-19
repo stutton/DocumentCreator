@@ -19,6 +19,19 @@
                 <ResourceDictionary Source="Views/Themes/EditorExpander.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="CustomWindowStyle" TargetType="Window">
+                <Setter Property="WindowChrome.WindowChrome">
+                    <Setter.Value>
+                        <WindowChrome NonClientFrameEdges="None"
+                                      GlassFrameThickness="0"
+                                      ResizeBorderThickness="3"
+                                      CornerRadius="0"
+                                      CaptionHeight="48" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>
