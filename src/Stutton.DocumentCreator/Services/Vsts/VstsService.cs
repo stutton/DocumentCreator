@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -17,6 +18,7 @@ using Microsoft.VisualStudio.Services.Profile.Client;
 using Microsoft.VisualStudio.Services.WebApi;
 using Microsoft.VisualStudio.Services.WebApi.Patch;
 using Microsoft.VisualStudio.Services.WebApi.Patch.Json;
+using Newtonsoft.Json;
 using Stutton.DocumentCreator.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Settings;
@@ -26,7 +28,9 @@ namespace Stutton.DocumentCreator.Services.Vsts
 {
     public class VstsService : IVstsService
     {
-        private const string GlobalProfileUrl = "https://app.vssps.visualstudio.com/";
+        private static readonly string _fieldsCacheFileName = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator\\Fields.cache";
+        private static readonly string _cacheDirectoryName = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\DocumentCreator";
+        private const string _globalProfileUrl = "https://app.vssps.visualstudio.com/";
 
         private readonly ISettingsService _settingsService;
         private readonly IMapper _mapper;
@@ -259,7 +263,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
             {
                 if (_profileConnection == null)
                 {
-                    _profileConnection = new VssConnection(new Uri(GlobalProfileUrl), new VssClientCredentials());
+                    _profileConnection = new VssConnection(new Uri(_globalProfileUrl), new VssClientCredentials());
                 }
                 
                 var profileClient = await _profileConnection.GetClientAsync<ProfileHttpClient>();
@@ -288,12 +292,26 @@ namespace Stutton.DocumentCreator.Services.Vsts
         {
             try
             {
+                // Return memory cache if loaded
                 if (_workItemFieldsCache != null)
                 {
                     return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(_workItemFieldsCache);
                 }
 
-                var connectionResponse = await GetUpdatedVssConnection();
+                // Load file cache if available
+                if (File.Exists(_fieldsCacheFileName))
+                {
+                    _workItemFieldsCache = await LoadFieldsFromCache().ConfigureAwait(false);
+                    if(_workItemFieldsCache != null)
+                    {
+                        // Fire and forget background task to download the fields
+                        _ = Task.Run(DownloadFieldsAndUpdateCacheInBackground).ConfigureAwait(false);
+                        return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(_workItemFieldsCache);
+                    }
+                }
+
+                // Download fields
+                var connectionResponse = await GetUpdatedVssConnection().ConfigureAwait(false);
                 if (!connectionResponse.Success)
                 {
                     return Response<IEnumerable<WorkItemFieldModel>>.FromFailure(connectionResponse.Message);
@@ -305,6 +323,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 var workItemClient = await Task.Run(async () => await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false)).ConfigureAwait(false);
                 var result = await Task.Run(async () => await workItemClient.GetFieldsAsync().ConfigureAwait(false)).ConfigureAwait(false);
                 _workItemFieldsCache = result.Select(f => new WorkItemFieldModel {Name = f.Name, ReferenceName = f.ReferenceName});
+                await SaveFieldsCache(_workItemFieldsCache);
                 return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(_workItemFieldsCache);
             }
             catch (Exception ex)
@@ -411,6 +430,50 @@ namespace Stutton.DocumentCreator.Services.Vsts
             {
                 return Response<VssConnection>.FromFailure(ex.Message);
             }
+        }
+
+        private async Task DownloadFieldsAndUpdateCacheInBackground()
+        {
+            var connectionResponse = await GetUpdatedVssConnection();
+            if (!connectionResponse.Success)
+            {
+                return;
+            }
+
+            var connection = connectionResponse.Value;
+            var workItemClient = await Task.Run(async () => await connection.GetClientAsync<WorkItemTrackingHttpClient>().ConfigureAwait(false)).ConfigureAwait(false);
+            var result = await Task.Run(async () => await workItemClient.GetFieldsAsync().ConfigureAwait(false)).ConfigureAwait(false);
+            _workItemFieldsCache = result.Select(f => new WorkItemFieldModel { Name = f.Name, ReferenceName = f.ReferenceName });
+            await SaveFieldsCache(_workItemFieldsCache);
+        }
+
+        private static async Task<IEnumerable<WorkItemFieldModel>> LoadFieldsFromCache()
+        {
+            if (!File.Exists(_fieldsCacheFileName))
+            {
+                throw new FileNotFoundException("Fields cache file not found", _fieldsCacheFileName);
+            }
+
+            var fieldsJson = await Task.Run(() => File.ReadAllText(_fieldsCacheFileName));
+            var model = await Task.Run(() => JsonConvert.DeserializeObject<IEnumerable<WorkItemFieldModel>>(fieldsJson));
+
+            return model;
+        }
+
+        private static async Task SaveFieldsCache(IEnumerable<WorkItemFieldModel> fields)
+        {
+            if(fields == null)
+            {
+                throw new ArgumentNullException(nameof(fields));
+            }
+
+            if (!Directory.Exists(_cacheDirectoryName))
+            {
+                Directory.CreateDirectory(_cacheDirectoryName);
+            }
+
+            var fieldsJson = await Task.Run(() => JsonConvert.SerializeObject(fields));
+            await Task.Run(() => File.WriteAllText(_fieldsCacheFileName, fieldsJson));
         }
 
         private sealed class WorkItemUpdateException : Exception
