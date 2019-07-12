@@ -38,6 +38,7 @@ namespace Stutton.DocumentCreator
             Configure(messageQueue, mainWindow);
             await LoadInitialSettings();
             await InitializeTelemetryService();
+            await LoadUserProfile();
             await LoadFirstRunTemplates();
             if (!debugging)
             {
@@ -93,7 +94,6 @@ namespace Stutton.DocumentCreator
         private static async Task LoadInitialSettings()
         {
             var settingsService = _container.Resolve<ISettingsService>();
-            var tfsService = _container.Resolve<IVstsService>();
             var telemetryService = _container.Resolve<ITelemetryService>();
 
             // Load settings
@@ -118,6 +118,7 @@ namespace Stutton.DocumentCreator
             {
                 if (defaultSettingsResponse.Code != ResponseCode.FileNotFound)
                 {
+
                     await DialogHost.Show(new ErrorMessageDialogViewModel(defaultSettingsResponse.Message), MainWindow.RootDialog);
                     return;
                 }
@@ -127,13 +128,19 @@ namespace Stutton.DocumentCreator
                 ApplyDefaultSettings(settings, defaultSettingsResponse.Value);
             }
 
+            // Check Application Insights key
+            if (settings.SendTelemetryEnabled == null || !settings.SendTelemetryEnabled.Value || string.IsNullOrEmpty(settings.ApplicationInsightsKey))
+            {
+                telemetryService.Enabled = false;
+            }
+
             // Check TfsUrl
             if (string.IsNullOrEmpty(settings.TfsUrl))
             {
                 var tfsUrlDialog = new TfsUrlDialogViewModel();
                 if (!(bool)await DialogHost.Show(tfsUrlDialog, MainWindow.RootDialog))
                 {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel("Connecting to VSTS/TFS canceled by user"), MainWindow.RootDialog);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel("Connecting to Azure DevOps/TFS canceled by user"), MainWindow.RootDialog);
                     return;
                 }
 
@@ -157,29 +164,9 @@ namespace Stutton.DocumentCreator
                 return;
             }
 
-            // Check TfsUserName
-            if (string.IsNullOrEmpty(settings.TfsUserName))
-            {
-                var tfsProfileResponse = await tfsService.GetUserProfileAsync();
-                if (!tfsProfileResponse.Success)
-                {
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(tfsProfileResponse.Message), MainWindow.RootDialog);
-                    return;
-                }
-
-                settings.TfsUserName = tfsProfileResponse.Value.Name;
-                // TODO: Save profile picture
-            }
-
             if (!await SaveSettingsAsync(settingsService, settings))
             {
                 return;
-            }
-
-            // Check Application Insights key
-            if (settings.SendTelemetryEnabled == null || !settings.SendTelemetryEnabled.Value || string.IsNullOrEmpty(settings.ApplicationInsightsKey))
-            {
-                telemetryService.Enabled = false;
             }
 
             // Save settings
@@ -287,6 +274,38 @@ namespace Stutton.DocumentCreator
             {
                 telemetryService?.TrackException(ex);
                 await DialogHost.Show(new ErrorMessageDialogViewModel("Error loading first run templates"), MainWindow.RootDialog);
+            }
+        }
+
+        private static async Task LoadUserProfile()
+        {
+            var settingsService = _container.Resolve<ISettingsService>();
+            var tfsService = _container.Resolve<IVstsService>();
+            var telemetryService = _container.Resolve<ITelemetryService>();
+
+            var settingsResponse = await settingsService.GetSettings();
+            if (!settingsResponse.Success)
+            {
+                telemetryService?.TrackFailedResponse(settingsResponse);
+                await DialogHost.Show(new ErrorMessageDialogViewModel("Failed to load settings while getting user profile"), MainWindow.RootDialog);
+                return;
+            }
+
+            var settings = settingsResponse.Value;
+
+            // Check TfsUserName
+            if (string.IsNullOrEmpty(settings.TfsUserName))
+            {
+                var tfsProfileResponse = await tfsService.GetUserProfileAsync();
+                if (!tfsProfileResponse.Success)
+                {
+                    telemetryService?.TrackFailedResponse(tfsProfileResponse);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(tfsProfileResponse.Message), MainWindow.RootDialog);
+                    return;
+                }
+
+                settings.TfsUserName = tfsProfileResponse.Value.Name;
+                // TODO: Save profile picture
             }
         }
     }
