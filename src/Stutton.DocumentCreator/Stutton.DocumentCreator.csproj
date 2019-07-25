@@ -108,6 +108,8 @@
     <Compile Include="Fields\FieldTemplateModelBase.cs" />
     <Compile Include="Fields\FieldTemplateDtoBase.cs" />
     <Compile Include="IWindow.cs" />
+    <Compile Include="Services\Vsts\Dtos\WorkItemFieldDto.cs" />
+    <Compile Include="Services\Vsts\VstsAdalService.cs" />
     <Compile Include="Services\Vsts\VstsWorkItemMapperProfile.cs" />
     <Compile Include="Shared\IContext.cs" />
     <Compile Include="Shared\IExpandable.cs" />
@@ -640,5 +642,6 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
