@@ -7,8 +7,11 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using Flurl;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
+using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Settings;
@@ -53,27 +56,121 @@ namespace Stutton.DocumentCreator.Services.Vsts
 
         public async Task<IResponse<IWorkItem>> GetWorkItemAsync(int id)
         {
-            var response = SendRequestAsync(HttpMethod.Get, $"CSI/_apis/wit/workitems/{id}");
+            var response = SendRequestAsync(HttpMethod.Get, $"_apis/wit/workitems/{id}?api-version=5.0");
 
             throw new NotImplementedException();
         }
 
         public async Task<IResponse<IEnumerable<WorkItemFieldModel>>> GetWorkItemFields()
         {
-            var response = await SendRequestAsync(HttpMethod.Get, $"CSI/_apis/wit/fields");
+            var response = await SendRequestAsync(HttpMethod.Get, $"_apis/wit/fields?api-version=5.0");
             if (!response.Success)
             {
                 return Response<IEnumerable<WorkItemFieldModel>>.FromFailure(response.Message);
             }
 
-            var dto = JsonConvert.DeserializeObject<IEnumerable<WorkItemFieldDto>>(response.Value);
+            var dto = JsonConvert.DeserializeObject<VstsCollectionDto<WorkItemFieldDto>>(response.Value);
 
-            throw new NotImplementedException();
+            var models = dto.Value.Select(t => new WorkItemFieldModel { Name = t.Name, ReferenceName = t.ReferenceName });
+
+            return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(models);
         }
 
         public Task<IResponse<string>> GetWorkItemFieldValue(int id, string field) => throw new NotImplementedException();
 
-        public Task<IResponse<IEnumerable<IWorkItem>>> GetWorkItemsAsync(WorkItemQueryModel query) => throw new NotImplementedException();
+        public async Task<IResponse<IEnumerable<IWorkItem>>> GetWorkItemsAsync(WorkItemQueryModel query)
+        {
+            try
+            {
+                var settingsResponse = await _settingsService.GetSettings();
+
+                if (!settingsResponse.Success)
+                {
+                    return Response<IEnumerable<IWorkItem>>.FromFailure(settingsResponse.Message);
+                }
+
+                var settings = settingsResponse.Value;
+
+                var sb = new StringBuilder();
+                sb.Append($"SELECT [System.Id] FROM workitems WHERE [System.AssignedTo] contains '{settings.TfsUserName}'");
+                foreach (var expression in query.Expressions.Where(p => p.Field != null))
+                {
+                    sb.Append(" AND ");
+
+                    sb.Append($"[{expression.Field}] ");
+
+                    sb.Append($"{VstsHelpers.GetExpressionOperatorString(expression.Operator)} ");
+
+                    if (expression.Operator == WorkItemQueryExpressionOperator.In)
+                    {
+                        var valueSb = new StringBuilder();
+                        valueSb.Append("(");
+
+                        foreach (var value in expression.Values)
+                        {
+                            valueSb.Append($"'{value.Value}', ");
+                        }
+
+                        sb.Append($"{valueSb.ToString().TrimEnd(',', ' ')})");
+                    }
+                    else
+                    {
+                        sb.Append($"'{expression.Value}'");
+                    }
+                }
+
+                var wiql = sb.ToString();
+                var queryBody = JsonConvert.SerializeObject(new { query = wiql });
+
+                var queryResponse = await SendRequestAsync(HttpMethod.Post, "_apis/wit/wiql?api-version=5.0", queryBody);
+                if (!queryResponse.Success)
+                {
+                    return Response<IEnumerable<IWorkItem>>.FromFailure(queryResponse.Message);
+                }
+                var dto = JsonConvert.DeserializeObject<WiqlQueryResultDto>(queryResponse.Value);
+
+                if(dto.WorkItems.Count == 0)
+                {
+                    return Response<IEnumerable<IWorkItem>>.FromSuccess(new List<IWorkItem>());
+                }
+
+                if(dto.WorkItems.Count > 200)
+                {
+                    dto.WorkItems = dto.WorkItems.Take(1).ToList();
+                }
+
+                var batchRequest = JsonConvert.SerializeObject(new
+                {
+                    expand = "Relations",
+                    ids = dto.WorkItems.Select(wi => wi.Id),
+                    //fields = new[]
+                    //{
+                    //    "System.Id",
+                    //    "System.Title",
+                    //    "System.WorkItemType",
+                    //    "System.Description",
+                    //    "System.AreaPath",
+                    //    "System.TeamProject",
+                    //    "System.State"
+                    //}
+                });
+                batchRequest = batchRequest.Replace("expand", "$expand");
+
+                var batchResponse = await SendRequestAsync(HttpMethod.Post, "_apis/wit/workitemsbatch?api-version=5.0", batchRequest);
+                if (!batchResponse.Success)
+                {
+                    return Response<IEnumerable<IWorkItem>>.FromFailure(batchResponse.Message);
+                }
+
+
+
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                return Response<IEnumerable<IWorkItem>>.FromException($"An error occurred getting the requested work items", ex);
+            }
+        }
 
         public Task OpenWorkItemInBrowser(IWorkItem workItem) => throw new NotImplementedException();
 
@@ -122,18 +219,22 @@ namespace Stutton.DocumentCreator.Services.Vsts
                     return Response<HttpClient>.FromFailure(settingsResponse.Message);
                 }
 
-                var orgUrl = settingsResponse.Value.TfsUrl;
-
-                if(orgUrl.Last() != '/')
+                var baseUrl = settingsResponse.Value.TfsUrl;
+                if (string.IsNullOrWhiteSpace(baseUrl))
                 {
-                    orgUrl += '/';
+                    return Response<HttpClient>.FromFailure("No TFS url found in settings");
+                }
+
+                if(baseUrl.Last() != '/')
+                {
+                    baseUrl += '/';
                 }
 
                 if(_client == null)
                 {
                     _client = new HttpClient
                     {
-                        BaseAddress = new Uri(orgUrl)
+                        BaseAddress = new Uri(baseUrl)
                     };
                 }
 
@@ -168,13 +269,15 @@ namespace Stutton.DocumentCreator.Services.Vsts
                     return Response<string>.FromFailure(clientResponse.Message);
                 }
 
+                var client = clientResponse.Value;
+
                 var request = new HttpRequestMessage(method, url);
                 if (!string.IsNullOrEmpty(body))
                 {
-                    request.Content = new StringContent(body);
+                    request.Content = new StringContent(body, Encoding.UTF8, "application/json");
                 }
 
-                var response = await _client.SendAsync(request);
+                var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
                 var result = await response.Content.ReadAsStringAsync();

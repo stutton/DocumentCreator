@@ -98,7 +98,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
 
                     sb.Append($"[{expression.Field}] ");
 
-                    sb.Append($"{GetExpressionOperatorString(expression.Operator)} ");
+                    sb.Append($"{VstsHelpers.GetExpressionOperatorString(expression.Operator)} ");
 
                     if (expression.Operator == WorkItemQueryExpressionOperator.In)
                     {
@@ -378,27 +378,6 @@ namespace Stutton.DocumentCreator.Services.Vsts
 
             var workItemUrl = Url.Combine(tfsUrl, workItem.Team, "_workitems/edit", workItem.Id.ToString());
             Process.Start(workItemUrl);
-        }
-
-        private string GetExpressionOperatorString(WorkItemQueryExpressionOperator op)
-        {
-            switch (op)
-            {
-                case WorkItemQueryExpressionOperator.Equals:
-                    return "=";
-                case WorkItemQueryExpressionOperator.GreaterThan:
-                    return ">";
-                case WorkItemQueryExpressionOperator.LessThan:
-                    return "<";
-                case WorkItemQueryExpressionOperator.NotEqual:
-                    return "<>"; // Not sure what operator should be used here.
-                case WorkItemQueryExpressionOperator.Contains:
-                    return "contains";
-                case WorkItemQueryExpressionOperator.In:
-                    return "in";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(op), op, null);
-            }
         }
 
         private async Task<IResponse<VssConnection>> GetUpdatedVssConnection()
