@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Flurl;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
@@ -22,22 +26,92 @@ namespace Stutton.DocumentCreator.Services.Vsts
 {
     public class VstsAdalService : IVstsService
     {
+        // ===== - Authentication Settings - ===== \\
+        // This should be refactored into an IHttpProvider/Factory service that will return a configured HttpClient to use
+        private const string _adalV3CacheFileName = "cacheAdalV3.bin";
+        private const string _msalCacheFileName = "cacheMsal.bin";
+        private FilesBasedTokenCache _tokenCache;
+        private AuthenticationContext _context;
+        private AuthenticationResult _authenticationResult;
+
         private const string _clientId = "872cd9fa-d31f-45e0-9eab-6e460a02d1f1";
         private const string _replyUri = "urn:ietf:wg:oauth:2.0:oob";
         private const string _azureDevOpsResourceId = "499b84ac-1321-427f-aa17-267ca6975798";
         private readonly IPlatformParameters _defaultPromptBehavior = new PlatformParameters(PromptBehavior.Auto);
         private readonly ISettingsService _settingsService;
-
-        private AuthenticationContext _context;
-        private AuthenticationResult _authenticationResult;
+        private readonly IMapper _mapper;
         private HttpClient _client;
 
-        public VstsAdalService(ISettingsService settingsService)
+        public VstsAdalService(ISettingsService settingsService, IMapper mapper)
         {
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task<IResponse> AttachFileToWorkItemAsync(string filePath, int workItemId) => throw new NotImplementedException();
+        public async Task<IResponse> AttachFileToWorkItemAsync(string filePath, int workItemId)
+        {
+            var fileName = Path.GetFileName(filePath);
+            var fileBytes = File.ReadAllBytes(filePath);
+            
+            var uploadResponse = await SendRequestAsync(
+                HttpMethod.Post,
+                $"_apis/wit/attachments?fileName={fileName}&api-version=5.0",
+                fileBytes);
+
+            if (!uploadResponse.Success)
+            {
+                return Response.FromFailure(uploadResponse.Message);
+            }
+
+            var uploadResult = (JObject)JsonConvert.DeserializeObject(uploadResponse.Value);
+            var uploadUrl = uploadResult.SelectToken("url")?.ToString();
+
+            if (uploadUrl == null)
+            {
+                return Response.FromFailure("File upload did not return a file location url");
+            }
+
+            var patchDocument = new Object[]
+            {
+                new
+                {
+                    op = "test",
+                    path = "/rev",
+                    value = 3
+                },
+                new
+                {
+                    op = "add",
+                    path = "/fields/System.History",
+                    value = $"Attaching file {fileName}"
+                },
+                new
+                {
+                    op = "add",
+                    path = "/relations/-",
+                    value = new
+                    {
+                        rel = "AttachedFile",
+                        url = uploadUrl,
+                        attributes = new { comment = fileName }
+                    }
+                }
+            };
+
+            var body = JsonConvert.SerializeObject(patchDocument);
+
+            var linkResponse = await SendRequestAsync(
+                new HttpMethod("PATCH"),
+                $"_apis/wit/workitems/{workItemId}?api-version=5.0",
+                body);
+
+            if (!linkResponse.Success)
+            {
+                return Response.FromFailure(linkResponse.Message);
+            }
+
+            return Response.FromSuccess();
+        }
 
         public async Task<IResponse<ProfileModel>> GetUserProfileAsync()
         {
@@ -56,9 +130,11 @@ namespace Stutton.DocumentCreator.Services.Vsts
 
         public async Task<IResponse<IWorkItem>> GetWorkItemAsync(int id)
         {
-            var response = SendRequestAsync(HttpMethod.Get, $"_apis/wit/workitems/{id}?api-version=5.0");
+            var response = await SendRequestAsync(HttpMethod.Get, $"_apis/wit/workitems/{id}?$expand=relations&api-version=5.0");
+            var dto = JsonConvert.DeserializeObject<WorkItemApiResultDto>(response.Value);
+            var result = _mapper.Map<WorkItemModel>(dto);
 
-            throw new NotImplementedException();
+            return Response<IWorkItem>.FromSuccess(result);
         }
 
         public async Task<IResponse<IEnumerable<WorkItemFieldModel>>> GetWorkItemFields()
@@ -76,7 +152,25 @@ namespace Stutton.DocumentCreator.Services.Vsts
             return Response<IEnumerable<WorkItemFieldModel>>.FromSuccess(models);
         }
 
-        public Task<IResponse<string>> GetWorkItemFieldValue(int id, string field) => throw new NotImplementedException();
+        public async Task<IResponse<string>> GetWorkItemFieldValue(int id, string field)
+        {
+            if(field.Equals("System.ID", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return Response<string>.FromSuccess(id.ToString());
+            }
+
+            var response = await SendRequestAsync(HttpMethod.Get, $"_apis/wit/workitems/{id}?fields={field}&api-version=5.0");
+            var dto = (JObject)JsonConvert.DeserializeObject(response.Value);
+
+            var result = dto.SelectToken($"fields.['{field}']")?.ToString();
+
+            if(result == null)
+            {
+                return Response<string>.FromFailure($"Field '{field}' not found on work item '{id}'");
+            }
+
+            return Response<string>.FromSuccess(result);
+        }
 
         public async Task<IResponse<IEnumerable<IWorkItem>>> GetWorkItemsAsync(WorkItemQueryModel query)
         {
@@ -136,23 +230,13 @@ namespace Stutton.DocumentCreator.Services.Vsts
 
                 if(dto.WorkItems.Count > 200)
                 {
-                    dto.WorkItems = dto.WorkItems.Take(1).ToList();
+                    dto.WorkItems = dto.WorkItems.Take(200).ToList();
                 }
 
                 var batchRequest = JsonConvert.SerializeObject(new
                 {
                     expand = "Relations",
-                    ids = dto.WorkItems.Select(wi => wi.Id),
-                    //fields = new[]
-                    //{
-                    //    "System.Id",
-                    //    "System.Title",
-                    //    "System.WorkItemType",
-                    //    "System.Description",
-                    //    "System.AreaPath",
-                    //    "System.TeamProject",
-                    //    "System.State"
-                    //}
+                    ids = dto.WorkItems.Select(wi => wi.Id)
                 });
                 batchRequest = batchRequest.Replace("expand", "$expand");
 
@@ -162,9 +246,15 @@ namespace Stutton.DocumentCreator.Services.Vsts
                     return Response<IEnumerable<IWorkItem>>.FromFailure(batchResponse.Message);
                 }
 
+                var batchResponseDto = JsonConvert.DeserializeObject<VstsCollectionDto<WorkItemApiResultDto>>(batchResponse.Value);
 
+                var result = new List<IWorkItem>();
+                foreach(var workItem in batchResponseDto.Value)
+                {
+                    result.Add(_mapper.Map<WorkItemModel>(workItem));
+                }
 
-                throw new NotImplementedException();
+                return Response<IEnumerable<IWorkItem>>.FromSuccess(result);
             }
             catch (Exception ex)
             {
@@ -184,17 +274,41 @@ namespace Stutton.DocumentCreator.Services.Vsts
             {
                 if (_authenticationResult == null || _authenticationResult.ExpiresOn >= DateTime.Now)
                 {
+                    if (_tokenCache == null)
+                    {
+                        var cacheFolder =
+                            Path.GetFullPath(
+                                Path.GetDirectoryName(
+                                    Assembly.GetEntryAssembly().Location));
+                        _tokenCache = new FilesBasedTokenCache(
+                            Path.Combine(cacheFolder, _adalV3CacheFileName),
+                            Path.Combine(cacheFolder, _msalCacheFileName));
+                    }
+
                     if (_context == null)
                     {
-                        _context = new AuthenticationContext("https://login.windows.net/common");
+                        _context = new AuthenticationContext("https://login.windows.net/common", _tokenCache);
                         if (_context.TokenCache.Count > 0)
                         {
                             var homeTenant = _context.TokenCache.ReadItems().First().TenantId;
-                            _context = new AuthenticationContext("https://login.microsoftonline.com/" + homeTenant);
+                            _context = new AuthenticationContext("https://login.microsoftonline.com/" + homeTenant, _tokenCache);
                         }
                     }
 
-                    var result = await _context.AcquireTokenAsync(_azureDevOpsResourceId, _clientId, new Uri(_replyUri), promptBehavior);
+                    AuthenticationResult result = null;
+                    try
+                    {
+                        result = await _context.AcquireTokenSilentAsync(_azureDevOpsResourceId, _clientId);
+                    }
+                    catch (AdalException adalException)
+                    {
+                        if (adalException.ErrorCode == AdalError.FailedToAcquireTokenSilently ||
+                            adalException.ErrorCode == AdalError.InteractionRequired)
+                        {
+                            result = await _context.AcquireTokenAsync(_azureDevOpsResourceId, _clientId, new Uri(_replyUri), promptBehavior);
+                        }
+                    }
+
                     if (result == null || string.IsNullOrEmpty(result.AccessToken))
                     {
                         return Response<AuthenticationResult>.FromFailure("Unable to acquire access token");
@@ -209,7 +323,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
             }
         }
 
-        private async Task<IResponse<HttpClient>> GetHttpClient(AuthenticationHeaderValue authHeader)
+        private async Task<IResponse<HttpClient>> GetHttpClient(AuthenticationHeaderValue authHeader, string accept = null)
         {
             try
             {
@@ -239,7 +353,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 }
 
                 _client.DefaultRequestHeaders.Accept.Clear();
-                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(accept ?? "application/json"));
                 _client.DefaultRequestHeaders.Add("User-Agent", "ManagedClientConsoleAppSample");
                 _client.DefaultRequestHeaders.Add("X-TFS-FedAuthRedirect", "Suppress");
                 _client.DefaultRequestHeaders.Authorization = authHeader;
@@ -284,6 +398,45 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 return Response<string>.FromSuccess(result);
             }
             catch(Exception ex)
+            {
+                return Response<string>.FromException("There was an error sending the request", ex);
+            }
+        }
+
+        private async Task<IResponse<string>> SendRequestAsync(HttpMethod method, string url, byte[] body)
+        {
+            try
+            {
+                var authResponse = await AuthenticateAsync(_defaultPromptBehavior);
+                if (!authResponse.Success)
+                {
+                    return Response<string>.FromFailure(authResponse.Message);
+                }
+
+                var authToken = authResponse.Value.AccessToken;
+                var clientResponse = await GetHttpClient(
+                    new AuthenticationHeaderValue("Bearer", authToken),
+                    "application/octet-stream");
+                if (!clientResponse.Success)
+                {
+                    return Response<string>.FromFailure(clientResponse.Message);
+                }
+
+                var client = clientResponse.Value;
+
+                var request = new HttpRequestMessage(method, url)
+                {
+                    Content = new ByteArrayContent(body)
+                };
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadAsStringAsync();
+                return Response<string>.FromSuccess(result);
+            }
+            catch (Exception ex)
             {
                 return Response<string>.FromException("There was an error sending the request", ex);
             }
