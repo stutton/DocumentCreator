@@ -49,19 +49,5 @@ namespace Stutton.DocumentCreator.Models.Settings
             get => _sendTelemetryEnabled;
             set => Set(ref _sendTelemetryEnabled, value);
         }
-
-        [DataMember]
-        public bool UseAdalAuth
-        {
-            get => _useAdalAuth;
-            set => Set(ref _useAdalAuth, value);
-        }
-
-        [DataMember]
-        public string DefaultProject
-        {
-            get => _defaultProject;
-            set => Set(ref _defaultProject, value);
-        }
     }
 }
