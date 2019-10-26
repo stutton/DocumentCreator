@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Flurl;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OpenXmlPowerTools;
 using Stutton.DocumentCreator.Models;
 using Stutton.DocumentCreator.Models.WorkItems;
 using Stutton.DocumentCreator.Services.Settings;
@@ -75,12 +72,6 @@ namespace Stutton.DocumentCreator.Services.Vsts
             {
                 new
                 {
-                    op = "test",
-                    path = "/rev",
-                    value = 3
-                },
-                new
-                {
                     op = "add",
                     path = "/fields/System.History",
                     value = $"Attaching file {fileName}"
@@ -103,6 +94,7 @@ namespace Stutton.DocumentCreator.Services.Vsts
             var linkResponse = await SendRequestAsync(
                 new HttpMethod("PATCH"),
                 $"_apis/wit/workitems/{workItemId}?api-version=5.0",
+                "application/json-patch+json",
                 body);
 
             if (!linkResponse.Success)
@@ -262,11 +254,65 @@ namespace Stutton.DocumentCreator.Services.Vsts
             }
         }
 
-        public Task OpenWorkItemInBrowser(IWorkItem workItem) => throw new NotImplementedException();
+        public async Task OpenWorkItemInBrowser(IWorkItem workItem)
+        {
+            var settingsResponse = await _settingsService.GetSettings();
+            if (!settingsResponse.Success)
+            {
+                return;
+            }
 
-        public Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue) => throw new NotImplementedException();
+            var settings = settingsResponse.Value;
+            var tfsUrl = settings.TfsUrl;
+            var workItemUrl = Url.Combine(tfsUrl, workItem.Team, "_workitems/edit", workItem.Id.ToString());
 
-        public Task<IResponse> UpdateWorkItemAsync(int[] id, string fieldToUpdate, string newValue) => throw new NotImplementedException();
+            Process.Start(workItemUrl);
+        }
+
+        public Task<IResponse> UpdateWorkItemAsync(int id, string fieldToUpdate, string newValue) => 
+            UpdateWorkItemAsync(new[] { id }, fieldToUpdate, newValue);
+
+        public async Task<IResponse> UpdateWorkItemAsync(int[] ids, string fieldToUpdate, string newValue)
+        {
+            try
+            {
+                if (ids == null || ids.Length == 0)
+                {
+                    return Response.FromSuccess();
+                }
+
+                var patch = new[]
+                {
+                    new
+                    {
+                        op = "add",
+                        path = $"/fields/{fieldToUpdate}",
+                        value = newValue
+                    }
+                };
+
+                var body = JsonConvert.SerializeObject(patch);
+
+                foreach (var id in ids)
+                {
+                    var response = await SendRequestAsync(
+                        new HttpMethod("PATCH"),
+                        $"_apis/wit/workitems/{id}?api-version=5.0",
+                        "application/json-patch+json",
+                        body);
+                    if (!response.Success)
+                    {
+                        return Response.FromFailure(response.Message);
+                    }
+                }
+
+                return Response.FromSuccess();
+            }
+            catch (Exception ex)
+            {
+                return Response.FromFailure(ex.Message);
+            }
+        }
 
         private async Task<IResponse<AuthenticationResult>> AuthenticateAsync(IPlatformParameters promptBehavior)
         {
@@ -366,7 +412,10 @@ namespace Stutton.DocumentCreator.Services.Vsts
             }
         }
 
-        private async Task<IResponse<string>> SendRequestAsync(HttpMethod method, string url, string body = null)
+        private Task<IResponse<string>> SendRequestAsync(HttpMethod method, string url, string body = null) => 
+            SendRequestAsync(method, url, "application/json", body);
+
+        private async Task<IResponse<string>> SendRequestAsync(HttpMethod method, string url, string mediaType, string body = null)
         {
             try
             {
@@ -388,11 +437,20 @@ namespace Stutton.DocumentCreator.Services.Vsts
                 var request = new HttpRequestMessage(method, url);
                 if (!string.IsNullOrEmpty(body))
                 {
-                    request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+                    request.Content = new StringContent(body, Encoding.UTF8, mediaType);
                 }
 
                 var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var message = response.ReasonPhrase;
+                    if(content != null)
+                    {
+                        message += $": {content}";
+                    }
+                    return Response<string>.FromFailure(message);
+                }
 
                 var result = await response.Content.ReadAsStringAsync();
                 return Response<string>.FromSuccess(result);
