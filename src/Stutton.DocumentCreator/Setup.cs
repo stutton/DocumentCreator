@@ -64,7 +64,7 @@ namespace Stutton.DocumentCreator
             _container.RegisterInstance<IContext>(new WpfContext(), new ContainerControlledLifetimeManager());
             _container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISettingsService, SettingsService>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IVstsService, VstsService>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IVstsService, VstsAdalService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IImageService, ImageService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITemplatesService, TemplatesService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ITelemetryService, TelemetryService>(new ContainerControlledLifetimeManager());

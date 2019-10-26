@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Stutton.DocumentCreator.Models.WorkItems;
+﻿using System.Runtime.Serialization;
 using Stutton.DocumentCreator.Shared;
 
 namespace Stutton.DocumentCreator.Models.Settings
@@ -16,6 +10,8 @@ namespace Stutton.DocumentCreator.Models.Settings
         private string _tfsDefaultCollection;
         private string _tfsUserName;
         private bool? _sendTelemetryEnabled;
+        private bool _useAdalAuth;
+        private string _defaultProject;
 
         [DataMember]
         public string TfsUrl
