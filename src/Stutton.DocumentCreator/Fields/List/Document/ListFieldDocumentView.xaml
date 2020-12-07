@@ -60,7 +60,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Text="{Binding Index}"
-                                           Style="{DynamicResource MaterialDesignDisplay1TextBlock}"
+                                           Style="{DynamicResource MaterialDesignHeadline4TextBlock}"
                                            Opacity="0.4"
                                            Margin="8,0"/>
 

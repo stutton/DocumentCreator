@@ -314,7 +314,7 @@
                                     <TextBlock Margin="32,0,32,0"
                                                VerticalAlignment="Center"
                                                Opacity=".69"
-                                               Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                                               Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                                                Text="{Binding Title}" />
                                 </DockPanel>
                             </DataTemplate>

@@ -23,7 +23,7 @@
 
             <TextBlock Margin="16"
                        Opacity="0.8"
-                       Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                        Text="Appearance" />
             <materialDesign:Card Margin="0,4,0,0">
                 <StackPanel Margin="16">
@@ -45,7 +45,7 @@
 
             <TextBlock Margin="16"
                        Opacity="0.8"
-                       Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                        Text="Visual Studio Team Services" />
             <materialDesign:Card Margin="0,4,0,0">
                 <StackPanel Margin="16">
