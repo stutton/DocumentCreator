@@ -57,7 +57,7 @@
             </Grid.RowDefinitions>
             <TextBlock Margin="8,8,0,0"
                        Opacity="0.3"
-                       Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                       Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
                        Text="Saved Documents" />
 
             <ScrollViewer Grid.Row="1"
@@ -108,7 +108,7 @@
                                         </Grid.RowDefinitions>
                                         <TextBlock VerticalAlignment="Bottom"
                                                    FontWeight="Bold"
-                                                   Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                                                   Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
                                                    Text="{Binding Model.FileName}" />
                                         <TextBlock Grid.Row="1"
                                                    Margin="0,-4,0,0"
@@ -134,7 +134,7 @@
                    Grid.Column="1"
                    Margin="16,8,0,0"
                    Opacity="0.3"
-                   Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                   Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
                    Text="Document Templates" />
 
         <ScrollViewer Grid.Row="1"
