@@ -51,7 +51,7 @@ steps:
   displayName: 'Copy Squirrel.Windows to Staging'
   inputs:
     sourceFolder: '$(Agent.BuildDirectory)\packages'
-    contents: 'squirrel.windows\1.9.1\tools\*'
+    contents: 'squirrel.windows\2.0.1\tools\*'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: CopyFiles@2
