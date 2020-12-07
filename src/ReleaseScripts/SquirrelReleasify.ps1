@@ -16,7 +16,7 @@ param(
 	[string]$SquirrelPackageFolder
 )
 
-Set-Alias Squirrel "$SquirrelPackageFolder\squirrel.windows\1.9.1\tools\Squirrel.exe"
+Set-Alias Squirrel "$SquirrelPackageFolder\squirrel.windows\2.0.1\tools\Squirrel.exe"
 
 If ($Version.Contains('+')) {
 	$Version = $Version.Substring(0, $Version.IndexOf('+'))
