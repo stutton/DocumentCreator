@@ -96,7 +96,7 @@ namespace Stutton.DocumentCreator.ViewModels.Pages
                 if (!automationResponse.Success)
                 {
                     _telemetryService.TrackFailedResponse(automationResponse);
-                    await DialogHost.Show(new ErrorMessageDialogViewModel(result.Message, _telemetryService.SessionId), MainWindow.RootDialog);
+                    await DialogHost.Show(new ErrorMessageDialogViewModel(automationResponse.Message, _telemetryService.SessionId), MainWindow.RootDialog);
                     return;
                 }
 
